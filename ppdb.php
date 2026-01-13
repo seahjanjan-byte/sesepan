@@ -1,0 +1,54 @@
+<?php 
+include 'config/config.php';
+include 'includes/header.php'; 
+
+// Cek status PPDB
+$sql = mysqli_query($conn, "SELECT * FROM ppdb LIMIT 1");
+$d = mysqli_fetch_array($sql);
+?>
+
+<div class="container py-5 mt-5">
+    <?php if($d && $d['status'] == 'buka'): ?>
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-primary">Penerimaan Peserta Didik Baru (PPDB)</h2>
+            <p class="text-muted">Selamat datang calon siswa-siswi cerdas SDN Sesepan!</p>
+            <hr class="mx-auto" style="width: 80px; height: 4px; background-color: #3b82f6; border-radius: 2px; opacity: 1;">
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-9">
+                <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                    <img src="assets/img/<?= $d['gambar']; ?>" class="img-fluid" alt="Brosur PPDB">
+                </div>
+                <div class="alert alert-info mt-4 text-center rounded-pill">
+                    <i class="bi bi-info-circle me-2"></i> Silakan simpan gambar di atas atau hubungi kontak kami untuk pendaftaran.
+                </div>
+            </div>
+        </div>
+
+    <?php else: ?>
+        <div class="row justify-content-center py-5">
+            <div class="col-md-8 text-center">
+                <div class="p-5 bg-white shadow-sm border rounded-4">
+                    <div class="mb-4">
+                        <i class="bi bi-clock-history text-warning display-1"></i>
+                    </div>
+                    <h3 class="fw-bold text-dark">Layanan PPDB Sedang Tidak Aktif</h3>
+                    <p class="lead text-muted mt-3">
+                        Mohon maaf, saat ini periode Penerimaan Peserta Didik Baru (PPDB) SDN Sesepan 
+                        <strong>telah ditutup atau belum memasuki masa pendaftaran</strong>.
+                    </p>
+                    <p class="text-muted small">
+                        Kami sangat menghargai minat Bapak/Ibu. Silakan pantau terus halaman ini atau media sosial kami 
+                        untuk pembaruan informasi pendaftaran di masa mendatang.
+                    </p>
+                    <div class="mt-4">
+                        <a href="index.php" class="btn btn-outline-primary px-4 rounded-pill">Kembali ke Beranda</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
+</div>
+
+<?php include 'includes/footer.php'; ?>

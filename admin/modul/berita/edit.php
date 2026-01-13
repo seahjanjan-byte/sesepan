@@ -1,58 +1,85 @@
 <?php 
 include '../../../config/config.php'; 
+
+// Ambil ID dari URL
 $id = $_GET['id'];
-$data = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM berita WHERE id = '$id'"));
+$query = mysqli_query($conn, "SELECT * FROM berita WHERE id = '$id'");
+$data = mysqli_fetch_array($query);
+
+// Jika data tidak ditemukan
+if(mysqli_num_rows($query) < 1) {
+    die("Data tidak ditemukan...");
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Berita - Admin</title>
+    <title>Edit Berita - Admin SDN Sesepan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <style>
-        body { background-color: #f4f7f6; }
-        .custom-card { background-color: #fdf8ee; border: none; border-radius: 15px; padding: 30px; }
-        .btn-update { background-color: #1e3a5f; color: white; border-radius: 10px; padding: 10px 25px; border: none; }
-    </style>
+    <link rel="stylesheet" href="../../../assets/css/style.css">
 </head>
 <body>
 
-<div class="d-flex">
+<div class="main-wrapper">
     <?php include '../../sidebar.php'; ?>
 
     <div class="content-main">
-        <div class="p-4 bg-white border-bottom shadow-sm">
-            <h4 class="fw-bold mb-0 text-dark">Edit Berita</h4>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bold text-dark m-0">Edit Berita</h3>
+            <a href="index.php" class="btn-secondary-sesepan text-decoration-none">
+                <i class="bi bi-arrow-left me-2"></i> Kembali
+            </a>
         </div>
 
-        <div class="p-5">
-            <div class="custom-card shadow-sm">
+        <div class="card-sesepan">
+            <div class="card-header-blue">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-pencil-square me-2"></i> Perbarui Konten Berita</h5>
+            </div>
+            <div class="card-sesepan-body p-4">
                 <form action="proses.php?aksi=edit" method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="id" value="<?= $data['id']; ?>"> <div class="mb-3">
+                    
+                    <input type="hidden" name="id" value="<?= $data['id']; ?>">
+
+                    <div class="mb-3">
                         <label class="form-label fw-bold">Judul Berita</label>
-                        <input type="text" name="judul" class="form-control shadow-sm" style="border-radius: 8px;" value="<?= $data['judul']; ?>" required>
+                        <input type="text" name="judul" class="form-control form-control-lg" value="<?= $data['judul']; ?>" required>
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label fw-bold">Isi Berita</label>
-                        <textarea name="isi" class="form-control shadow-sm" style="border-radius: 8px;" rows="8" required><?= $data['isi']; ?></textarea>
+                        <textarea name="isi" class="form-control" rows="10" required><?= $data['isi']; ?></textarea>
                     </div>
-                    <div class="mb-3 text-center">
-                        <p class="fw-bold">Gambar Saat Ini:</p>
-                        <img src="../../../assets/img/<?= $data['gambar']; ?>" width="200" class="rounded shadow-sm">
+
+                    <div class="row mb-4">
+                        <div class="col-md-4 text-center">
+                            <label class="form-label d-block fw-bold">Gambar Saat Ini</label>
+                            <?php if($data['gambar'] != ""): ?>
+                                <img src="../../../assets/img/<?= $data['gambar']; ?>" class="img-fluid rounded shadow-sm border" style="max-height: 150px;">
+                            <?php else: ?>
+                                <div class="bg-light rounded py-4 text-muted border small">Tidak ada gambar</div>
+                            <?php endif; ?>
+                        </div>
+                        <div class="col-md-8">
+                            <label class="form-label fw-bold">Ganti Gambar (Opsional)</label>
+                            <input type="file" name="gambar" class="form-control" accept="image/*">
+                            <div class="form-text mt-2 text-muted">*Biarkan kosong jika tidak ingin mengganti gambar sampul.</div>
+                        </div>
                     </div>
-                    <div class="mb-4">
-                        <label class="form-label fw-bold">Ganti Gambar (Opsional)</label>
-                        <input type="file" name="gambar" class="form-control shadow-sm" style="border-radius: 8px;">
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <a href="index.php" class="btn btn-secondary px-4 shadow-sm" style="border-radius: 10px;">Batal</a>
-                        <button type="submit" class="btn-update shadow-sm">Simpan Perubahan</button>
+
+                    <div class="d-flex justify-content-end border-top pt-4">
+                        <button type="submit" name="update" class="btn-primary-sesepan shadow-sm">
+                            <i class="bi bi-check-circle me-2"></i> Simpan Perubahan
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
