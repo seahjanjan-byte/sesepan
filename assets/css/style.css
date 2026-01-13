@@ -1,0 +1,75 @@
+/* Variabel Warna */
+:root {
+    --sidebar-bg: #303f9f;
+    --active-color: #2ecc71;
+    --bg-content: #f8f9fa;
+    --card-bg: #ffffff;
+    --text-dark: #2c3e50;
+    --primary-btn: #3949ab;
+}
+
+/* Layout Dasar */
+body {
+    background-color: var(--bg-content);
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+}
+
+.content-main {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    min-height: 100vh;
+    padding-bottom: 50px;
+}
+
+/* Gaya Sidebar */
+.sidebar-custom {
+    width: 250px;
+    min-height: 100vh;
+    position: fixed;
+    background-color: var(--sidebar-bg);
+    z-index: 1000;
+    color: #303f9f;
+}
+
+.sidebar-custom .nav-link {
+    color: rgba(255,255,255,0.8);
+    transition: 0.3s;
+    border-radius: 8px;
+    margin-bottom: 5px;
+}
+
+.sidebar-custom .nav-link:hover, 
+.sidebar-custom .nav-link.active {
+    background-color: var(--active-color);
+    color: white !important;
+}
+
+/* Gaya Card (Tambah/Edit/List) */
+.custom-card {
+    background-color: var(--card-bg);
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    padding: 25px;
+}
+
+.card-header-custom {
+    border-bottom: 2px solid #eee;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+/* Gaya Tombol */
+.btn-save-custom {
+    background-color: var(--primary-btn);
+    color: white;
+    border-radius: 10px;
+    padding: 10px 25px;
+    border: none;
+}
+
+.btn-save-custom:hover {
+    background-color: #283593;
+    color: white;
+}
