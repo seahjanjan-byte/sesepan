@@ -20,30 +20,39 @@
             <div class="card-sesepan-body p-4">
                 <form action="proses.php?aksi=tambah" method="POST" enctype="multipart/form-data">
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-7">
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Judul Prestasi</label>
                                 <input type="text" name="judul_prestasi" class="form-control" placeholder="Contoh: Juara 1 Lomba Adiwiyata" required>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Tanggal Prestasi</label>
-                                <input type="date" name="tgl_prestasi" class="form-control" required>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Tanggal Prestasi</label>
+                                    <input type="date" name="tgl_prestasi" class="form-control" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Kategori</label>
+                                    <select name="kategori" class="form-select" required>
+                                        <option value="akademik">Akademik</option>
+                                        <option value="non-akademik">Non-Akademik</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Gambar/Sertifikat</label>
                                 <input type="file" name="gambar" class="form-control" accept="image/*" required>
                             </div>
                         </div>
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 mt-2">
                         <label class="form-label fw-bold">Keterangan</label>
                         <textarea name="keterangan" class="form-control" rows="5" placeholder="Jelaskan detail prestasi..." required></textarea>
                     </div>
                     <div class="d-flex justify-content-end gap-2">
-                        <a href="index.php" class="btn-secondary-sesepan text-decoration-none">Batal</a>
-                        <button type="submit" class="btn-primary-sesepan">Simpan Prestasi</button>
+                        <a href="index.php" class="btn btn-secondary px-4 rounded-pill text-decoration-none">Batal</a>
+                        <button type="submit" class="btn-primary-sesepan px-4">Simpan Prestasi</button>
                     </div>
                 </form>
             </div>

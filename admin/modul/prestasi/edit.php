@@ -30,9 +30,18 @@ $data = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM prestasi WHERE id=
                                 <label class="form-label fw-bold">Judul Prestasi</label>
                                 <input type="text" name="judul_prestasi" class="form-control" value="<?= $data['judul_prestasi']; ?>" required>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Tanggal Prestasi</label>
-                                <input type="date" name="tgl_prestasi" class="form-control" value="<?= $data['tgl_prestasi']; ?>" required>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Tanggal Prestasi</label>
+                                    <input type="date" name="tgl_prestasi" class="form-control" value="<?= $data['tgl_prestasi']; ?>" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Kategori</label>
+                                    <select name="kategori" class="form-select" required>
+                                        <option value="akademik" <?= ($data['kategori'] == 'akademik') ? 'selected' : ''; ?>>Akademik</option>
+                                        <option value="non-akademik" <?= ($data['kategori'] == 'non-akademik') ? 'selected' : ''; ?>>Non-Akademik</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-4 text-center">
@@ -46,8 +55,8 @@ $data = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM prestasi WHERE id=
                         <textarea name="keterangan" class="form-control" rows="5" required><?= $data['keterangan']; ?></textarea>
                     </div>
                     <div class="d-flex justify-content-end gap-2">
-                        <a href="index.php" class="btn-secondary-sesepan text-decoration-none">Batal</a>
-                        <button type="submit" class="btn-primary-sesepan">Simpan Perubahan</button>
+                        <a href="index.php" class="btn btn-secondary px-4 rounded-pill text-decoration-none">Batal</a>
+                        <button type="submit" class="btn-primary-sesepan px-4">Simpan Perubahan</button>
                     </div>
                 </form>
             </div>

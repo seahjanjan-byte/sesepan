@@ -22,6 +22,13 @@ if(isset($_POST['update'])){
     }
     
     mysqli_query($conn, $sql);
-    header("location:index.php");
+    
+    // REVISI: Diarahkan keluar ke halaman utama profil
+    header("location:../profil/index.php?status=success");
+    exit();
+} else {
+    // Jika diakses tanpa submit, kembalikan ke profil
+    header("location:../profil/index.php");
+    exit();
 }
 ?>

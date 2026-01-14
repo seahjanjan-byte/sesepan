@@ -117,25 +117,112 @@ include 'includes/header.php';
             <?php $delay += 200; endwhile; ?> </div>
     </div>
 </section>
+<section id="hubungi-kami" class="py-5 bg-white">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="fw-bold text-dark">Hubungi Kami</h2>
+            <hr class="mx-auto" style="width: 80px; height: 4px; background-color: #3b82f6; border-radius: 2px; opacity: 1;">
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            <div class="col-lg-6" data-aos="fade-right">
+                <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+                    <h5 class="fw-bold mb-4">Kirim Pesan</h5>
+                    <form action="proses_kontak.php" method="POST">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Nama Lengkap</label>
+                            <input type="text" name="nama" class="form-control bg-light border-0 py-2 px-3" placeholder="Masukkan nama Anda" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Alamat Email</label>
+                            <input type="email" name="email" class="form-control bg-light border-0 py-2 px-3" placeholder="nama@email.com" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Nomor Telepon/WA</label>
+                            <input type="text" name="telepon" class="form-control bg-light border-0 py-2 px-3" placeholder="08xxxxxxxxxx" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Subjek</label>
+                            <input type="text" name="subjek" class="form-control bg-light border-0 py-2 px-3" placeholder="Contoh: Tanya PPDB" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold">Pesan</label>
+                            <textarea name="isi_pesan" class="form-control bg-light border-0 py-2 px-3" rows="4" placeholder="Tuliskan pesan Anda di sini..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 fw-bold shadow-sm">
+                            Kirim Pesan Sekarang
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-5" data-aos="fade-left">
+                <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-light">
+                    <h5 class="fw-bold mb-4">Informasi Sekolah</h5>
+                    <div class="d-flex mb-3">
+                        <i class="bi bi-geo-alt-fill text-primary me-3 fs-5"></i>
+                        <p class="small mb-0 text-secondary">Jl. Raya Dukuhbenda, Kec. Bumijawa, Kab. Tegal, Jawa Tengah.</p>
+                    </div>
+
+                    <div class="rounded-3 overflow-hidden border mb-4" style="height: 250px;">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15832.2222!2d109.123456!3d-7.123456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwMDcnMjQuNCJTIDEwOcKwMDcnMjQuNCJF!5e0!3m2!1sid!2sid!4v1621234567890" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="fw-bold small d-block">Kontak:</label>
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="bi bi-telephone-fill text-primary me-2"></i>
+                            <span class="small text-secondary">(0283) 123456</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-envelope-fill text-primary me-2"></i>
+                            <span class="small text-secondary">info@sdndukuhbenda02.sch.id</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 <?php include 'includes/footer.php'; ?>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    function handleNavbar() {
-        const nav = document.getElementById('mainNav');
-        if (window.scrollY > 50) {
-            nav.classList.add('scrolled');
-            nav.classList.remove('navbar-transparent');
-        } else {
-            // Jika di posisi paling atas (scrollY < 50)
-            nav.classList.remove('scrolled');
-            nav.classList.add('navbar-transparent');
-        }
-    }
+    /**
+     * PERBAIKAN 1: Script Navbar yang Lebih Mulus & Efisien
+     */
+    const handleNavbar = () => {
+        const nav = document.querySelector('#mainNav');
+        if (!nav) return;
 
-    // Jalankan saat scroll
-    window.addEventListener('scroll', handleNavbar);
+        const isScrolled = window.scrollY > 50;
+        nav.classList.toggle('scrolled', isScrolled);
+        nav.classList.toggle('navbar-transparent', !isScrolled);
+    };
 
-    // Jalankan saat halaman baru selesai dimuat (antisipasi jika user refresh di tengah halaman)
-    window.addEventListener('load', handleNavbar);
+    window.addEventListener('scroll', handleNavbar, { passive: true });
+    document.addEventListener('DOMContentLoaded', handleNavbar);
+
+    /**
+     * PERBAIKAN 2: Logika Notifikasi SweetAlert Berdasarkan Status URL
+     */
+    <?php if(isset($_GET['status']) && $_GET['status'] == 'terkirim'): ?>
+        document.addEventListener('DOMContentLoaded', () => {
+            Swal.fire({
+                title: "Pesan Terkirim!",
+                text: "Terima kasih, kami akan segera merespons pesan Anda.",
+                icon: "success",
+                showConfirmButton: false,
+                timer: 3500,
+                timerProgressBar: true,
+                background: '#ffffff',
+                iconColor: '#3b82f6',
+                customClass: {
+                    title: 'fw-bold text-dark',
+                    popup: 'rounded-4 shadow-lg'
+                }
+            });
+        });
+    <?php endif; ?>
 </script>

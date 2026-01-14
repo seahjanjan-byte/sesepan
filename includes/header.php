@@ -45,6 +45,7 @@
           </li>
           <li class="nav-item"><a class="nav-link" href="guru.php">Guru</a></li>
           <li class="nav-item"><a class="nav-link" href="berita.php">Berita</a></li>
+          <li class="nav-item"><a class="nav-link" href="prestasi.php">Prestasi</a></li>
           <li class="nav-item"><a class="nav-link" href="fasilitas.php">Fasilitas</a></li>
           <li class="nav-item"><a class="nav-link" href="pengumuman.php">Pengumuman</a></li>
           <li class="nav-item"><a class="nav-link" href="galeri.php">Galeri</a></li>

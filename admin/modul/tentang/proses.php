@@ -2,24 +2,24 @@
 include '../../../config/config.php';
 
 if (isset($_POST['update'])) {
+    // Mengambil ID dan Isi dari form
+    $id  = mysqli_real_escape_string($conn, $_POST['id']);
     $isi = mysqli_real_escape_string($conn, $_POST['isi']);
     
-    // Pastikan WHERE kategori='tentang' sesuai dengan yang ada di database
-    $query = "UPDATE profil SET isi='$isi' WHERE kategori='tentang'";
+    // Melakukan update data berdasarkan ID
+    $query = "UPDATE profil SET isi='$isi' WHERE id='$id'";
     
     if (mysqli_query($conn, $query)) {
-        // Cek apakah ada baris yang benar-benar terupdate
-        if (mysqli_affected_rows($conn) > 0) {
-            header("location:index.php?status=success");
-        } else {
-            // Jika sukses tapi 0 baris berubah (biasanya karena teksnya sama persis)
-            header("location:index.php?status=nochange");
-        }
+        // PERUBAHAN DI SINI:
+        // Diarahkan keluar dari folder 'tentang' menuju folder 'profil'
+        header("location:../profil/index.php?status=success");
         exit();
     } else {
+        // Jika ada error database
         echo "Error Database: " . mysqli_error($conn);
     }
 } else {
-    header("location:index.php");
+    // Jika diakses tanpa submit form, kembalikan ke profil
+    header("location:../profil/index.php");
 }
 ?>

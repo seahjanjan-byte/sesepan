@@ -2,11 +2,12 @@
 include 'config/config.php';
 include 'includes/header.php'; 
 ?>
-<div class="container py-5 mt-5">
-    <div class="text-center mb-5" data-aos="fade-up">
+<div class="container py-5 mt-5 pt-lg-5">
+    <div class="text-center mb-5 mt-4" data-aos="fade-up">
         <h2 class="fw-bold">Tenaga Pengajar</h2>
         <hr class="mx-auto" style="width: 80px; height: 4px; background-color: #3b82f6; opacity: 1;">
     </div>
+    
     <div class="row g-4">
         <?php
         $sql = mysqli_query($conn, "SELECT * FROM guru ORDER BY id ASC");
