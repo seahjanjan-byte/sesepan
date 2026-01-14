@@ -1,6 +1,6 @@
 <?php 
 include '../../../config/config.php'; 
-include 'cek_session.php';
+include '../../cek_session.php';
 // Mengambil data sambutan
 $query = mysqli_query($conn, "SELECT * FROM profil WHERE kategori='sambutan' LIMIT 1");
 $d = mysqli_fetch_array($query);

@@ -1,6 +1,6 @@
 <?php
 include '../../../config/config.php';
-include 'cek_session.php';
+include '../../cek_session.php'; 
 $aksi = $_GET['aksi'];
 
 if($aksi == 'pin'){

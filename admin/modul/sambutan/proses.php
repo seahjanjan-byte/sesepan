@@ -1,6 +1,6 @@
 <?php
 include '../../../config/config.php';
-include 'cek_session.php';
+include '../../cek_session.php';
 
 if (isset($_POST['update'])) {
     $id    = $_POST['id'];

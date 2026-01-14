@@ -1,6 +1,6 @@
 <?php 
 include '../../../config/config.php'; 
-include 'cek_session.php';
+include '../../cek_session.php'; ;
 $id = $_GET['id'];
 $d = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM galeri WHERE id='$id'"));
 ?>

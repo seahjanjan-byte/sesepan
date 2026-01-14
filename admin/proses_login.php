@@ -1,7 +1,6 @@
 <?php
 session_start();
 include '../config/config.php';
-include 'cek_session.php'; // Sesuaikan pathnya jika berada di dalam folder modul 
 
 // Menangkap data dari form login
 $username = mysqli_real_escape_string($conn, $_POST['username']);
