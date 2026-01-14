@@ -1,6 +1,7 @@
 <?php 
 include 'config/config.php'; 
 include 'includes/header.php'; 
+// JANGAN sertakan cek_session.php di sini karena ini halaman publik
 ?>
 
 <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-pause="false" data-bs-interval="3000">
@@ -13,7 +14,7 @@ include 'includes/header.php';
             <div class="carousel-item <?= $active; ?>" style="height: 100vh; background: url('<?= $base_url; ?>assets/img/<?= $s['gambar']; ?>') center/cover no-repeat;">
                 <div class="hero-overlay text-white">
                     <div class="container">
-                        <div class="col-lg-7" data-aos="fade-right"> 
+                        <div class="col-lg-7" data-aos="fade-right">
                             <h1 class="display-2 fw-bold mb-3"><?= $s['judul']; ?></h1>
                             <p class="fs-4 opacity-85"><?= $s['subjudul']; ?></p>
                         </div>
@@ -27,7 +28,6 @@ include 'includes/header.php';
 <section class="py-5 bg-white">
     <div class="container">
         <div class="row justify-content-center g-5 align-items-start">
-            
             <div class="col-lg-4" data-aos="fade-right">
                 <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
                     <div class="card-header bg-primary text-white py-3">
@@ -70,7 +70,10 @@ include 'includes/header.php';
                     <div class="row g-4">
                         <div class="col-md-5">
                             <div class="rounded-4 overflow-hidden shadow-sm border bg-light">
-                                <?php $foto = (!empty($sk['gambar']) && file_exists("assets/img/" . $sk['gambar'])) ? $base_url . "assets/img/" . $sk['gambar'] : $base_url . "assets/img/logoo.png"; ?>
+                                <?php
+                                $foto_path = "assets/img/" . ($sk['gambar'] ?? '');
+                                $foto = (!empty($sk['gambar']) && file_exists($foto_path)) ? $base_url . $foto_path : $base_url . "assets/img/logoo.png";
+                                ?>
                                 <img src="<?= $foto; ?>" class="img-fluid w-100" style="object-fit: cover; aspect-ratio: 3/4;">
                             </div>
                         </div>
@@ -86,7 +89,6 @@ include 'includes/header.php';
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </section>
@@ -162,7 +164,7 @@ include 'includes/header.php';
                         <p class="small mb-0 text-secondary">Jl. Sesepan, Kec. Balapulang, Tegal, Jawa Tengah.</p>
                     </div>
                     <div class="rounded-3 overflow-hidden border mb-4" style="height: 250px;">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3958.847585098935!2d109.1171452!3d-7.0543213!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwMDMnMTUuNiJTIDEwOcKwMDcnMDEuNyJF!5e0!3m2!1sid!2sid!4v1705244589254!5m2!1sid!2sid" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15837.287513364402!2d109.11!3d-7.0!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwMDAnMDAuMCJTIDEwOcKwMDYnMDAuMCJF!5e0!3m2!1sid!2sid!4v123456789" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
                     </div>
                     <div class="mb-2">
                         <label class="fw-bold small d-block">Kontak:</label>
@@ -182,3 +184,18 @@ include 'includes/header.php';
 </section>
 
 <?php include 'includes/footer.php'; ?>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<?php if(isset($_GET['status']) && $_GET['status'] == 'terkirim'): ?>
+<script>
+    Swal.fire({
+        title: "Pesan Terkirim!",
+        text: "Terima kasih, kami akan segera merespons pesan Anda.",
+        icon: "success",
+        timer: 3500,
+        showConfirmButton: false,
+        timerProgressBar: true,
+        customClass: { popup: 'rounded-4 shadow-lg' }
+    });
+</script>
+<?php endif; ?>
