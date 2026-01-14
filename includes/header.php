@@ -1,26 +1,28 @@
-<?php 
-  // 1. Sertakan config agar base_url tersedia di semua halaman
-  include_once 'config/config.php';
+<?php
+// 1. Sertakan config agar base_url tersedia di semua halaman
+include_once 'config/config.php';
 
-  // 2. Deteksi halaman saat ini
-  $current_page = basename($_SERVER['PHP_SELF']);
-  $is_home = ($current_page == 'index.php');
-  
-  // 3. Tentukan class navbar (transparan di home, biru/solid di halaman lain)
-  $nav_class = $is_home ? 'navbar-transparent' : 'scrolled';
+// 2. Deteksi halaman saat ini
+$current_page = basename($_SERVER['PHP_SELF']);
+$is_home = ($current_page == 'index.php');
+
+// 3. Tentukan class navbar (transparan di home, biru/solid di halaman lain)
+$nav_class = $is_home ? 'navbar-transparent' : 'scrolled';
 ?>
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SDN Sesepan - Cerdas & Berkarakter</title>
-  
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="<?= $base_url; ?>assets/css/style.css">
+  <link rel="shortcut icon" href="<?= $base_url; ?>assets/img/logoo.png">
 </head>
 
 <body class="<?= ($is_home) ? 'home-page' : ''; ?>">
@@ -31,7 +33,7 @@
         <img src="<?= $base_url; ?>assets/img/logoo.png" alt="Logo" width="50" height="50" class="me-2">
         SDN SESEPAN
       </a>
-      
+
       <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
