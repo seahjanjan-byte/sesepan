@@ -4,14 +4,18 @@ include '../../../config/config.php';
 if(isset($_POST['update'])){
     $isi = mysqli_real_escape_string($conn, $_POST['isi']);
     $gambar = $_FILES['gambar']['name'];
+    $path = "../../../assets/img/";
 
     if(!empty($gambar)){
-        // Hapus file lama jika ada
+        // 1. Hapus bagan lama
         $old = mysqli_fetch_array(mysqli_query($conn, "SELECT gambar FROM profil WHERE kategori='struktur'"));
-        if($old['gambar'] && file_exists("../../../assets/img/".$old['gambar'])) unlink("../../../assets/img/".$old['gambar']);
+        if(!empty($old['gambar']) && file_exists($path . $old['gambar'])) {
+            unlink($path . $old['gambar']);
+        }
         
+        // 2. Upload bagan baru
         $nama_file = "struktur_" . time() . "_" . $gambar;
-        move_uploaded_file($_FILES['gambar']['tmp_name'], "../../../assets/img/".$nama_file);
+        move_uploaded_file($_FILES['gambar']['tmp_name'], $path . $nama_file);
         $sql = "UPDATE profil SET isi='$isi', gambar='$nama_file' WHERE kategori='struktur'";
     } else {
         $sql = "UPDATE profil SET isi='$isi' WHERE kategori='struktur'";

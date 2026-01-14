@@ -1,14 +1,16 @@
 <?php
 include '../../../config/config.php';
 $aksi = $_GET['aksi'];
+$path = "../../../assets/img/";
 
 if($aksi == 'tambah'){
     $nama = mysqli_real_escape_string($conn, $_POST['nama']);
     $jabatan = mysqli_real_escape_string($conn, $_POST['jabatan']);
     $foto = $_FILES['foto']['name'];
     
-    move_uploaded_file($_FILES['foto']['tmp_name'], "../../../assets/img/".$foto);
-    mysqli_query($conn, "INSERT INTO guru (nama, jabatan, foto) VALUES ('$nama', '$jabatan', '$foto')");
+    $nama_file = time() . "_" . $foto;
+    move_uploaded_file($_FILES['foto']['tmp_name'], $path . $nama_file);
+    mysqli_query($conn, "INSERT INTO guru (nama, jabatan, foto) VALUES ('$nama', '$jabatan', '$nama_file')");
     header("location:index.php");
 
 } elseif($aksi == 'edit'){
@@ -19,10 +21,11 @@ if($aksi == 'tambah'){
 
     if($foto != ""){
         $old = mysqli_fetch_array(mysqli_query($conn, "SELECT foto FROM guru WHERE id='$id'"));
-        if(file_exists("../../../assets/img/".$old['foto'])) unlink("../../../assets/img/".$old['foto']);
+        if(!empty($old['foto']) && file_exists($path . $old['foto'])) unlink($path . $old['foto']);
         
-        move_uploaded_file($_FILES['foto']['tmp_name'], "../../../assets/img/".$foto);
-        $sql = "UPDATE guru SET nama='$nama', jabatan='$jabatan', foto='$foto' WHERE id='$id'";
+        $nama_baru = time() . "_" . $foto;
+        move_uploaded_file($_FILES['foto']['tmp_name'], $path . $nama_baru);
+        $sql = "UPDATE guru SET nama='$nama', jabatan='$jabatan', foto='$nama_baru' WHERE id='$id'";
     } else {
         $sql = "UPDATE guru SET nama='$nama', jabatan='$jabatan' WHERE id='$id'";
     }
@@ -32,7 +35,7 @@ if($aksi == 'tambah'){
 } elseif($aksi == 'hapus'){
     $id = $_GET['id'];
     $old = mysqli_fetch_array(mysqli_query($conn, "SELECT foto FROM guru WHERE id='$id'"));
-    if(file_exists("../../../assets/img/".$old['foto'])) unlink("../../../assets/img/".$old['foto']);
+    if(!empty($old['foto']) && file_exists($path . $old['foto'])) unlink($path . $old['foto']);
     
     mysqli_query($conn, "DELETE FROM guru WHERE id='$id'");
     header("location:index.php");

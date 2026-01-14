@@ -66,6 +66,11 @@ $base_url_admin = "/sdn-sesepan/admin/";
                 <i class="bi bi-person me-3"></i> Sambutan Kepsek
             </a>
         </li>
+        <li>
+            <a href="<?= $base_url_admin; ?>modul/pengumuman/index.php" class="nav-link py-2">
+                <i class="bi bi-megaphone me-3"></i> Kelola Pengumuman
+            </a>
+        </li>
     </ul>
 
     <div class="mt-auto ps-2 pb-4 border-top pt-3">

@@ -1,6 +1,7 @@
 <?php
 include '../../../config/config.php';
 $aksi = $_GET['aksi'];
+$path = "../../../assets/img/";
 
 if($aksi == 'tambah'){
     $judul = mysqli_real_escape_string($conn, $_POST['judul']);
@@ -8,8 +9,9 @@ if($aksi == 'tambah'){
     $gambar = $_FILES['gambar']['name'];
 
     if(!empty($gambar)){
-        move_uploaded_file($_FILES['gambar']['tmp_name'], "../../../assets/img/".$gambar);
-        mysqli_query($conn, "INSERT INTO profil (judul, isi, gambar) VALUES ('$judul', '$isi', '$gambar')");
+        $nama_file = "profil_" . time() . "_" . $gambar;
+        move_uploaded_file($_FILES['gambar']['tmp_name'], $path . $nama_file);
+        mysqli_query($conn, "INSERT INTO profil (judul, isi, gambar) VALUES ('$judul', '$isi', '$nama_file')");
     } else {
         mysqli_query($conn, "INSERT INTO profil (judul, isi) VALUES ('$judul', '$isi')");
     }
@@ -23,10 +25,11 @@ if($aksi == 'tambah'){
     if(!empty($gambar)){
         // Hapus gambar lama
         $old = mysqli_fetch_array(mysqli_query($conn, "SELECT gambar FROM profil WHERE id='$id'"));
-        if($old['gambar'] && file_exists("../../../assets/img/".$old['gambar'])) unlink("../../../assets/img/".$old['gambar']);
+        if(!empty($old['gambar']) && file_exists($path . $old['gambar'])) unlink($path . $old['gambar']);
         
-        move_uploaded_file($_FILES['gambar']['tmp_name'], "../../../assets/img/".$gambar);
-        $sql = "UPDATE profil SET isi='$isi', gambar='$gambar' WHERE id='$id'";
+        $nama_baru = "profil_" . time() . "_" . $gambar;
+        move_uploaded_file($_FILES['gambar']['tmp_name'], $path . $nama_baru);
+        $sql = "UPDATE profil SET isi='$isi', gambar='$nama_baru' WHERE id='$id'";
     } else {
         $sql = "UPDATE profil SET isi='$isi' WHERE id='$id'";
     }
@@ -36,7 +39,7 @@ if($aksi == 'tambah'){
 } elseif($aksi == 'hapus'){
     $id = $_GET['id'];
     $d = mysqli_fetch_array(mysqli_query($conn, "SELECT gambar FROM profil WHERE id='$id'"));
-    if($d['gambar'] && file_exists("../../../assets/img/".$d['gambar'])) unlink("../../../assets/img/".$d['gambar']);
+    if(!empty($d['gambar']) && file_exists($path . $d['gambar'])) unlink($path . $d['gambar']);
     
     mysqli_query($conn, "DELETE FROM profil WHERE id='$id'");
     header("location:index.php");

@@ -1,14 +1,16 @@
 <?php
 include '../../../config/config.php';
 $aksi = $_GET['aksi'];
+$path = "../../../assets/img/";
 
 if($aksi == 'tambah'){
     $nama = mysqli_real_escape_string($conn, $_POST['nama_fasilitas']);
     $desk = mysqli_real_escape_string($conn, $_POST['deskripsi']);
     $gambar = $_FILES['gambar']['name'];
     
-    move_uploaded_file($_FILES['gambar']['tmp_name'], "../../../assets/img/".$gambar);
-    mysqli_query($conn, "INSERT INTO fasilitas (nama_fasilitas, deskripsi, gambar) VALUES ('$nama', '$desk', '$gambar')");
+    $nama_file = time() . "_" . $gambar;
+    move_uploaded_file($_FILES['gambar']['tmp_name'], $path . $nama_file);
+    mysqli_query($conn, "INSERT INTO fasilitas (nama_fasilitas, deskripsi, gambar) VALUES ('$nama', '$desk', '$nama_file')");
     header("location:index.php");
 
 } elseif($aksi == 'edit'){
@@ -19,10 +21,11 @@ if($aksi == 'tambah'){
 
     if($gambar != ""){
         $old = mysqli_fetch_array(mysqli_query($conn, "SELECT gambar FROM fasilitas WHERE id='$id'"));
-        if(file_exists("../../../assets/img/".$old['gambar'])) unlink("../../../assets/img/".$old['gambar']);
+        if(!empty($old['gambar']) && file_exists($path . $old['gambar'])) unlink($path . $old['gambar']);
         
-        move_uploaded_file($_FILES['gambar']['tmp_name'], "../../../assets/img/".$gambar);
-        $sql = "UPDATE fasilitas SET nama_fasilitas='$nama', deskripsi='$desk', gambar='$gambar' WHERE id='$id'";
+        $nama_baru = time() . "_" . $gambar;
+        move_uploaded_file($_FILES['gambar']['tmp_name'], $path . $nama_baru);
+        $sql = "UPDATE fasilitas SET nama_fasilitas='$nama', deskripsi='$desk', gambar='$nama_baru' WHERE id='$id'";
     } else {
         $sql = "UPDATE fasilitas SET nama_fasilitas='$nama', deskripsi='$desk' WHERE id='$id'";
     }
@@ -32,7 +35,7 @@ if($aksi == 'tambah'){
 } elseif($aksi == 'hapus'){
     $id = $_GET['id'];
     $old = mysqli_fetch_array(mysqli_query($conn, "SELECT gambar FROM fasilitas WHERE id='$id'"));
-    if(file_exists("../../../assets/img/".$old['gambar'])) unlink("../../../assets/img/".$old['gambar']);
+    if(!empty($old['gambar']) && file_exists($path . $old['gambar'])) unlink($path . $old['gambar']);
     
     mysqli_query($conn, "DELETE FROM fasilitas WHERE id='$id'");
     header("location:index.php");

@@ -10,7 +10,7 @@ if($aksi == 'pin'){
 
 } elseif($aksi == 'status'){
     $id = $_GET['id'];
-    $set = $_GET['set']; // bisa 'arsip' atau 'dibaca'
+    $set = $_GET['set']; 
     mysqli_query($conn, "UPDATE pesan SET status='$set', is_pinned='0' WHERE id='$id'");
     header("location:index.php");
 
