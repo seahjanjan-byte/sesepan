@@ -3,17 +3,18 @@ include 'config/config.php';
 include 'includes/header.php'; 
 ?>
 
-<div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-pause="false" data-bs-interval="2000">
+<div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-pause="false" data-bs-interval="3000">
     <div class="carousel-inner">
         <?php
         $sql = mysqli_query($conn, "SELECT * FROM slider");
         $active = "active";
         while ($s = mysqli_fetch_array($sql)):
         ?>
-            <div class="carousel-item <?= $active; ?>" style="height: 100vh; background: url('assets/img/<?= $s['gambar']; ?>') center/cover no-repeat;">
+            <div class="carousel-item <?= $active; ?>" style="height: 100vh; background: url('<?= $base_url; ?>assets/img/<?= $s['gambar']; ?>') center/cover no-repeat;">
                 <div class="hero-overlay text-white">
                     <div class="container">
-                        <div class="col-lg-7" data-aos="fade-right"> <h1 class="display-2 fw-bold mb-3"><?= $s['judul']; ?></h1>
+                        <div class="col-lg-7" data-aos="fade-right"> 
+                            <h1 class="display-2 fw-bold mb-3"><?= $s['judul']; ?></h1>
                             <p class="fs-4 opacity-85"><?= $s['subjudul']; ?></p>
                         </div>
                     </div>
@@ -23,11 +24,11 @@ include 'includes/header.php';
     </div>
 </div>
 
-<section class="py-5 bg-white overflow-hidden">
+<section class="py-5 bg-white">
     <div class="container">
         <div class="row justify-content-center g-5 align-items-start">
             
-            <div class="col-lg-4" data-aos="fade-right" data-aos-delay="200">
+            <div class="col-lg-4" data-aos="fade-right">
                 <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
                     <div class="card-header bg-primary text-white py-3">
                         <h5 class="mb-0 fw-bold"><i class="bi bi-megaphone-fill me-2"></i> Pengumuman</h5>
@@ -43,7 +44,7 @@ include 'includes/header.php';
                                     <span class="badge bg-primary-subtle text-primary mb-2"><?= date('d M Y', strtotime($p['tanggal'])); ?></span>
                                     <h6 class="fw-bold mb-2 text-dark"><?= $p['judul']; ?></h6>
                                     <?php if (!empty($p['dokumen'])): ?>
-                                        <a href="assets/doc/<?= $p['dokumen']; ?>" target="_blank" class="btn btn-sm btn-outline-danger rounded-pill px-3 py-1 mt-2">
+                                        <a href="<?= $base_url; ?>assets/doc/<?= $p['dokumen']; ?>" target="_blank" class="btn btn-sm btn-outline-danger rounded-pill px-3 py-1 mt-2">
                                             <i class="bi bi-file-earmark-pdf me-1"></i> Lihat Lampiran
                                         </a>
                                     <?php endif; ?>
@@ -53,13 +54,13 @@ include 'includes/header.php';
                             <?php endif; ?>
                         </div>
                         <div class="p-3 text-center bg-light">
-                            <a href="pengumuman.php" class="text-decoration-none fw-bold small text-primary">LIHAT SEMUA PENGUMUMAN</a>
+                            <a href="<?= $base_url; ?>pengumuman.php" class="text-decoration-none fw-bold small text-primary">LIHAT SEMUA PENGUMUMAN</a>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-7" data-aos="fade-left" data-aos-delay="400">
+            <div class="col-lg-7" data-aos="fade-left">
                 <div class="ps-lg-4">
                     <?php
                     $query_sk = mysqli_query($conn, "SELECT * FROM profil WHERE kategori='sambutan' LIMIT 1");
@@ -67,9 +68,9 @@ include 'includes/header.php';
                     ?>
                     <h3 class="fw-bold text-primary mb-4">Sambutan Kepala Sekolah</h3>
                     <div class="row g-4">
-                        <div class="col-md-5" data-aos="zoom-in" data-aos-delay="600">
+                        <div class="col-md-5">
                             <div class="rounded-4 overflow-hidden shadow-sm border bg-light">
-                                <?php $foto = (!empty($sk['gambar']) && file_exists("assets/img/" . $sk['gambar'])) ? "assets/img/" . $sk['gambar'] : "assets/img/default.jpg"; ?>
+                                <?php $foto = (!empty($sk['gambar']) && file_exists("assets/img/" . $sk['gambar'])) ? $base_url . "assets/img/" . $sk['gambar'] : $base_url . "assets/img/logoo.png"; ?>
                                 <img src="<?= $foto; ?>" class="img-fluid w-100" style="object-fit: cover; aspect-ratio: 3/4;">
                             </div>
                         </div>
@@ -78,7 +79,7 @@ include 'includes/header.php';
                             <div class="text-secondary" style="line-height: 1.8; text-align: justify; font-size: 0.95rem;">
                                 <?= nl2br(substr($sk['isi'] ?? 'Teks sambutan sedang diperbarui.', 0, 500)); ?>...
                             </div>
-                            <a href="profil_view.php?kat=sambutan" class="btn btn-outline-primary rounded-pill px-4 mt-4 fw-bold shadow-sm">
+                            <a href="<?= $base_url; ?>profil_view.php?kat=sambutan" class="btn btn-outline-primary rounded-pill px-4 mt-4 fw-bold shadow-sm">
                                 Baca Selengkapnya <i class="bi bi-arrow-right-short ms-1"></i>
                             </a>
                         </div>
@@ -98,37 +99,37 @@ include 'includes/header.php';
         </div>
         <div class="row g-4">
             <?php
-            $delay = 200; // Inisialisasi delay awal
             $sql_news = mysqli_query($conn, "SELECT * FROM berita WHERE status='tampil' ORDER BY id DESC LIMIT 3");
             while ($bn = mysqli_fetch_array($sql_news)):
             ?>
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="<?= $delay; ?>">
-                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
-                        <img src="assets/img/<?= $bn['gambar']; ?>" class="card-img-top" style="height: 220px; object-fit: cover;">
+                <div class="col-md-4" data-aos="fade-up">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden card-sesepan">
+                        <img src="<?= $base_url; ?>assets/img/<?= $bn['gambar']; ?>" class="card-img-top" style="height: 220px; object-fit: cover;">
                         <div class="card-body p-4">
                             <h5 class="fw-bold text-dark mb-3"><?= $bn['judul']; ?></h5>
                             <p class="text-muted small mb-4"><?= substr(strip_tags($bn['isi']), 0, 100); ?>...</p>
-                            <a href="berita_view.php?id=<?= $bn['id']; ?>" class="btn btn-link text-primary fw-bold p-0 text-decoration-none">
+                            <a href="<?= $base_url; ?>berita_view.php?id=<?= $bn['id']; ?>" class="btn btn-link text-primary fw-bold p-0 text-decoration-none">
                                 Selengkapnya <i class="bi bi-chevron-right"></i>
                             </a>
                         </div>
                     </div>
                 </div>
-            <?php $delay += 200; endwhile; ?> </div>
+            <?php endwhile; ?>
+        </div>
     </div>
 </section>
+
 <section id="hubungi-kami" class="py-5 bg-white">
     <div class="container">
         <div class="text-center mb-5" data-aos="fade-up">
             <h2 class="fw-bold text-dark">Hubungi Kami</h2>
             <hr class="mx-auto" style="width: 80px; height: 4px; background-color: #3b82f6; border-radius: 2px; opacity: 1;">
         </div>
-
         <div class="row g-4 justify-content-center">
             <div class="col-lg-6" data-aos="fade-right">
                 <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
                     <h5 class="fw-bold mb-4">Kirim Pesan</h5>
-                    <form action="proses_kontak.php" method="POST">
+                    <form action="<?= $base_url; ?>proses_kontak.php" method="POST">
                         <div class="mb-3">
                             <label class="form-label small fw-bold">Nama Lengkap</label>
                             <input type="text" name="nama" class="form-control bg-light border-0 py-2 px-3" placeholder="Masukkan nama Anda" required>
@@ -143,31 +144,26 @@ include 'includes/header.php';
                         </div>
                         <div class="mb-3">
                             <label class="form-label small fw-bold">Subjek</label>
-                            <input type="text" name="subjek" class="form-control bg-light border-0 py-2 px-3" placeholder="Contoh: Tanya PPDB" required>
+                            <input type="text" name="subjek" class="form-control bg-light border-0 py-2 px-3" placeholder="Tanya PPDB / Info Sekolah" required>
                         </div>
                         <div class="mb-4">
                             <label class="form-label small fw-bold">Pesan</label>
-                            <textarea name="isi_pesan" class="form-control bg-light border-0 py-2 px-3" rows="4" placeholder="Tuliskan pesan Anda di sini..." required></textarea>
+                            <textarea name="isi_pesan" class="form-control bg-light border-0 py-2 px-3" rows="4" placeholder="Tuliskan pesan Anda..." required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 fw-bold shadow-sm">
-                            Kirim Pesan Sekarang
-                        </button>
+                        <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 fw-bold shadow-sm">Kirim Pesan Sekarang</button>
                     </form>
                 </div>
             </div>
-
             <div class="col-lg-5" data-aos="fade-left">
                 <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-light">
                     <h5 class="fw-bold mb-4">Informasi Sekolah</h5>
                     <div class="d-flex mb-3">
                         <i class="bi bi-geo-alt-fill text-primary me-3 fs-5"></i>
-                        <p class="small mb-0 text-secondary">Jl. Raya Dukuhbenda, Kec. Bumijawa, Kab. Tegal, Jawa Tengah.</p>
+                        <p class="small mb-0 text-secondary">Jl. Sesepan, Kec. Balapulang, Tegal, Jawa Tengah.</p>
                     </div>
-
                     <div class="rounded-3 overflow-hidden border mb-4" style="height: 250px;">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15832.2222!2d109.123456!3d-7.123456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwMDcnMjQuNCJTIDEwOcKwMDcnMjQuNCJF!5e0!3m2!1sid!2sid!4v1621234567890" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3958.847585098935!2d109.1171452!3d-7.0543213!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwMDMnMTUuNiJTIDEwOcKwMDcnMDEuNyJF!5e0!3m2!1sid!2sid!4v1705244589254!5m2!1sid!2sid" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
                     </div>
-
                     <div class="mb-2">
                         <label class="fw-bold small d-block">Kontak:</label>
                         <div class="d-flex align-items-center mb-2">
@@ -176,7 +172,7 @@ include 'includes/header.php';
                         </div>
                         <div class="d-flex align-items-center">
                             <i class="bi bi-envelope-fill text-primary me-2"></i>
-                            <span class="small text-secondary">info@sdndukuhbenda02.sch.id</span>
+                            <span class="small text-secondary">info@sdnsesepan.sch.id</span>
                         </div>
                     </div>
                 </div>
@@ -186,43 +182,3 @@ include 'includes/header.php';
 </section>
 
 <?php include 'includes/footer.php'; ?>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<script>
-    /**
-     * PERBAIKAN 1: Script Navbar yang Lebih Mulus & Efisien
-     */
-    const handleNavbar = () => {
-        const nav = document.querySelector('#mainNav');
-        if (!nav) return;
-
-        const isScrolled = window.scrollY > 50;
-        nav.classList.toggle('scrolled', isScrolled);
-        nav.classList.toggle('navbar-transparent', !isScrolled);
-    };
-
-    window.addEventListener('scroll', handleNavbar, { passive: true });
-    document.addEventListener('DOMContentLoaded', handleNavbar);
-
-    /**
-     * PERBAIKAN 2: Logika Notifikasi SweetAlert Berdasarkan Status URL
-     */
-    <?php if(isset($_GET['status']) && $_GET['status'] == 'terkirim'): ?>
-        document.addEventListener('DOMContentLoaded', () => {
-            Swal.fire({
-                title: "Pesan Terkirim!",
-                text: "Terima kasih, kami akan segera merespons pesan Anda.",
-                icon: "success",
-                showConfirmButton: false,
-                timer: 3500,
-                timerProgressBar: true,
-                background: '#ffffff',
-                iconColor: '#3b82f6',
-                customClass: {
-                    title: 'fw-bold text-dark',
-                    popup: 'rounded-4 shadow-lg'
-                }
-            });
-        });
-    <?php endif; ?>
-</script>

@@ -1,5 +1,6 @@
 <?php 
 include '../../../config/config.php'; 
+include 'cek_session.php';
 $id = $_GET['id'];
 $data = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM prestasi WHERE id='$id'"));
 ?>

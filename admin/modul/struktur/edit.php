@@ -1,4 +1,5 @@
 <?php include '../../../config/config.php'; 
+include 'cek_session.php';
 $d = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM profil WHERE kategori='struktur'"));
 ?>
 <!DOCTYPE html>

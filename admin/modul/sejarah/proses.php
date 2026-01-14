@@ -1,5 +1,6 @@
 <?php
 include '../../../config/config.php';
+include 'cek_session.php';
 
 if(isset($_POST['update'])){
     $isi = mysqli_real_escape_string($conn, $_POST['isi']);

@@ -1,5 +1,6 @@
 <?php 
 include '../config/config.php'; 
+include 'cek_session.php';
 
 // 1. Logika untuk menentukan waktu salam
 $jam = date('H');

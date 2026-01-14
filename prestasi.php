@@ -14,14 +14,13 @@ $cat = isset($_GET['cat']) ? $_GET['cat'] : 'semua';
     </div>
 
     <div class="d-flex justify-content-center gap-2 mb-5" data-aos="fade-up">
-        <a href="prestasi.php?cat=semua" class="btn <?= ($cat == 'semua') ? 'btn-primary' : 'btn-outline-primary'; ?> rounded-pill px-4">Semua</a>
-        <a href="prestasi.php?cat=akademik" class="btn <?= ($cat == 'akademik') ? 'btn-primary' : 'btn-outline-primary'; ?> rounded-pill px-4">Akademik</a>
-        <a href="prestasi.php?cat=non-akademik" class="btn <?= ($cat == 'non-akademik') ? 'btn-primary' : 'btn-outline-primary'; ?> rounded-pill px-4">Non-Akademik</a>
+        <a href="<?= $base_url; ?>prestasi.php?cat=semua" class="btn <?= ($cat == 'semua') ? 'btn-primary' : 'btn-outline-primary'; ?> rounded-pill px-4">Semua</a>
+        <a href="<?= $base_url; ?>prestasi.php?cat=akademik" class="btn <?= ($cat == 'akademik') ? 'btn-primary' : 'btn-outline-primary'; ?> rounded-pill px-4">Akademik</a>
+        <a href="<?= $base_url; ?>prestasi.php?cat=non-akademik" class="btn <?= ($cat == 'non-akademik') ? 'btn-primary' : 'btn-outline-primary'; ?> rounded-pill px-4">Non-Akademik</a>
     </div>
 
     <div class="row g-4">
         <?php
-        // Query berdasarkan filter
         $query = "SELECT * FROM prestasi";
         if($cat != 'semua') {
             $query .= " WHERE kategori = '$cat'";
@@ -35,7 +34,7 @@ $cat = isset($_GET['cat']) ? $_GET['cat'] : 'semua';
             <div class="col-md-4" data-aos="fade-up">
                 <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden card-sesepan">
                     <div class="position-relative">
-                        <img src="assets/img/<?= $d['gambar']; ?>" class="card-img-top" style="height: 250px; object-fit: cover;">
+                        <img src="<?= $base_url; ?>assets/img/<?= $d['gambar']; ?>" class="card-img-top" style="height: 250px; object-fit: cover;">
                         <span class="badge bg-primary position-absolute top-0 end-0 m-3 px-3 py-2 rounded-pill shadow-sm">
                             <?= strtoupper($d['kategori']); ?>
                         </span>
@@ -43,7 +42,7 @@ $cat = isset($_GET['cat']) ? $_GET['cat'] : 'semua';
                     <div class="card-body p-4">
                         <small class="text-muted d-block mb-2"><i class="bi bi-calendar3 me-1"></i> <?= date('d/m/Y', strtotime($d['tgl_prestasi'])); ?></small>
                         <h5 class="fw-bold text-dark mb-3"><?= $d['judul_prestasi']; ?></h5>
-                        <p class="text-secondary small mb-0"><?= nl2br($d['keterangan']); ?></p>
+                        <p class="text-secondary small mb-0" style="line-height: 1.6;"><?= nl2br($d['keterangan']); ?></p>
                     </div>
                 </div>
             </div>

@@ -1,5 +1,6 @@
 <?php
 // Path absolut agar link tidak pecah di level folder mana pun
+include_once __DIR__ . '/../config/config.php';
 $base_url_admin = "/sdn-sesepan/admin/";
 ?>
 

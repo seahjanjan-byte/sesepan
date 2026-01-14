@@ -1,4 +1,5 @@
-<?php include '../../../config/config.php'; ?>
+<?php include '../../../config/config.php';
+include 'cek_session.php'; ?>
 <!DOCTYPE html>
 <html lang="id">
 

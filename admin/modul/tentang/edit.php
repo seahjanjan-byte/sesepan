@@ -1,5 +1,6 @@
 <?php 
 include '../../../config/config.php'; 
+include 'cek_session.php';
 // Ambil data terbaru
 $sql = mysqli_query($conn, "SELECT * FROM profil WHERE kategori='tentang'");
 $d = mysqli_fetch_array($sql);

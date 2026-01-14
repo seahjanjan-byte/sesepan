@@ -1,5 +1,6 @@
 <?php
 include '../../../config/config.php';
+include 'cek_session.php';
 $aksi = $_GET['aksi'];
 $path = "../../../assets/img/";
 

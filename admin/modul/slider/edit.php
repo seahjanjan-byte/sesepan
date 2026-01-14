@@ -1,5 +1,6 @@
 <?php 
 include '../../../config/config.php'; 
+include 'cek_session.php';
 // Mengambil data slider berdasarkan ID yang dikirim melalui URL
 $id = $_GET['id'];
 $sql = mysqli_query($conn, "SELECT * FROM slider WHERE id='$id'");

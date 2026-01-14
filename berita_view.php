@@ -9,18 +9,18 @@ $id = isset($_GET['id']) ? mysqli_real_escape_string($conn, $_GET['id']) : '';
 $query = mysqli_query($conn, "SELECT * FROM berita WHERE id = '$id' AND status = 'tampil'");
 $b = mysqli_fetch_array($query);
 
-// Jika berita tidak ditemukan, kembalikan ke beranda
-if (!$b) { echo "<script>window.location='index.php';</script>"; exit; }
+// Jika berita tidak ditemukan, kembalikan ke beranda menggunakan base_url
+if (!$b) { echo "<script>window.location='" . $base_url . "index.php';</script>"; exit; }
 ?>
 
-<div class="container py-5 mt-5">
+<div class="container py-5 mt-5 pt-lg-5">
     <div class="row justify-content-center">
         <div class="col-lg-10">
             
             <nav aria-label="breadcrumb" class="mb-4 bg-light p-3 rounded-3 shadow-sm border-start border-primary border-4">
                 <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="index.php" class="text-decoration-none"><i class="bi bi-house-door-fill"></i> Beranda</a></li>
-                    <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Berita</a></li>
+                    <li class="breadcrumb-item"><a href="<?= $base_url; ?>index.php" class="text-decoration-none"><i class="bi bi-house-door-fill"></i> Beranda</a></li>
+                    <li class="breadcrumb-item"><a href="<?= $base_url; ?>berita.php" class="text-decoration-none">Berita</a></li>
                     <li class="breadcrumb-item active text-truncate" aria-current="page"><?= $b['judul']; ?></li>
                 </ol>
             </nav>
@@ -42,7 +42,7 @@ if (!$b) { echo "<script>window.location='index.php';</script>"; exit; }
             <?php if ($b['gambar']): ?>
             <div class="position-relative mb-5">
                 <div class="rounded-4 overflow-hidden shadow-lg border">
-                    <img src="assets/img/<?= $b['gambar']; ?>" class="img-fluid w-100" style="max-height: 550px; object-fit: cover;" alt="<?= $b['judul']; ?>">
+                    <img src="<?= $base_url; ?>assets/img/<?= $b['gambar']; ?>" class="img-fluid w-100" style="max-height: 550px; object-fit: cover;" alt="<?= $b['judul']; ?>">
                 </div>
             </div>
             <?php endif; ?>
@@ -52,8 +52,8 @@ if (!$b) { echo "<script>window.location='index.php';</script>"; exit; }
             </div>
 
             <div class="mt-5 pt-4 border-top">
-                <a href="index.php" class="btn btn-primary px-4 rounded-pill fw-bold shadow-sm transition-all">
-                    <i class="bi bi-arrow-left me-2"></i> Kembali ke Beranda
+                <a href="<?= $base_url; ?>berita.php" class="btn btn-primary px-4 rounded-pill fw-bold shadow-sm transition-all">
+                    <i class="bi bi-arrow-left me-2"></i> Kembali ke Daftar Berita
                 </a>
             </div>
 

@@ -2,14 +2,13 @@
 include 'config/config.php';
 include 'includes/header.php'; 
 
-// Fungsi Helper untuk mengubah link YouTube biasa menjadi link Embed
 function get_youtube_embed($url) {
     preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $match);
     return $match[1] ?? '';
 }
 ?>
 
-<div class="container py-5 mt-5">
+<div class="container py-5 mt-5 pt-lg-5">
     <div class="text-center mb-5">
         <h2 class="fw-bold">Galeri Kegiatan</h2>
         <p class="text-muted">Dokumentasi momen berharga di SDN Sesepan</p>
@@ -26,7 +25,7 @@ function get_youtube_embed($url) {
         while($d = mysqli_fetch_array($sql)) {
         ?>
         <div class="col-md-4 col-sm-6">
-            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden card-sesepan">
                 
                 <?php if($d['kategori'] == 'video' && $d['tipe_sumber'] == 'link_youtube'): ?>
                     <div class="ratio ratio-16x9">
@@ -35,7 +34,7 @@ function get_youtube_embed($url) {
                     </div>
 
                 <?php elseif($d['tipe_sumber'] == 'upload'): ?>
-                    <img src="assets/img/<?= $d['sumber']; ?>" class="card-img-top" style="height: 200px; object-fit: cover;" alt="<?= $d['judul']; ?>">
+                    <img src="<?= $base_url; ?>assets/img/<?= $d['sumber']; ?>" class="card-img-top" style="height: 200px; object-fit: cover;" alt="<?= $d['judul']; ?>">
 
                 <?php else: ?>
                     <div class="bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
@@ -46,7 +45,7 @@ function get_youtube_embed($url) {
                     </div>
                 <?php endif; ?>
 
-                <div class="card-body">
+                <div class="card-body p-4">
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <span class="badge <?= $d['kategori'] == 'foto' ? 'bg-info' : 'bg-danger' ?> small">
                             <?= strtoupper($d['kategori']); ?>

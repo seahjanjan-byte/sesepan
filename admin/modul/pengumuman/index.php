@@ -1,6 +1,7 @@
 <?php 
 // Gunakan require_once dan pastikan path ../../../ tepat ke arah folder root/config/
 require_once '../../../config/config.php'; 
+include 'cek_session.php';
 
 // Mengambil data pengumuman
 $sql = mysqli_query($conn, "SELECT * FROM pengumuman ORDER BY tanggal DESC");

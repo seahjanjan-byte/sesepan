@@ -1,3 +1,4 @@
+<?php include 'cek_session.php'; // Sesuaikan pathnya jika berada di dalam folder modul ?>
 <!DOCTYPE html>
 <html lang="id">
 <head>

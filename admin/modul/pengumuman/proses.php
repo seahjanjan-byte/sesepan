@@ -1,5 +1,6 @@
 <?php
 require_once '../../../config/config.php';
+include 'cek_session.php';
 $aksi = isset($_GET['aksi']) ? $_GET['aksi'] : '';
 $folder_doc = "../../../assets/doc/";
 

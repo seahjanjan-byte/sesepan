@@ -1,4 +1,5 @@
 <?php include '../../../config/config.php'; 
+include 'cek_session.php';
 // Mengambil data sejarah dari database
 $sql = mysqli_query($conn, "SELECT * FROM profil WHERE kategori='sejarah'");
 $d = mysqli_fetch_array($sql);

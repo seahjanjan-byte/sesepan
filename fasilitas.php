@@ -3,7 +3,7 @@ include 'config/config.php';
 include 'includes/header.php'; 
 ?>
 
-<div class="container py-5 mt-5">
+<div class="container py-5 mt-5 pt-lg-5">
     <div class="text-center mb-5" data-aos="fade-up">
         <h2 class="fw-bold text-dark">Fasilitas Sekolah</h2>
         <p class="text-muted">Sarana dan prasarana pendukung kegiatan belajar mengajar di SDN Sesepan</p>
@@ -12,20 +12,20 @@ include 'includes/header.php';
 
     <div class="row g-4">
         <?php
-        // Mengambil data dari tabel fasilitas
         $sql = mysqli_query($conn, "SELECT * FROM fasilitas ORDER BY id DESC");
         
         if(mysqli_num_rows($sql) > 0):
-            $delay = 100; // Inisialisasi delay animasi
+            $delay = 100;
             while($f = mysqli_fetch_array($sql)):
         ?>
             <div class="col-md-4" data-aos="fade-up" data-aos-delay="<?= $delay; ?>">
                 <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden transition-all">
                     <div class="position-relative">
                         <?php 
+                        // Menggunakan base_url untuk gambar fasilitas
                         $gambar = (!empty($f['gambar']) && file_exists("assets/img/" . $f['gambar'])) 
-                                  ? "assets/img/" . $f['gambar'] 
-                                  : "assets/img/default-fasilitas.jpg"; 
+                                  ? $base_url . "assets/img/" . $f['gambar'] 
+                                  : $base_url . "assets/img/default-fasilitas.jpg"; 
                         ?>
                         <img src="<?= $gambar; ?>" class="card-img-top" style="height: 240px; object-fit: cover;" alt="<?= $f['nama_fasilitas']; ?>">
                         <div class="card-img-overlay d-flex align-items-end p-0">
@@ -43,7 +43,7 @@ include 'includes/header.php';
                 </div>
             </div>
         <?php 
-            $delay += 100; // Tambah delay agar muncul bergantian
+            $delay += 100;
             endwhile; 
         else:
         ?>
