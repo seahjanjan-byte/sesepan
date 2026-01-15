@@ -1,7 +1,7 @@
 <?php
 // Path absolut agar link tidak pecah di level folder mana pun
 include_once __DIR__ . '/../config/config.php';
-$base_url_admin = "/sdn-sesepan/admin/";
+$admin_url = $base_url . "admin/";
 ?>
 
 <link rel="stylesheet" href="/sdn-sesepan/assets/css/style.css">
