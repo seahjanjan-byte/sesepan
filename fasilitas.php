@@ -12,7 +12,7 @@ include 'includes/header.php';
 
     <div class="row g-4">
         <?php
-        $sql = mysqli_query($conn, "SELECT * FROM fasilitas ORDER BY id DESC");
+        $sql = mysqli_query($conn, "SELECT * FROM fasilitas ORDER BY id_fasilitas DESC");
         
         if(mysqli_num_rows($sql) > 0):
             $delay = 100;

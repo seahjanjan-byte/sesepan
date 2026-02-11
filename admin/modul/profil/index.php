@@ -27,38 +27,41 @@ include '../../cek_session.php'; ?>
                         <tr>
                             <th class="px-4 py-3" width="10%">No</th>
                             <th class="py-3">Kategori Profil</th>
+                            <th class="py-3">Status</th>
                             <th class="py-3 text-center" width="20%">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
+                        <?php
+                        // Daftar kategori manual sesuai keinginan Anda
+                        $menus = [
+                            ['no' => 1, 'nama' => 'Tentang Sekolah', 'kat' => 'tentang', 'folder' => 'tentang'],
+                            ['no' => 2, 'nama' => 'Visi dan Misi', 'kat' => 'visi', 'folder' => 'visi-misi'],
+                            ['no' => 3, 'nama' => 'Struktur Organisasi', 'kat' => 'struktur', 'folder' => 'struktur'],
+                            ['no' => 4, 'nama' => 'Sejarah Sekolah', 'kat' => 'sejarah', 'folder' => 'sejarah']
+                        ];
+
+                        foreach($menus as $m):
+                            // Cek apakah data sudah ada di tabel profil
+                            $kategori = $m['kat'];
+                            $cek = mysqli_query($conn, "SELECT id_profil FROM profil WHERE kategori='$kategori'");
+                            $ada = mysqli_num_rows($cek) > 0;
+                        ?>
                         <tr>
-                            <td class="px-4 fw-bold">1</td>
-                            <td class="fw-semibold">Tentang Sekolah</td>
+                            <td class="px-4 fw-bold"><?= $m['no']; ?></td>
+                            <td class="fw-semibold"><?= $m['nama']; ?></td>
+                            <td>
+                                <?= $ada ? '<span class="badge bg-success">Tersedia</span>' : '<span class="badge bg-danger">Belum Diisi</span>'; ?>
+                            </td>
                             <td class="text-center">
-                                <a href="../tentang/index.php" class="btn btn-primary btn-sm px-4 rounded-pill">Kelola</a>
+                                <?php if($ada): ?>
+                                    <a href="../<?= $m['folder']; ?>/index.php" class="btn btn-primary btn-sm px-4 rounded-pill">Kelola</a>
+                                <?php else: ?>
+                                    <a href="tambah.php?kat=<?= $kategori; ?>" class="btn btn-warning btn-sm px-4 rounded-pill">Input Data</a>
+                                <?php endif; ?>
                             </td>
                         </tr>
-                        <tr>
-                            <td class="px-4 fw-bold">2</td>
-                            <td class="fw-semibold">Visi dan Misi</td>
-                            <td class="text-center">
-                                <a href="../visi-misi/index.php" class="btn btn-primary btn-sm px-4 rounded-pill">Kelola</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-4 fw-bold">3</td>
-                            <td class="fw-semibold">Struktur Organisasi</td>
-                            <td class="text-center">
-                                <a href="../struktur/index.php" class="btn btn-primary btn-sm px-4 rounded-pill">Kelola</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-4 fw-bold">4</td>
-                            <td class="fw-semibold">Sejarah Sekolah</td>
-                            <td class="text-center">
-                                <a href="../sejarah/index.php" class="btn btn-primary btn-sm px-4 rounded-pill">Kelola</a>
-                            </td>
-                        </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>

@@ -32,8 +32,10 @@ include '../../cek_session.php'; ?>
                         <input type="file" name="gambar" class="form-control" accept="image/*" required>
                     </div>
                     <div class="d-flex justify-content-end gap-2">
-                        <a href="index.php" class="btn-secondary-sesepan text-decoration-none">Batal</a>
-                        <button type="submit" class="btn-primary-sesepan">Simpan Fasilitas</button>
+                        <a href="index.php" class="btn btn-secondary-sesepan text-decoration-none">Batal</a>
+                        <button type="submit" class="btn-primary-sesepan">
+                            <i class="bi bi-check-circle me-2"></i> Simpan Fasilitas
+                        </button>
                     </div>
                 </form>
             </div>

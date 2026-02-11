@@ -1,6 +1,6 @@
-<?php 
-include 'config/config.php'; 
-include 'includes/header.php'; 
+<?php
+include 'config/config.php';
+include 'includes/header.php';
 // JANGAN sertakan cek_session.php di sini karena ini halaman publik
 ?>
 
@@ -21,7 +21,8 @@ include 'includes/header.php';
                     </div>
                 </div>
             </div>
-        <?php $active = ""; endwhile; ?>
+        <?php $active = "";
+        endwhile; ?>
     </div>
 </div>
 
@@ -40,16 +41,17 @@ include 'includes/header.php';
                             if (mysqli_num_rows($q_peng) > 0):
                                 while ($p = mysqli_fetch_array($q_peng)):
                             ?>
-                                <div class="list-group-item p-4 border-bottom transition-all">
-                                    <span class="badge bg-primary-subtle text-primary mb-2"><?= date('d M Y', strtotime($p['tanggal'])); ?></span>
-                                    <h6 class="fw-bold mb-2 text-dark"><?= $p['judul']; ?></h6>
-                                    <?php if (!empty($p['dokumen'])): ?>
-                                        <a href="<?= $base_url; ?>assets/doc/<?= $p['dokumen']; ?>" target="_blank" class="btn btn-sm btn-outline-danger rounded-pill px-3 py-1 mt-2">
-                                            <i class="bi bi-file-earmark-pdf me-1"></i> Lihat Lampiran
-                                        </a>
-                                    <?php endif; ?>
-                                </div>
-                            <?php endwhile; else: ?>
+                                    <div class="list-group-item p-4 border-bottom transition-all">
+                                        <span class="badge bg-primary-subtle text-primary mb-2"><?= date('d M Y', strtotime($p['tanggal'])); ?></span>
+                                        <h6 class="fw-bold mb-2 text-dark"><?= $p['judul']; ?></h6>
+                                        <?php if (!empty($p['dokumen'])): ?>
+                                            <a href="<?= $base_url; ?>assets/doc/<?= $p['dokumen']; ?>" target="_blank" class="btn btn-sm btn-outline-danger rounded-pill px-3 py-1 mt-2">
+                                                <i class="bi bi-file-earmark-pdf me-1"></i> Lihat Lampiran
+                                            </a>
+                                        <?php endif; ?>
+                                    </div>
+                                <?php endwhile;
+                            else: ?>
                                 <div class='p-4 text-center text-muted'>Belum ada pengumuman aktif.</div>
                             <?php endif; ?>
                         </div>
@@ -101,7 +103,8 @@ include 'includes/header.php';
         </div>
         <div class="row g-4">
             <?php
-            $sql_news = mysqli_query($conn, "SELECT * FROM berita WHERE status='tampil' ORDER BY id DESC LIMIT 3");
+            // Sesuaikan kolom 'id' menjadi 'id_berita'
+            $sql_news = mysqli_query($conn, "SELECT * FROM berita WHERE status='tampil' ORDER BY id_berita DESC LIMIT 3");
             while ($bn = mysqli_fetch_array($sql_news)):
             ?>
                 <div class="col-md-4" data-aos="fade-up">
@@ -186,16 +189,18 @@ include 'includes/header.php';
 <?php include 'includes/footer.php'; ?>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<?php if(isset($_GET['status']) && $_GET['status'] == 'terkirim'): ?>
-<script>
-    Swal.fire({
-        title: "Pesan Terkirim!",
-        text: "Terima kasih, kami akan segera merespons pesan Anda.",
-        icon: "success",
-        timer: 3500,
-        showConfirmButton: false,
-        timerProgressBar: true,
-        customClass: { popup: 'rounded-4 shadow-lg' }
-    });
-</script>
+<?php if (isset($_GET['status']) && $_GET['status'] == 'terkirim'): ?>
+    <script>
+        Swal.fire({
+            title: "Pesan Terkirim!",
+            text: "Terima kasih, kami akan segera merespons pesan Anda.",
+            icon: "success",
+            timer: 3500,
+            showConfirmButton: false,
+            timerProgressBar: true,
+            customClass: {
+                popup: 'rounded-4 shadow-lg'
+            }
+        });
+    </script>
 <?php endif; ?>

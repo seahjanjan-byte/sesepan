@@ -33,7 +33,8 @@ include '../../cek_session.php'; ?>
                             <tr>
                                 <th class="px-4 py-3" width="5%">No</th>
                                 <th class="py-3" width="10%">Gambar</th>
-                                <th class="py-3">Judul Prestasi</th>
+                                <th class="py-3">Judul & Pembimbing</th>
+                                <th class="py-3">Kategori</th>
                                 <th class="py-3">Tanggal</th>
                                 <th class="py-3 text-center" width="15%">Aksi</th>
                             </tr>
@@ -41,7 +42,12 @@ include '../../cek_session.php'; ?>
                         <tbody>
                             <?php
                             $no = 1;
-                            $sql = mysqli_query($conn, "SELECT * FROM prestasi ORDER BY tgl_prestasi DESC");
+                            // REVISI: JOIN dengan Guru (Pembimbing) dan Admin (Pengelola)
+                            $sql = mysqli_query($conn, "SELECT prestasi.*, guru.nama as nama_guru, admin.username 
+                                                        FROM prestasi 
+                                                        LEFT JOIN guru ON prestasi.id_guru = guru.id_guru 
+                                                        JOIN admin ON prestasi.id_admin = admin.id_admin 
+                                                        ORDER BY prestasi.tgl_prestasi DESC");
                             while($d = mysqli_fetch_array($sql)){
                             ?>
                             <tr>
@@ -49,12 +55,18 @@ include '../../cek_session.php'; ?>
                                 <td>
                                     <img src="../../../assets/img/<?= $d['gambar']; ?>" class="rounded shadow-sm" style="width: 60px; height: 60px; object-fit: cover;">
                                 </td>
-                                <td class="fw-semibold"><?= $d['judul_prestasi']; ?></td>
+                                <td>
+                                    <div class="fw-semibold"><?= $d['judul_prestasi']; ?></div>
+                                    <small class="text-muted" style="font-size: 10px;">
+                                        ID: <?= $d['id_prestasi']; ?> | Mentor: <?= $d['nama_guru'] ?? 'Tanpa Pembimbing'; ?>
+                                    </small>
+                                </td>
+                                <td><span class="badge bg-info"><?= ucfirst($d['kategori']); ?></span></td>
                                 <td><?= date('d/m/Y', strtotime($d['tgl_prestasi'])); ?></td>
                                 <td class="text-center">
                                     <div class="btn-group shadow-sm">
-                                        <a href="edit.php?id=<?= $d['id']; ?>" class="btn btn-sm btn-warning px-3"><i class="bi bi-pencil-square"></i></a>
-                                        <a href="proses.php?aksi=hapus&id=<?= $d['id']; ?>" class="btn btn-sm btn-danger px-3" onclick="return confirm('Hapus prestasi ini?')"><i class="bi bi-trash"></i></a>
+                                        <a href="edit.php?id=<?= $d['id_prestasi']; ?>" class="btn btn-sm btn-warning px-3"><i class="bi bi-pencil-square"></i></a>
+                                        <a href="proses.php?aksi=hapus&id=<?= $d['id_prestasi']; ?>" class="btn btn-sm btn-danger px-3" onclick="return confirm('Hapus prestasi ini?')"><i class="bi bi-trash"></i></a>
                                     </div>
                                 </td>
                             </tr>

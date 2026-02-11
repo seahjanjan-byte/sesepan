@@ -42,18 +42,21 @@ $nav_class = $is_home ? 'navbar-transparent' : 'scrolled';
         <ul class="navbar-nav ms-auto align-items-center">
           <li class="nav-item"><a class="nav-link" href="<?= $base_url; ?>index.php">Beranda</a></li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Profil</a>
-            <ul class="dropdown-menu border-0 shadow-lg mt-2">
-              <li><a class="dropdown-item py-2" href="<?= $base_url; ?>profil_view.php?kat=tentang">Tentang Sekolah</a></li>
-              <li><a class="dropdown-item py-2" href="<?= $base_url; ?>profil_view.php?kat=visi-misi">Visi & Misi</a></li>
-              <li><a class="dropdown-item py-2" href="<?= $base_url; ?>profil_view.php?kat=struktur">Struktur Organisasi</a></li>
-              <li><a class="dropdown-item py-2" href="<?= $base_url; ?>profil_view.php?kat=sejarah">Sejarah Sekolah</a></li>
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Profil
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="profil_view.php?kat=tentang">Tentang Sekolah</a></li>
+              <li><a class="dropdown-item" href="profil_view.php?kat=visi">Visi & Misi</a></li>
+              <li><a class="dropdown-item" href="profil_view.php?kat=sejarah">Sejarah Sekolah</a></li>
+              <li><a class="dropdown-item" href="profil_view.php?kat=struktur">Struktur Organisasi</a></li>
             </ul>
           </li>
           <li class="nav-item"><a class="nav-link" href="<?= $base_url; ?>guru.php">Guru</a></li>
           <li class="nav-item"><a class="nav-link" href="<?= $base_url; ?>berita.php">Berita</a></li>
           <li class="nav-item"><a class="nav-link" href="<?= $base_url; ?>prestasi.php">Prestasi</a></li>
           <li class="nav-item"><a class="nav-link" href="<?= $base_url; ?>fasilitas.php">Fasilitas</a></li>
+          <li class="nav-item"><a class="nav-link" href="<?= $base_url; ?>pengumuman.php">Pengumuman</a></li>
           <li class="nav-item"><a class="nav-link" href="<?= $base_url; ?>index.php#hubungi-kami">Hubungi Kami</a></li>
           <li class="nav-item">
             <a class="nav-link fw-bold text-primary" href="<?= $base_url; ?>ppdb.php">PPDB</a>

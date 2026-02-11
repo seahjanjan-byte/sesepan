@@ -7,6 +7,7 @@ if(isset($_POST['update'])){
     $gambar = $_FILES['gambar']['name'];
     $tmp = $_FILES['gambar']['tmp_name'];
     $path = "../../../assets/img/";
+    $admin_id = $_SESSION['admin_id'];
 
     if(!empty($gambar)){
         // 1. Cari dan hapus gambar lama
@@ -18,9 +19,9 @@ if(isset($_POST['update'])){
         // 2. Upload gambar baru
         $nama_file = "sejarah_" . time() . "_" . $gambar;
         move_uploaded_file($tmp, $path . $nama_file);
-        $sql = "UPDATE profil SET isi='$isi', gambar='$nama_file' WHERE kategori='sejarah'";
+        $sql = "UPDATE profil SET isi='$isi', gambar='$nama_file', id_admin='$admin_id' WHERE kategori='sejarah'";
     } else {
-        $sql = "UPDATE profil SET isi='$isi' WHERE kategori='sejarah'";
+        $sql = "UPDATE profil SET isi='$isi', id_admin='$admin_id' WHERE kategori='sejarah'";
     }
     
     if(mysqli_query($conn, $sql)){

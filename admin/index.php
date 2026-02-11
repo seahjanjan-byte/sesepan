@@ -15,7 +15,7 @@ if ($jam >= 5 && $jam < 11) {
 }
 
 // 2. Query untuk menghitung jumlah pesan masuk (yang belum diarsip)
-$query_pesan = mysqli_query($conn, "SELECT id FROM pesan WHERE status != 'arsip'");
+$query_pesan = mysqli_query($conn, "SELECT id_pesan FROM pesan WHERE status != 'arsip'");
 $total_pesan = mysqli_num_rows($query_pesan);
 ?>
 <!DOCTYPE html>

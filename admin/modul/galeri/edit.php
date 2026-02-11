@@ -1,8 +1,13 @@
 <?php 
 include '../../../config/config.php'; 
-include '../../cek_session.php'; ;
+include '../../cek_session.php'; 
 $id = $_GET['id'];
-$d = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM galeri WHERE id='$id'"));
+// REVISI: Mencari berdasarkan id_galeri
+$d = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM galeri WHERE id_galeri='$id'"));
+
+if(!$d) {
+    die("Data tidak ditemukan...");
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -20,7 +25,7 @@ $d = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM galeri WHERE id='$id'
             <div class="card-header-blue text-white"><h5 class="mb-0">Ubah Data Media</h5></div>
             <div class="p-4">
                 <form action="proses.php?aksi=edit" method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="id" value="<?= $d['id']; ?>">
+                    <input type="hidden" name="id" value="<?= $d['id_galeri']; ?>">
                     <div class="mb-3">
                         <label class="form-label fw-bold">Judul Kegiatan</label>
                         <input type="text" name="judul" class="form-control" value="<?= $d['judul']; ?>" required>

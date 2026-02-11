@@ -3,7 +3,7 @@ include '../../../config/config.php';
 include '../../cek_session.php';
 // Mengambil ID dari URL
 $id = $_GET['id'];
-$d = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM ppdb WHERE id='$id'"));
+$d = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM ppdb WHERE id_ppdb='$id'"));
 
 // Jika data tidak ditemukan, kembalikan ke index
 if (!$d) { header("location:index.php"); exit; }
@@ -26,7 +26,7 @@ if (!$d) { header("location:index.php"); exit; }
             </div>
             <div class="p-4">
                 <form action="proses.php?aksi=edit" method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="id" value="<?= $d['id']; ?>">
+                    <input type="hidden" name="id" value="<?= $d['id_ppdb']; ?>">
                     
                     <div class="mb-3 text-center">
                         <label class="form-label fw-bold d-block text-start">Brosur Saat Ini</label>

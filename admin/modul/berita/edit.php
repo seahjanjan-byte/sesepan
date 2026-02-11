@@ -5,7 +5,7 @@ include '../../cek_session.php';
 
 // Ambil ID dari URL
 $id = $_GET['id'];
-$query = mysqli_query($conn, "SELECT * FROM berita WHERE id = '$id'");
+$query = mysqli_query($conn, "SELECT * FROM berita WHERE id_berita = '$id'");
 $data = mysqli_fetch_array($query);
 
 // Jika data tidak ditemukan
@@ -43,7 +43,7 @@ if(mysqli_num_rows($query) < 1) {
             <div class="card-sesepan-body p-4">
                 <form action="proses.php?aksi=edit" method="POST" enctype="multipart/form-data">
                     
-                    <input type="hidden" name="id" value="<?= $data['id']; ?>">
+                    <input type="hidden" name="id" value="<?= $data['id_berita']; ?>">
 
                     <div class="mb-3">
                         <label class="form-label fw-bold">Judul Berita</label>

@@ -40,6 +40,18 @@ include '../../cek_session.php';
                                     </select>
                                 </div>
                             </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Guru Pembimbing</label>
+                                <select name="id_guru" class="form-select" required>
+                                    <option value="">-- Pilih Guru Pembimbing --</option>
+                                    <?php 
+                                    $gurus = mysqli_query($conn, "SELECT id_guru, nama FROM guru ORDER BY nama ASC");
+                                    while($g = mysqli_fetch_array($gurus)){
+                                        echo "<option value='".$g['id_guru']."'>".$g['nama']."</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
                         </div>
                         <div class="col-md-5">
                             <div class="mb-3">

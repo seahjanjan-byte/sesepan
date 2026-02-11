@@ -8,7 +8,7 @@ if (isset($_POST['update'])) {
     $isi = mysqli_real_escape_string($conn, $_POST['isi']);
     
     // Melakukan update data berdasarkan ID
-    $query = "UPDATE profil SET isi='$isi' WHERE id='$id'";
+    $query = "UPDATE profil SET isi='$isi' WHERE id_admin='$id'";
     
     if (mysqli_query($conn, $query)) {
         // PERUBAHAN DI SINI:

@@ -2,20 +2,19 @@
 include '../../../config/config.php'; 
 include '../../cek_session.php'; 
 
-// Mengambil ID pesan dari URL
-$id = $_GET['id'];
+// REVISI: Mengambil ID pesan (String) dari URL
+$id = mysqli_real_escape_string($conn, $_GET['id']);
+$admin_id = $_SESSION['admin_id'];
 
-// Update status pesan menjadi 'dibaca' secara otomatis saat dibuka
-mysqli_query($conn, "UPDATE pesan SET status='dibaca' WHERE id='$id'");
+// REVISI: Update status dan catat admin yang membaca sesuai aturan relasi
+mysqli_query($conn, "UPDATE pesan SET status='dibaca', id_admin_pembaca='$admin_id' WHERE id_pesan='$id'");
 
-// Mengambil data lengkap pesan
-$query = mysqli_query($conn, "SELECT * FROM pesan WHERE id='$id'");
+// REVISI: Query menggunakan kolom id_pesan
+$query = mysqli_query($conn, "SELECT * FROM pesan WHERE id_pesan='$id'");
 $d = mysqli_fetch_array($query);
 
-// Jika pesan tidak ditemukan, arahkan kembali ke index
 if(!$d) { echo "<script>window.location='index.php';</script>"; exit; }
 
-// Format nomor WhatsApp (menghilangkan karakter selain angka dan mengubah 0 di depan menjadi 62)
 $wa_number = preg_replace('/[^0-9]/', '', $d['telepon']);
 if(substr($wa_number, 0, 1) === '0') {
     $wa_number = '62' . substr($wa_number, 1);
@@ -30,8 +29,10 @@ if(substr($wa_number, 0, 1) === '0') {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../../../assets/css/style.css">
 </head>
-<body style="background-color: #f8f9fa;"> <div class="main-wrapper">
-    <?php include '../../sidebar.php'; ?> <div class="content-main">
+<body style="background-color: #f8f9fa;"> 
+<div class="main-wrapper">
+    <?php include '../../sidebar.php'; ?> 
+    <div class="content-main">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h3 class="fw-bold m-0 text-dark">Baca Pesan Masuk</h3>
             <a href="index.php" class="btn btn-secondary px-4 rounded-pill shadow-sm fw-bold">
@@ -43,7 +44,7 @@ if(substr($wa_number, 0, 1) === '0') {
             <div class="card-header bg-primary text-white py-3">
                 <div class="d-flex justify-content-between align-items-center">
                     <h5 class="mb-0 fw-bold"><i class="bi bi-envelope-open-fill me-2"></i> Detail Pesan</h5>
-                    <?php if($d['is_pinned']): ?>
+                    <?php if($d['is_pinned'] == '1'): ?>
                         <span class="badge bg-warning text-dark rounded-pill px-3"><i class="bi bi-pin-angle-fill me-1"></i> Tersemat</span>
                     <?php endif; ?>
                 </div>
@@ -86,13 +87,13 @@ if(substr($wa_number, 0, 1) === '0') {
 
                 <div class="mt-5 d-flex justify-content-between align-items-center border-top pt-4">
                     <div>
-                        <span class="text-muted small italic">ID Pesan: #<?= $d['id']; ?></span>
+                        <span class="text-muted small italic">ID Pesan: #<?= $d['id_pesan']; ?></span>
                     </div>
                     <div class="d-flex gap-2">
-                        <a href="proses.php?aksi=status&id=<?= $d['id']; ?>&set=arsip" class="btn btn-outline-secondary px-4 rounded-pill fw-bold">
+                        <a href="proses.php?aksi=status&id=<?= $d['id_pesan']; ?>&set=arsip" class="btn btn-outline-secondary px-4 rounded-pill fw-bold">
                             <i class="bi bi-archive me-2"></i> Arsipkan Pesan
                         </a>
-                        <a href="proses.php?aksi=hapus&id=<?= $d['id']; ?>" class="btn btn-danger px-4 rounded-pill fw-bold" onclick="return confirm('Hapus pesan ini secara permanen?')">
+                        <a href="proses.php?aksi=hapus&id=<?= $d['id_pesan']; ?>" class="btn btn-danger px-4 rounded-pill fw-bold" onclick="return confirm('Hapus pesan ini secara permanen?')">
                             <i class="bi bi-trash me-2"></i> Hapus Pesan
                         </a>
                     </div>
@@ -101,6 +102,5 @@ if(substr($wa_number, 0, 1) === '0') {
         </div>
     </div>
 </div>
-
 </body>
 </html>

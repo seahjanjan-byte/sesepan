@@ -1,8 +1,19 @@
 <?php 
 include '../../../config/config.php'; 
 include '../../cek_session.php';
-$id = $_GET['id'];
-$data = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM prestasi WHERE id='$id'"));
+
+// REVISI: Mengambil ID Prestasi (String/Varchar) dari URL
+$id = mysqli_real_escape_string($conn, $_GET['id']);
+
+// REVISI: Query menggunakan kolom id_prestasi
+$query = mysqli_query($conn, "SELECT * FROM prestasi WHERE id_prestasi='$id'");
+$data = mysqli_fetch_array($query);
+
+// Jika data tidak ditemukan, kembali ke halaman utama
+if(!$data) {
+    header("Location: index.php");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -24,13 +35,15 @@ $data = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM prestasi WHERE id=
             </div>
             <div class="card-sesepan-body p-4">
                 <form action="proses.php?aksi=edit" method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="id" value="<?= $data['id']; ?>">
+                    <input type="hidden" name="id" value="<?= $data['id_prestasi']; ?>">
+                    
                     <div class="row">
                         <div class="col-md-8">
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Judul Prestasi</label>
                                 <input type="text" name="judul_prestasi" class="form-control" value="<?= $data['judul_prestasi']; ?>" required>
                             </div>
+                            
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label fw-bold">Tanggal Prestasi</label>
@@ -44,25 +57,53 @@ $data = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM prestasi WHERE id=
                                     </select>
                                 </div>
                             </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Guru Pembimbing</label>
+                                <select name="id_guru" class="form-select" required>
+                                    <option value="">-- Pilih Guru Pembimbing --</option>
+                                    <?php 
+                                    $gurus = mysqli_query($conn, "SELECT id_guru, nama FROM guru ORDER BY nama ASC");
+                                    while($g = mysqli_fetch_array($gurus)){
+                                        $selected = ($g['id_guru'] == $data['id_guru']) ? 'selected' : '';
+                                        echo "<option value='".$g['id_guru']."' $selected>".$g['nama']."</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
                         </div>
+
                         <div class="col-md-4 text-center">
                             <label class="form-label fw-bold d-block">Gambar Saat Ini</label>
-                            <img src="../../../assets/img/<?= $data['gambar']; ?>" class="rounded shadow-sm border mb-2" style="max-height: 120px;">
+                            <?php if(!empty($data['gambar'])): ?>
+                                <img src="../../../assets/img/<?= $data['gambar']; ?>" class="rounded shadow-sm border mb-2" style="max-height: 120px; width: 100%; object-fit: cover;">
+                            <?php else: ?>
+                                <div class="bg-light border rounded mb-2 d-flex align-items-center justify-content-center" style="height: 120px;">
+                                    <span class="text-muted small">Tanpa Gambar</span>
+                                </div>
+                            <?php endif; ?>
                             <input type="file" name="gambar" class="form-control" accept="image/*">
+                            <div class="form-text small text-start">*Kosongkan jika tidak ingin mengganti gambar.</div>
                         </div>
                     </div>
+
                     <div class="mb-4 mt-3">
                         <label class="form-label fw-bold">Keterangan</label>
                         <textarea name="keterangan" class="form-control" rows="5" required><?= $data['keterangan']; ?></textarea>
                     </div>
-                    <div class="d-flex justify-content-end gap-2">
+
+                    <div class="d-flex justify-content-end gap-2 border-top pt-3">
                         <a href="index.php" class="btn btn-secondary px-4 rounded-pill text-decoration-none">Batal</a>
-                        <button type="submit" class="btn-primary-sesepan px-4">Simpan Perubahan</button>
+                        <button type="submit" class="btn-primary-sesepan px-4">
+                            <i class="bi bi-check-circle me-1"></i> Simpan Perubahan
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -3,7 +3,7 @@ include '../../cek_session.php'; ?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <title>Slider Beranda - Admin</title>
+    <title>Slider Beranda - Admin SDN Sesepan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../../../assets/css/style.css">
@@ -25,37 +25,46 @@ include '../../cek_session.php'; ?>
                 <h5 class="mb-0 fw-bold"><i class="bi bi-images me-2"></i> Daftar Slider Aktif</h5>
             </div>
             <div class="card-body p-0">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="bg-light">
-                        <tr>
-                            <th class="px-4 py-3" width="5%">No</th>
-                            <th class="py-3" width="15%">Foto</th> <th class="py-3">Judul & Subjudul</th>
-                            <th class="py-3 text-center" width="15%">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $no = 1;
-                        $sql = mysqli_query($conn, "SELECT * FROM slider ORDER BY id DESC");
-                        while($d = mysqli_fetch_array($sql)){
-                        ?>
-                        <tr>
-                            <td class="px-4 fw-bold"><?= $no++; ?></td>
-                            <td>
-                                <img src="../../../assets/img/<?= $d['gambar']; ?>" class="rounded shadow-sm border" style="width: 100px; height: 60px; object-fit: cover;">
-                            </td>
-                            <td>
-                                <div class="fw-bold text-dark"><?= $d['judul']; ?></div>
-                                <small class="text-muted"><?= $d['subjudul']; ?></small>
-                            </td>
-                            <td class="text-center">
-                                <a href="edit.php?id=<?= $d['id']; ?>" class="btn btn-warning btn-sm me-1"><i class="bi bi-pencil-square"></i></a>
-                                <a href="proses.php?aksi=hapus&id=<?= $d['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Hapus slider ini?')"><i class="bi bi-trash"></i></a>
-                            </td>
-                        </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th class="px-4 py-3" width="5%">No</th>
+                                <th class="py-3" width="15%">Foto</th> 
+                                <th class="py-3">Judul & Subjudul</th>
+                                <th class="py-3 text-center" width="15%">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $no = 1;
+                            // REVISI: JOIN dengan admin dan ganti id menjadi id_slider
+                            $sql = mysqli_query($conn, "SELECT slider.*, admin.username FROM slider 
+                                                        JOIN admin ON slider.id_admin = admin.id_admin 
+                                                        ORDER BY slider.id_slider DESC");
+                            while($d = mysqli_fetch_array($sql)){
+                            ?>
+                            <tr>
+                                <td class="px-4 fw-bold"><?= $no++; ?></td>
+                                <td>
+                                    <img src="../../../assets/img/<?= $d['gambar']; ?>" class="rounded shadow-sm border" style="width: 100px; height: 60px; object-fit: cover;">
+                                </td>
+                                <td>
+                                    <div class="fw-bold text-dark"><?= $d['judul']; ?></div>
+                                    <small class="text-muted"><?= $d['subjudul']; ?></small><br>
+                                    <small class="text-muted" style="font-size: 10px;">ID: <?= $d['id_slider']; ?> | Oleh: <?= $d['username']; ?></small>
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <a href="edit.php?id=<?= $d['id_slider']; ?>" class="btn btn-warning btn-sm px-3"><i class="bi bi-pencil-square"></i></a>
+                                        <a href="proses.php?aksi=hapus&id=<?= $d['id_slider']; ?>" class="btn btn-danger btn-sm px-3" onclick="return confirm('Hapus slider ini?')"><i class="bi bi-trash"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

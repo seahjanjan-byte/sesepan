@@ -1,5 +1,19 @@
 <?php include '../../../config/config.php';
-include '../../cek_session.php'; ?>
+include '../../cek_session.php'; 
+
+// Ambil data visi dan misi
+$qv = mysqli_query($conn, "SELECT isi FROM profil WHERE kategori='visi'");
+$dv = mysqli_fetch_array($qv);
+$qm = mysqli_query($conn, "SELECT isi FROM profil WHERE kategori='misi'");
+$dm = mysqli_fetch_array($qm);
+
+// NULL CHECK: Jika data tidak ada, berikan array berisi satu string kosong agar form tetap muncul
+$isi_visi = isset($dv['isi']) ? $dv['isi'] : '';
+$poin_visi = !empty($isi_visi) ? explode("[BREAK]", $isi_visi) : [''];
+
+$isi_misi = isset($dm['isi']) ? $dm['isi'] : '';
+$poin_misi = !empty($isi_misi) ? explode("[BREAK]", $isi_misi) : [''];
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -8,7 +22,8 @@ include '../../cek_session.php'; ?>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../../../assets/css/style.css">
 </head>
-<body style="background-color: #f8f9fa;"> <div class="main-wrapper">
+<body style="background-color: #f8f9fa;"> 
+<div class="main-wrapper">
     <?php include '../../sidebar.php'; ?>
     <div class="content-main">
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -33,19 +48,15 @@ include '../../cek_session.php'; ?>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
-                            $qv = mysqli_query($conn, "SELECT isi FROM profil WHERE kategori='visi'");
-                            $dv = mysqli_fetch_array($qv);
-                            $poin_visi = explode("[BREAK]", $dv['isi']);
-                            $no = 1;
-                            foreach($poin_visi as $p) { if(!empty($p)){
-                            ?>
+                            <?php $no = 1; foreach($poin_visi as $p): ?>
                             <tr>
                                 <td class="fw-bold text-center no-urut"><?= $no++; ?></td>
-                                <td><input type="text" name="visi[]" class="form-control border-0 bg-light" value="<?= $p; ?>"></td>
-                                <td class="text-center"><button type="button" class="btn btn-outline-danger border-0 btn-sm" onclick="hapusBaris(this)"><i class="bi bi-trash"></i></button></td>
+                                <td><input type="text" name="visi[]" class="form-control border-0 bg-light" value="<?= htmlspecialchars($p); ?>" placeholder="Tulis poin visi..."></td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-outline-danger border-0 btn-sm" onclick="hapusBaris(this)"><i class="bi bi-trash"></i></button>
+                                </td>
                             </tr>
-                            <?php }} ?>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                     <button type="button" class="btn btn-dark btn-sm rounded-pill px-3 mt-2" onclick="tambahBaris('tableVisi', 'visi[]')">
@@ -68,19 +79,15 @@ include '../../cek_session.php'; ?>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
-                            $qm = mysqli_query($conn, "SELECT isi FROM profil WHERE kategori='misi'");
-                            $dm = mysqli_fetch_array($qm);
-                            $poin_misi = explode("[BREAK]", $dm['isi']);
-                            $no = 1;
-                            foreach($poin_misi as $p) { if(!empty($p)){
-                            ?>
+                            <?php $no = 1; foreach($poin_misi as $p): ?>
                             <tr>
                                 <td class="fw-bold text-center no-urut"><?= $no++; ?></td>
-                                <td><input type="text" name="misi[]" class="form-control border-0 bg-light" value="<?= $p; ?>"></td>
-                                <td class="text-center"><button type="button" class="btn btn-outline-danger border-0 btn-sm" onclick="hapusBaris(this)"><i class="bi bi-trash"></i></button></td>
+                                <td><input type="text" name="misi[]" class="form-control border-0 bg-light" value="<?= htmlspecialchars($p); ?>" placeholder="Tulis poin misi..."></td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-outline-danger border-0 btn-sm" onclick="hapusBaris(this)"><i class="bi bi-trash"></i></button>
+                                </td>
                             </tr>
-                            <?php }} ?>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                     <button type="button" class="btn btn-dark btn-sm rounded-pill px-3 mt-2" onclick="tambahBaris('tableMisi', 'misi[]')">
@@ -91,7 +98,7 @@ include '../../cek_session.php'; ?>
 
             <div class="d-flex justify-content-end gap-2 mb-5">
                 <button type="submit" name="update" class="btn btn-success px-5 rounded-pill shadow-sm fw-bold">
-                    <i class="bi bi-check-circle me-2"></i> Simpan Perubahan
+                    <i class="bi bi-check-circle me-2"></i> Simpan Visi & Misi
                 </button>
             </div>
         </form>
@@ -103,10 +110,9 @@ function tambahBaris(tableId, inputName) {
     const table = document.getElementById(tableId).getElementsByTagName('tbody')[0];
     const rowCount = table.rows.length;
     const row = table.insertRow(rowCount);
-    
     row.innerHTML = `
         <td class="fw-bold text-center no-urut">${rowCount + 1}</td>
-        <td><input type="text" name="${inputName}" class="form-control border-0 bg-light" placeholder="Masukkan poin..."></td>
+        <td><input type="text" name="${inputName}" class="form-control border-0 bg-light" placeholder="Tulis poin..."></td>
         <td class="text-center"><button type="button" class="btn btn-outline-danger border-0 btn-sm" onclick="hapusBaris(this)"><i class="bi bi-trash"></i></button></td>
     `;
 }
@@ -114,12 +120,12 @@ function tambahBaris(tableId, inputName) {
 function hapusBaris(btn) {
     const row = btn.parentNode.parentNode;
     const table = row.parentNode;
-    row.parentNode.removeChild(row);
-    
-    // Update nomor urut otomatis
-    const rows = table.getElementsByClassName('no-urut');
-    for (let i = 0; i < rows.length; i++) {
-        rows[i].innerHTML = i + 1;
+    if(table.rows.length > 1) {
+        row.parentNode.removeChild(row);
+        const rows = table.getElementsByClassName('no-urut');
+        for (let i = 0; i < rows.length; i++) { rows[i].innerHTML = i + 1; }
+    } else {
+        alert("Minimal harus ada satu poin.");
     }
 }
 </script>

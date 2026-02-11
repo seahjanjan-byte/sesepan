@@ -39,12 +39,17 @@ include '../../cek_session.php'; ?>
                         <tbody>
                             <?php
                             $no = 1;
-                            $sql = mysqli_query($conn, "SELECT * FROM galeri ORDER BY id DESC");
+                            // REVISI: JOIN dengan admin dan ganti id menjadi id_galeri
+                            $sql = mysqli_query($conn, "SELECT galeri.*, admin.username FROM galeri 
+                                                        JOIN admin ON galeri.id_admin = admin.id_admin 
+                                                        ORDER BY galeri.id_galeri DESC");
                             while($d = mysqli_fetch_array($sql)){
                             ?>
                             <tr>
                                 <td class="px-4 fw-bold"><?= $no++; ?></td>
-                                <td class="fw-semibold"><?= $d['judul']; ?></td>
+                                <td class="fw-semibold">
+                                    <?= $d['judul']; ?><br>
+                                </td>
                                 <td>
                                     <span class="badge <?= $d['kategori'] == 'foto' ? 'bg-info' : 'bg-danger' ?>">
                                         <?= strtoupper($d['kategori']); ?>
@@ -53,8 +58,8 @@ include '../../cek_session.php'; ?>
                                 <td class="small text-muted"><?= str_replace('_', ' ', $d['tipe_sumber']); ?></td>
                                 <td class="text-center">
                                     <div class="btn-group shadow-sm">
-                                        <a href="edit.php?id=<?= $d['id']; ?>" class="btn btn-sm btn-warning px-3"><i class="bi bi-pencil-square"></i></a>
-                                        <a href="proses.php?aksi=hapus&id=<?= $d['id']; ?>" class="btn btn-sm btn-danger px-3" onclick="return confirm('Hapus media ini?')"><i class="bi bi-trash"></i></a>
+                                        <a href="edit.php?id=<?= $d['id_galeri']; ?>" class="btn btn-sm btn-warning px-3"><i class="bi bi-pencil-square"></i></a>
+                                        <a href="proses.php?aksi=hapus&id=<?= $d['id_galeri']; ?>" class="btn btn-sm btn-danger px-3" onclick="return confirm('Hapus media ini?')"><i class="bi bi-trash"></i></a>
                                     </div>
                                 </td>
                             </tr>

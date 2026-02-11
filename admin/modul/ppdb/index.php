@@ -18,7 +18,7 @@ include '../../cek_session.php'; ?>
         <h3 class="fw-bold text-dark mb-4">Pengaturan PPDB</h3>
 
         <?php
-        // Mengambil data tunggal PPDB
+        // REVISI: Mengambil data PPDB dengan kolom yang baru
         $sql = mysqli_query($conn, "SELECT * FROM ppdb LIMIT 1");
         $d = mysqli_fetch_array($sql);
         ?>
@@ -34,7 +34,7 @@ include '../../cek_session.php'; ?>
                         <?php if($d): ?>
                             <img src="../../../assets/img/<?= $d['gambar']; ?>" class="img-fluid rounded shadow-sm border mb-3" style="max-height: 350px;">
                             <div class="mt-2">
-                                <a href="edit.php?id=<?= $d['id']; ?>" class="btn btn-warning w-100 rounded-pill fw-bold">
+                                <a href="edit.php?id=<?= $d['id_ppdb']; ?>" class="btn btn-warning w-100 rounded-pill fw-bold">
                                     <i class="bi bi-image me-2"></i> Ganti Gambar Brosur
                                 </a>
                             </div>
@@ -52,7 +52,7 @@ include '../../cek_session.php'; ?>
                                 <i class="bi bi-check-circle-fill fs-3 me-3"></i>
                                 <div><strong>AKTIF:</strong> Pendaftaran sedang dibuka dan brosur tampil di website.</div>
                             </div>
-                            <a href="proses.php?aksi=status&id=<?= $d['id']; ?>&set=tutup" class="btn btn-danger btn-lg w-100 rounded-4 py-3 shadow">
+                            <a href="proses.php?aksi=status&id=<?= $d['id_ppdb']; ?>&set=tutup" class="btn btn-danger btn-lg w-100 rounded-4 py-3 shadow">
                                 <i class="bi bi-x-circle me-2"></i> Tutup Pendaftaran Sekarang
                             </a>
                         <?php elseif($d && $d['status'] == 'tutup'): ?>
@@ -60,7 +60,7 @@ include '../../cek_session.php'; ?>
                                 <i class="bi bi-info-circle-fill fs-3 me-3"></i>
                                 <div><strong>NON-AKTIF:</strong> Pendaftaran ditutup. Pengunjung akan melihat pesan pemberitahuan.</div>
                             </div>
-                            <a href="proses.php?aksi=status&id=<?= $d['id']; ?>&set=buka" class="btn btn-success btn-lg w-100 rounded-4 py-3 shadow">
+                            <a href="proses.php?aksi=status&id=<?= $d['id_ppdb']; ?>&set=buka" class="btn btn-success btn-lg w-100 rounded-4 py-3 shadow">
                                 <i class="bi bi-check-circle me-2"></i> Buka Pendaftaran Sekarang
                             </a>
                         <?php endif; ?>

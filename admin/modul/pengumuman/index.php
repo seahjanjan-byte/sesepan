@@ -1,15 +1,16 @@
 <?php 
-// Gunakan require_once dan pastikan path ../../../ tepat ke arah folder root/config/
 require_once '../../../config/config.php'; 
-include '../../cek_session.php';;
+include '../../cek_session.php';
 
-// Mengambil data pengumuman
-$sql = mysqli_query($conn, "SELECT * FROM pengumuman ORDER BY tanggal DESC");
+// REVISI: JOIN dengan admin untuk membuktikan relasi dan ganti ID
+$sql = mysqli_query($conn, "SELECT pengumuman.*, admin.username FROM pengumuman 
+                            JOIN admin ON pengumuman.id_admin = admin.id_admin 
+                            ORDER BY pengumuman.tanggal DESC");
 ?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <title>Kelola Pengumuman - Admin</title>
+    <title>Kelola Pengumuman - Admin SDN Sesepan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../../../assets/css/style.css">
@@ -50,6 +51,7 @@ $sql = mysqli_query($conn, "SELECT * FROM pengumuman ORDER BY tanggal DESC");
                             <td class="px-4 fw-bold"><?= $no++; ?></td>
                             <td>
                                 <div class="fw-semibold"><?= $d['judul']; ?></div>
+                                <small class="text-muted" style="font-size: 10px;">ID: <?= $d['id_pengumuman']; ?> | Oleh: <?= $d['username']; ?></small><br>
                                 <?php if(!empty($d['dokumen'])): ?>
                                     <small class="text-danger fw-bold"><i class="bi bi-file-earmark-pdf"></i> Ada Lampiran</small>
                                 <?php endif; ?>
@@ -63,17 +65,17 @@ $sql = mysqli_query($conn, "SELECT * FROM pengumuman ORDER BY tanggal DESC");
                             <td class="text-center">
                                 <div class="btn-group shadow-sm">
                                     <?php if($d['status'] == 'aktif'): ?>
-                                        <a href="proses.php?aksi=status&id=<?= $d['id']; ?>&set=arsip" class="btn btn-sm btn-dark px-3" title="Arsipkan">
+                                        <a href="proses.php?aksi=status&id=<?= $d['id_pengumuman']; ?>&set=arsip" class="btn btn-sm btn-dark px-3" title="Arsipkan">
                                             <i class="bi bi-eye-slash"></i>
                                         </a>
                                     <?php else: ?>
-                                        <a href="proses.php?aksi=status&id=<?= $d['id']; ?>&set=aktif" class="btn btn-sm btn-info text-white px-3" title="Tampilkan">
+                                        <a href="proses.php?aksi=status&id=<?= $d['id_pengumuman']; ?>&set=aktif" class="btn btn-sm btn-info text-white px-3" title="Tampilkan">
                                             <i class="bi bi-eye"></i>
                                         </a>
                                     <?php endif; ?>
 
-                                    <a href="edit.php?id=<?= $d['id']; ?>" class="btn btn-sm btn-warning px-3"><i class="bi bi-pencil-square"></i></a>
-                                    <a href="proses.php?aksi=hapus&id=<?= $d['id']; ?>" class="btn btn-sm btn-danger px-3" onclick="return confirm('Hapus pengumuman ini?')">
+                                    <a href="edit.php?id=<?= $d['id_pengumuman']; ?>" class="btn btn-sm btn-warning px-3"><i class="bi bi-pencil-square"></i></a>
+                                    <a href="proses.php?aksi=hapus&id=<?= $d['id_pengumuman']; ?>" class="btn btn-sm btn-danger px-3" onclick="return confirm('Hapus pengumuman ini?')">
                                         <i class="bi bi-trash"></i>
                                     </a>
                                 </div>

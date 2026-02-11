@@ -1,8 +1,14 @@
 <?php 
 include '../../../config/config.php'; 
-include '../../cek_session.php'; ;
+include '../../cek_session.php'; 
+
 $id = $_GET['id'];
-$data = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM fasilitas WHERE id='$id'"));
+// REVISI: Menggunakan id_fasilitas
+$data = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM fasilitas WHERE id_fasilitas='$id'"));
+
+if(!$data) {
+    die("Data tidak ditemukan...");
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -23,7 +29,7 @@ $data = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM fasilitas WHERE id
             </div>
             <div class="card-sesepan-body p-4">
                 <form action="proses.php?aksi=edit" method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="id" value="<?= $data['id']; ?>">
+                    <input type="hidden" name="id" value="<?= $data['id_fasilitas']; ?>">
                     <div class="mb-3">
                         <label class="form-label fw-bold">Nama Fasilitas</label>
                         <input type="text" name="nama_fasilitas" class="form-control" value="<?= $data['nama_fasilitas']; ?>" required>
@@ -39,7 +45,7 @@ $data = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM fasilitas WHERE id
                         <div class="form-text">*Kosongkan jika tidak ingin mengganti gambar.</div>
                     </div>
                     <div class="d-flex justify-content-end gap-2">
-                        <a href="index.php" class="btn-secondary-sesepan text-decoration-none">Batal</a>
+                        <a href="index.php" class="btn btn-secondary-sesepan text-decoration-none">Batal</a>
                         <button type="submit" class="btn-primary-sesepan">Simpan Perubahan</button>
                     </div>
                 </form>

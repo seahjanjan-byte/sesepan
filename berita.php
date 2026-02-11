@@ -10,7 +10,7 @@ include 'includes/header.php';
     </div>
     <div class="row g-4">
         <?php
-        $sql = mysqli_query($conn, "SELECT * FROM berita WHERE status='tampil' ORDER BY id DESC");
+        $sql = mysqli_query($conn, "SELECT * FROM berita WHERE status='tampil' ORDER BY id_berita DESC");
         if(mysqli_num_rows($sql) > 0):
             while($b = mysqli_fetch_array($sql)): 
         ?>

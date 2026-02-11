@@ -42,7 +42,10 @@ include '../../cek_session.php';
                         <tbody>
                             <?php
                             $no = 1;
-                            $sql = mysqli_query($conn, "SELECT * FROM berita ORDER BY id DESC");
+                            // REVISI: JOIN dengan admin untuk membuktikan relasi dan ganti ID
+                            $sql = mysqli_query($conn, "SELECT berita.*, admin.username FROM berita 
+                                                        JOIN admin ON berita.id_admin = admin.id_admin 
+                                                        ORDER BY berita.id_berita DESC");
                             while($d = mysqli_fetch_array($sql)){
                             ?>
                             <tr>
@@ -52,7 +55,10 @@ include '../../cek_session.php';
                                         <img src="../../../assets/img/<?= $d['gambar']; ?>" class="rounded shadow-sm" style="width: 80px; height: 50px; object-fit: cover;">
                                     <?php endif; ?>
                                 </td>
-                                <td class="fw-semibold"><?= $d['judul']; ?></td>
+                                <td class="fw-semibold">
+                                    <?= $d['judul']; ?><br>
+                                    <small class="text-muted" style="font-size: 10px;">ID: <?= $d['id_berita']; ?> | Oleh: <?= $d['username']; ?></small>
+                                </td>
                                 <td>
                                     <?php if($d['status'] == 'tampil'): ?>
                                         <span class="badge bg-success">Ditampilkan</span>
@@ -63,17 +69,17 @@ include '../../cek_session.php';
                                 <td class="text-center">
                                     <div class="btn-group shadow-sm">
                                         <?php if($d['status'] == 'tampil'): ?>
-                                            <a href="proses.php?aksi=status&id=<?= $d['id']; ?>&set=arsip" class="btn btn-sm btn-dark px-3" title="Arsipkan">
+                                            <a href="proses.php?aksi=status&id=<?= $d['id_berita']; ?>&set=arsip" class="btn btn-sm btn-dark px-3" title="Arsipkan">
                                                 <i class="bi bi-eye-slash"></i>
                                             </a>
                                         <?php else: ?>
-                                            <a href="proses.php?aksi=status&id=<?= $d['id']; ?>&set=tampil" class="btn btn-sm btn-info text-white px-3" title="Tampilkan">
+                                            <a href="proses.php?aksi=status&id=<?= $d['id_berita']; ?>&set=tampil" class="btn btn-sm btn-info text-white px-3" title="Tampilkan">
                                                 <i class="bi bi-eye"></i>
                                             </a>
                                         <?php endif; ?>
 
-                                        <a href="edit.php?id=<?= $d['id']; ?>" class="btn btn-sm btn-warning px-3"><i class="bi bi-pencil-square"></i></a>
-                                        <a href="proses.php?aksi=hapus&id=<?= $d['id']; ?>" class="btn btn-sm btn-danger px-3" onclick="return confirm('Hapus berita ini?')"><i class="bi bi-trash"></i></a>
+                                        <a href="edit.php?id=<?= $d['id_berita']; ?>" class="btn btn-sm btn-warning px-3"><i class="bi bi-pencil-square"></i></a>
+                                        <a href="proses.php?aksi=hapus&id=<?= $d['id_berita']; ?>" class="btn btn-sm btn-danger px-3" onclick="return confirm('Hapus berita ini?')"><i class="bi bi-trash"></i></a>
                                     </div>
                                 </td>
                             </tr>

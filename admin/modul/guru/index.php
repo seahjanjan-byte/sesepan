@@ -41,7 +41,10 @@ include '../../cek_session.php'; ?>
                         <tbody>
                             <?php
                             $no = 1;
-                            $sql = mysqli_query($conn, "SELECT * FROM guru ORDER BY id DESC");
+                            // REVISI: JOIN dengan tabel admin untuk relasi
+                            $sql = mysqli_query($conn, "SELECT guru.*, admin.username FROM guru 
+                                                        JOIN admin ON guru.id_admin = admin.id_admin 
+                                                        ORDER BY guru.id_guru DESC");
                             if(mysqli_num_rows($sql) == 0) {
                                 echo "<tr><td colspan='5' class='text-center py-4 text-muted small'>Belum ada data guru.</td></tr>";
                             }
@@ -52,12 +55,15 @@ include '../../cek_session.php'; ?>
                                 <td>
                                     <img src="../../../assets/img/<?= $d['foto']; ?>" class="rounded-circle shadow-sm" style="width: 50px; height: 50px; object-fit: cover; border: 2px solid #e2e8f0;">
                                 </td>
-                                <td class="fw-semibold"><?= $d['nama']; ?></td>
+                                <td class="fw-semibold">
+                                    <?= $d['nama']; ?><br>
+                                    <small class="text-muted" style="font-size: 10px;">ID: <?= $d['id_guru']; ?> | Oleh: <?= $d['username']; ?></small>
+                                </td>
                                 <td><span class="badge bg-secondary rounded-pill px-3"><?= $d['jabatan']; ?></span></td>
                                 <td class="text-center">
                                     <div class="btn-group shadow-sm">
-                                        <a href="edit.php?id=<?= $d['id']; ?>" class="btn btn-sm btn-warning px-3"><i class="bi bi-pencil-square"></i></a>
-                                        <a href="proses.php?aksi=hapus&id=<?= $d['id']; ?>" class="btn btn-sm btn-danger px-3" onclick="return confirm('Hapus data guru ini?')"><i class="bi bi-trash"></i></a>
+                                        <a href="edit.php?id=<?= $d['id_guru']; ?>" class="btn btn-sm btn-warning px-3"><i class="bi bi-pencil-square"></i></a>
+                                        <a href="proses.php?aksi=hapus&id=<?= $d['id_guru']; ?>" class="btn btn-sm btn-danger px-3" onclick="return confirm('Hapus data guru ini?')"><i class="bi bi-trash"></i></a>
                                     </div>
                                 </td>
                             </tr>

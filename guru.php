@@ -12,7 +12,7 @@ include 'includes/header.php';
     
     <div class="row g-4">
         <?php
-        $sql = mysqli_query($conn, "SELECT * FROM guru ORDER BY id ASC");
+        $sql = mysqli_query($conn, "SELECT * FROM guru ORDER BY id_guru DESC");
         while($g = mysqli_fetch_array($sql)): ?>
             <div class="col-md-3 text-center" data-aos="zoom-in">
                 <div class="p-4 bg-white shadow-sm rounded-4 border-top border-primary border-4 h-100 transition-all">

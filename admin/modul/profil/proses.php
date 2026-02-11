@@ -1,48 +1,45 @@
 <?php
 include '../../../config/config.php';
 include '../../cek_session.php';
-$aksi = $_GET['aksi'];
+
+$aksi = isset($_GET['aksi']) ? $_GET['aksi'] : '';
+$admin_id = $_SESSION['admin_id'];
 $path = "../../../assets/img/";
 
 if($aksi == 'tambah'){
-    $judul = mysqli_real_escape_string($conn, $_POST['judul']);
-    $isi   = mysqli_real_escape_string($conn, $_POST['isi']);
-    $gambar = $_FILES['gambar']['name'];
-
-    if(!empty($gambar)){
-        $nama_file = "profil_" . time() . "_" . $gambar;
-        move_uploaded_file($_FILES['gambar']['tmp_name'], $path . $nama_file);
-        mysqli_query($conn, "INSERT INTO profil (judul, isi, gambar) VALUES ('$judul', '$isi', '$nama_file')");
+    // Generate ID
+    $query_id = mysqli_query($conn, "SELECT id_profil FROM profil ORDER BY id_profil DESC LIMIT 1");
+    if(mysqli_num_rows($query_id) > 0) {
+        $last_id = mysqli_fetch_array($query_id)['id_profil'];
+        $num = (int)substr($last_id, 3) + 1;
+        $id_baru = "PFL" . str_pad($num, 3, "0", STR_PAD_LEFT);
     } else {
-        mysqli_query($conn, "INSERT INTO profil (judul, isi) VALUES ('$judul', '$isi')");
+        $id_baru = "PFL001";
     }
-    header("location:index.php");
 
-} elseif($aksi == 'edit'){
-    $id    = $_POST['id'];
-    $isi   = mysqli_real_escape_string($conn, $_POST['isi']);
-    $gambar = $_FILES['gambar']['name'];
-
-    if(!empty($gambar)){
-        // Hapus gambar lama
-        $old = mysqli_fetch_array(mysqli_query($conn, "SELECT gambar FROM profil WHERE id='$id'"));
-        if(!empty($old['gambar']) && file_exists($path . $old['gambar'])) unlink($path . $old['gambar']);
-        
-        $nama_baru = "profil_" . time() . "_" . $gambar;
-        move_uploaded_file($_FILES['gambar']['tmp_name'], $path . $nama_baru);
-        $sql = "UPDATE profil SET isi='$isi', gambar='$nama_baru' WHERE id='$id'";
-    } else {
-        $sql = "UPDATE profil SET isi='$isi' WHERE id='$id'";
-    }
-    mysqli_query($conn, $sql);
-    header("location:index.php");
-
-} elseif($aksi == 'hapus'){
-    $id = $_GET['id'];
-    $d = mysqli_fetch_array(mysqli_query($conn, "SELECT gambar FROM profil WHERE id='$id'"));
-    if(!empty($d['gambar']) && file_exists($path . $d['gambar'])) unlink($path . $d['gambar']);
+    $kategori = $_POST['kategori'];
+    $judul    = ucfirst($kategori);
     
-    mysqli_query($conn, "DELETE FROM profil WHERE id='$id'");
-    header("location:index.php");
+    // Ambil isi berdasarkan jenis input
+    if($kategori == 'visi' || $kategori == 'misi'){
+        $isi = isset($_POST['poin']) ? implode("[BREAK]", array_filter($_POST['poin'])) : "";
+    } else {
+        $isi = mysqli_real_escape_string($conn, $_POST['isi_biasa']);
+    }
+
+    // Gambar (Hanya diproses jika ada file diunggah)
+    $nama_file = NULL;
+    if(!empty($_FILES['gambar']['name'])){
+        $nama_file = $kategori . "_" . time() . "_" . $_FILES['gambar']['name'];
+        move_uploaded_file($_FILES['gambar']['tmp_name'], $path . $nama_file);
+    }
+
+    // Insert ke Database
+    $query = "INSERT INTO profil (id_profil, id_admin, kategori, judul, isi, gambar) 
+              VALUES ('$id_baru', '$admin_id', '$kategori', '$judul', '$isi', ".($nama_file ? "'$nama_file'" : "NULL").")";
+    
+    mysqli_query($conn, $query);
+    header("Location: index.php");
+    exit();
 }
 ?>

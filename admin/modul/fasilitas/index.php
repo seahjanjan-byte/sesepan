@@ -41,7 +41,10 @@ include '../../cek_session.php';
                         <tbody>
                             <?php
                             $no = 1;
-                            $sql = mysqli_query($conn, "SELECT * FROM fasilitas ORDER BY id DESC");
+                            // REVISI: JOIN dengan admin dan ganti id menjadi id_fasilitas
+                            $sql = mysqli_query($conn, "SELECT fasilitas.*, admin.username FROM fasilitas 
+                                                        JOIN admin ON fasilitas.id_admin = admin.id_admin 
+                                                        ORDER BY fasilitas.id_fasilitas DESC");
                             while($d = mysqli_fetch_array($sql)){
                             ?>
                             <tr>
@@ -49,13 +52,16 @@ include '../../cek_session.php';
                                 <td>
                                     <img src="../../../assets/img/<?= $d['gambar']; ?>" class="rounded shadow-sm" style="width: 80px; height: 50px; object-fit: cover;">
                                 </td>
-                                <td class="fw-semibold text-capitalize"><?= $d['nama_fasilitas']; ?></td>
+                                <td class="fw-semibold text-capitalize">
+                                    <?= $d['nama_fasilitas']; ?><br>
+                                    <small class="text-muted" style="font-size: 10px;">ID: <?= $d['id_fasilitas']; ?> | Oleh: <?= $d['username']; ?></small>
+                                </td>
                                 <td class="text-center">
                                     <div class="btn-group shadow-sm">
-                                        <a href="edit.php?id=<?= $d['id']; ?>" class="btn btn-sm btn-warning px-3">
+                                        <a href="edit.php?id=<?= $d['id_fasilitas']; ?>" class="btn btn-sm btn-warning px-3">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
-                                        <a href="proses.php?aksi=hapus&id=<?= $d['id']; ?>" class="btn btn-sm btn-danger px-3" onclick="return confirm('Hapus fasilitas ini?')">
+                                        <a href="proses.php?aksi=hapus&id=<?= $d['id_fasilitas']; ?>" class="btn btn-sm btn-danger px-3" onclick="return confirm('Hapus fasilitas ini?')">
                                             <i class="bi bi-trash"></i>
                                         </a>
                                     </div>

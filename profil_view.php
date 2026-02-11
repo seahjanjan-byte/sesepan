@@ -5,22 +5,30 @@ include 'includes/header.php';
 // Amankan input kategori
 $kat = isset($_GET['kat']) ? mysqli_real_escape_string($conn, $_GET['kat']) : '';
 
-if($kat == 'visi-misi'){
+// LOGIKA KHUSUS: Jika user mengklik Visi atau Misi, kita tampilkan dalam satu halaman "Visi & Misi"
+if($kat == 'visi' || $kat == 'misi' || $kat == 'visi-misi'){
     // Ambil data Visi
     $qv = mysqli_query($conn, "SELECT * FROM profil WHERE kategori = 'visi'");
     $dv = mysqli_fetch_array($qv);
+    
     // Ambil data Misi
     $qm = mysqli_query($conn, "SELECT * FROM profil WHERE kategori = 'misi'");
     $dm = mysqli_fetch_array($qm);
     
     $judul = "Visi dan Misi Sekolah";
+    $is_vm = true;
 } else {
+    // Query untuk kategori standar (Tentang, Sejarah, Struktur)
     $query = mysqli_query($conn, "SELECT * FROM profil WHERE kategori = '$kat'");
     $d = mysqli_fetch_array($query);
     
-    // Jika data tidak ditemukan, kembalikan ke beranda menggunakan base_url
-    if(!$d) { echo "<script>window.location='" . $base_url . "index.php';</script>"; exit; }
+    // Jika data tidak ditemukan, kembalikan ke beranda
+    if(!$d) { 
+        echo "<script>window.location='" . $base_url . "index.php';</script>"; 
+        exit; 
+    }
     $judul = $d['judul'];
+    $is_vm = false;
 }
 ?>
 
@@ -28,12 +36,13 @@ if($kat == 'visi-misi'){
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="text-center mb-5" data-aos="fade-down">
-                <h2 class="fw-bold text-dark text-uppercase"><?= $judul; ?></h2>
+                <h2 class="fw-bold text-dark text-uppercase"><?= htmlspecialchars($judul); ?></h2>
                 <hr class="mx-auto" style="width: 80px; height: 4px; background-color: #3b82f6; border-radius: 2px; opacity: 1;">
             </div>
 
             <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white" data-aos="fade-up">
-                <?php if($kat == 'visi-misi'): ?>
+                
+                <?php if($is_vm): ?>
                     <div class="mb-5">
                         <h4 class="fw-bold text-primary mb-4"><i class="bi bi-eye-fill me-2"></i> VISI</h4>
                         <div class="ps-3 border-start border-primary border-4">
@@ -41,7 +50,7 @@ if($kat == 'visi-misi'){
                                 <?php 
                                 $visis = explode("[BREAK]", $dv['isi'] ?? '');
                                 foreach($visis as $v) { 
-                                    if(!empty(trim($v))) echo "<li class='mb-2'><i class='bi bi-check2-circle text-primary me-2'></i> $v</li>"; 
+                                    if(!empty(trim($v))) echo "<li class='mb-2'><i class='bi bi-check2-circle text-primary me-2'></i> " . htmlspecialchars($v) . "</li>"; 
                                 } 
                                 ?>
                             </ul>
@@ -55,7 +64,7 @@ if($kat == 'visi-misi'){
                                 <?php 
                                 $misis = explode("[BREAK]", $dm['isi'] ?? '');
                                 foreach($misis as $m) { 
-                                    if(!empty(trim($m))) echo "<li class='mb-3'>$m</li>"; 
+                                    if(!empty(trim($m))) echo "<li class='mb-3'>" . htmlspecialchars($m) . "</li>"; 
                                 } 
                                 ?>
                             </ol>
@@ -65,14 +74,17 @@ if($kat == 'visi-misi'){
                 <?php else: ?>
                     <?php if(!empty($d['gambar'])): ?>
                         <div class="text-center mb-5">
-                            <img src="<?= $base_url; ?>assets/img/<?= $d['gambar']; ?>" class="img-fluid rounded-4 shadow-sm border border-5 border-white">
+                            <img src="<?= $base_url; ?>assets/img/<?= $d['gambar']; ?>" 
+                                 class="img-fluid rounded-4 shadow-sm border border-5 border-white" 
+                                 alt="<?= htmlspecialchars($judul); ?>">
                         </div>
                     <?php endif; ?>
                     
                     <div class="content-text" style="line-height: 1.9; color: #374151; font-size: 1.1rem; text-align: justify;">
-                        <?= nl2br($d['isi']); ?>
+                        <?= nl2br(htmlspecialchars($d['isi'])); ?>
                     </div>
                 <?php endif; ?>
+
             </div>
 
             <div class="text-center mt-5">

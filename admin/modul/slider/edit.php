@@ -1,18 +1,18 @@
 <?php 
 include '../../../config/config.php'; 
 include '../../cek_session.php';
-// Mengambil data slider berdasarkan ID yang dikirim melalui URL
-$id = $_GET['id'];
-$sql = mysqli_query($conn, "SELECT * FROM slider WHERE id='$id'");
+
+// REVISI: Mengambil ID Slider (String)
+$id = mysqli_real_escape_string($conn, $_GET['id']);
+$sql = mysqli_query($conn, "SELECT * FROM slider WHERE id_slider='$id'");
 $d = mysqli_fetch_array($sql);
 
-// Jika data tidak ditemukan, kembalikan ke index
-if(!$d) { header("location:index.php"); exit; }
+if(!$d) { header("Location: index.php"); exit; }
 ?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <title>Edit Slider - Admin</title>
+    <title>Edit Slider - Admin SDN Sesepan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../../../assets/css/style.css">
@@ -31,7 +31,7 @@ if(!$d) { header("location:index.php"); exit; }
             </div>
             <div class="card-body p-4">
                 <form action="proses.php?aksi=edit" method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="id" value="<?= $d['id']; ?>">
+                    <input type="hidden" name="id" value="<?= $d['id_slider']; ?>">
 
                     <div class="mb-3">
                         <label class="form-label fw-bold">Judul Utama</label>
@@ -57,7 +57,7 @@ if(!$d) { header("location:index.php"); exit; }
 
                     <div class="d-flex justify-content-end gap-2">
                         <a href="index.php" class="btn btn-secondary px-4 rounded-pill fw-bold">Batal</a>
-                        <button type="submit" class="btn btn-success px-5 rounded-pill fw-bold shadow-sm">
+                        <button type="submit" class="btn-success px-5 rounded-pill fw-bold shadow-sm">
                             <i class="bi bi-check-circle me-2"></i> Simpan Perubahan
                         </button>
                     </div>

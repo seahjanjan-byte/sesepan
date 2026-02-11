@@ -46,7 +46,7 @@ include '../../cek_session.php'; ?>
             </div>
             <div class="card-body p-4">
                 <form action="proses.php" method="POST">
-                    <input type="hidden" name="id" value="<?= $d['id']; ?>">
+                    <input type="hidden" name="id" value="<?= $d['id_profil']; ?>">
                     
                     <div class="mb-4">
                         <label class="fw-bold text-dark mb-3">Isi Teks Tentang Sekolah:</label>

@@ -2,7 +2,7 @@
 require_once '../../../config/config.php';
 include '../../cek_session.php';;
 $id = $_GET['id'];
-$d = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM pengumuman WHERE id='$id'"));
+$d = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM pengumuman WHERE id_pengumuman='$id'"));
 
 // Jika data tidak ditemukan, kembali ke index
 if (!$d) { header("location:index.php"); exit; }
@@ -35,7 +35,7 @@ if (!$d) { header("location:index.php"); exit; }
             </div>
             <div class="card-body p-4">
                 <form action="proses.php?aksi=edit" method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="id" value="<?= $d['id']; ?>">
+                    <input type="hidden" name="id" value="<?= $d['id_pengumuman']; ?>">
 
                     <div class="mb-3">
                         <label class="form-label fw-bold">Judul Pengumuman</label>

@@ -1,8 +1,9 @@
 <?php 
 include '../../../config/config.php'; 
-include '../../cek_session.php'; ;
+include '../../cek_session.php'; 
 $id = $_GET['id'];
-$data = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM guru WHERE id='$id'"));
+// REVISI: Query menggunakan id_guru
+$data = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM guru WHERE id_guru='$id'"));
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -23,7 +24,7 @@ $data = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM guru WHERE id='$id
             </div>
             <div class="card-sesepan-body p-4">
                 <form action="proses.php?aksi=edit" method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="id" value="<?= $data['id']; ?>">
+                    <input type="hidden" name="id" value="<?= $data['id_guru']; ?>">
                     <div class="mb-3">
                         <label class="form-label fw-bold">Nama Lengkap & Gelar</label>
                         <input type="text" name="nama" class="form-control" value="<?= $data['nama']; ?>" required>
