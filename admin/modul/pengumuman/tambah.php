@@ -21,7 +21,7 @@ include '../../cek_session.php'; ?>
                 </a>
             </div>
 
-            <div class="card-sesepan">
+            <div class="card-Dukuhbenda 02">
                 <div class="card-header-blue">
                     <h5 class="mb-0 fw-bold"><i class="bi bi-plus-circle me-2"></i> Input Data Pengumuman</h5>
                 </div>

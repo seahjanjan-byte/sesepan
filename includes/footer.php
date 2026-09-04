@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-4 mb-4">
-                <h4 class="fw-bold mb-4">SDN SESEPAN</h4>
+                <h4 class="fw-bold mb-4">SDN Dukuhbenda 02</h4>
                 <p class="opacity-75" style="line-height: 1.8;">
                     Mewujudkan generasi yang cerdas, religius, dan berkarakter unggul melalui lingkungan pendidikan yang aman, nyaman, dan berkualitas.
                 </p>
@@ -25,16 +25,16 @@
 
             <div class="col-lg-4 mb-4">
                 <h5 class="fw-bold mb-4">Informasi Sekolah</h5>
-                <p class="opacity-75 mb-2"><i class="bi bi-geo-alt-fill me-2 text-primary"></i> Jl. Sesepan, Kec. Balapulang, Tegal.</p>
+                <p class="opacity-75 mb-2"><i class="bi bi-geo-alt-fill me-2 text-primary"></i> Jl. Dukuhbenda, Kec. Bumijawa, Tegal.</p>
                 <p class="opacity-75 mb-2"><i class="bi bi-telephone-fill me-2 text-primary"></i> (0283) 123456</p>
-                <p class="opacity-75 mb-2"><i class="bi bi-envelope-fill me-2 text-primary"></i> info@sdnsesepan.sch.id</p>
+                <p class="opacity-75 mb-2"><i class="bi bi-envelope-fill me-2 text-primary"></i> info@sdnDukuhbenda 02.sch.id</p>
             </div>
         </div>
-        
+
         <hr class="opacity-25 my-4">
-        
+
         <div class="text-center">
-            <p class="small mb-0 opacity-50">&copy; <?= date('Y'); ?> SDN Sesepan. All Rights Reserved.</p>
+            <p class="small mb-0 opacity-50">&copy; <?= date('Y'); ?> SDN Dukuhbenda 02. All Rights Reserved.</p>
         </div>
     </div>
 </footer>
@@ -43,31 +43,34 @@
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
 <script>
-  // Inisialisasi AOS (Animation On Scroll)
-  AOS.init({
-    duration: 1000,
-    once: true,
-    offset: 120
-  });
+    // Inisialisasi AOS (Animation On Scroll)
+    AOS.init({
+        duration: 1000,
+        once: true,
+        offset: 120
+    });
 
-  // Script Navbar Global (Tetap ada di footer agar terpanggil di semua halaman)
-  const handleNavbar = () => {
-      const nav = document.querySelector('#mainNav');
-      if (!nav) return;
-      const isHome = <?= json_encode($is_home); ?>;
-      
-      if(isHome) {
-          const isScrolled = window.scrollY > 50;
-          nav.classList.toggle('scrolled', isScrolled);
-          nav.classList.toggle('navbar-transparent', !isScrolled);
-      } else {
-          nav.classList.add('scrolled');
-          nav.classList.remove('navbar-transparent');
-      }
-  };
+    // Script Navbar Global (Tetap ada di footer agar terpanggil di semua halaman)
+    const handleNavbar = () => {
+        const nav = document.querySelector('#mainNav');
+        if (!nav) return;
+        const isHome = <?= json_encode($is_home); ?>;
 
-  window.addEventListener('scroll', handleNavbar, { passive: true });
-  document.addEventListener('DOMContentLoaded', handleNavbar);
+        if (isHome) {
+            const isScrolled = window.scrollY > 50;
+            nav.classList.toggle('scrolled', isScrolled);
+            nav.classList.toggle('navbar-transparent', !isScrolled);
+        } else {
+            nav.classList.add('scrolled');
+            nav.classList.remove('navbar-transparent');
+        }
+    };
+
+    window.addEventListener('scroll', handleNavbar, {
+        passive: true
+    });
+    document.addEventListener('DOMContentLoaded', handleNavbar);
 </script>
 </body>
+
 </html>

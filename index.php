@@ -108,12 +108,12 @@ include 'includes/header.php';
             while ($bn = mysqli_fetch_array($sql_news)):
             ?>
                 <div class="col-md-4" data-aos="fade-up">
-                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden card-sesepan">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden card-dukuhbenda02">
                         <img src="<?= $base_url; ?>assets/img/<?= $bn['gambar']; ?>" class="card-img-top" style="height: 220px; object-fit: cover;">
                         <div class="card-body p-4">
                             <h5 class="fw-bold text-dark mb-3"><?= $bn['judul']; ?></h5>
                             <p class="text-muted small mb-4"><?= substr(strip_tags($bn['isi']), 0, 100); ?>...</p>
-                            <a href="<?= $base_url; ?>berita_view.php?id=<?= $bn['id']; ?>" class="btn btn-link text-primary fw-bold p-0 text-decoration-none">
+                            <a href="<?= $base_url; ?>berita_view.php?id=<?= $bn['id_berita']; ?>" class="btn btn-link text-primary fw-bold p-0 text-decoration-none">
                                 Selengkapnya <i class="bi bi-chevron-right"></i>
                             </a>
                         </div>
@@ -164,10 +164,10 @@ include 'includes/header.php';
                     <h5 class="fw-bold mb-4">Informasi Sekolah</h5>
                     <div class="d-flex mb-3">
                         <i class="bi bi-geo-alt-fill text-primary me-3 fs-5"></i>
-                        <p class="small mb-0 text-secondary">Jl. Sesepan, Kec. Balapulang, Tegal, Jawa Tengah.</p>
+                        <p class="small mb-0 text-secondary">Jl. Dukuhbenda, Kec. Bumijawa, Tegal, Jawa Tengah.</p>
                     </div>
                     <div class="rounded-3 overflow-hidden border mb-4" style="height: 250px;">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15837.287513364402!2d109.11!3d-7.0!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwMDAnMDAuMCJTIDEwOcKwMDYnMDAuMCJF!5e0!3m2!1sid!2sid!4v123456789" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                        <iframe src="https://maps.google.com/maps?q=SDN+Dukuhbenda+02&t=&z=16&ie=UTF8&iwloc=&output=embed" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
                     </div>
                     <div class="mb-2">
                         <label class="fw-bold small d-block">Kontak:</label>
@@ -177,7 +177,7 @@ include 'includes/header.php';
                         </div>
                         <div class="d-flex align-items-center">
                             <i class="bi bi-envelope-fill text-primary me-2"></i>
-                            <span class="small text-secondary">info@sdnsesepan.sch.id</span>
+                            <span class="small text-secondary">info@sdndukuhbenda.sch.id</span>
                         </div>
                     </div>
                 </div>

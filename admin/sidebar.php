@@ -1,14 +1,14 @@
 <?php
 // Path absolut agar link tidak pecah di level folder mana pun
 include_once __DIR__ . '/../config/config.php';
-$base_url_admin = "/sdn-sesepan/admin/";
+$base_url_admin = "/sdn-dukuhbenda02/admin/";
 ?>
 
-<link rel="stylesheet" href="/sdn-sesepan/assets/css/style.css">
+<link rel="stylesheet" href="/sdn-dukuhbenda02/assets/css/style.css">
 
-<div class="sidebar-sesepan d-flex flex-column p-3">
+<div class="sidebar-dukuhbenda02 d-flex flex-column p-3">
     <div class="text-center mb-4 py-4">
-        <h4 class="fw-bold text-white" style="letter-spacing: 2px;">SDN SESEPAN</h4>
+        <h4 class="fw-bold text-white" style="letter-spacing: 2px;">SDN Dukuhbenda 02</h4>
     </div>
 
     <ul class="nav nav-pills flex-column mb-auto">

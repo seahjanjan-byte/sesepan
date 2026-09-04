@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Login Admin - SDN Sesepan</title>
+    <title>Login Admin - SDN Dukuhbenda 02</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <style>
@@ -29,7 +29,7 @@
     <div class="login-box text-center">
         <img src="../assets/img/logoo.png" width="70" class="mb-3">
         <h4 class="fw-bold">Admin Login</h4>
-        <p class="text-muted small">SDN Sesepan Dashboard</p>
+        <p class="text-muted small">SDN Dukuhbenda 02 Dashboard</p>
         
         <?php if(isset($_GET['pesan']) && $_GET['pesan'] == 'gagal') echo "<div class='alert alert-danger py-2 small'>Login Gagal! Cek kembali data Anda.</div>"; ?>
 

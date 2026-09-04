@@ -6,7 +6,7 @@ include 'includes/header.php';
 <div class="container py-5 mt-5 pt-lg-5">
     <div class="text-center mb-5 mt-4" data-aos="fade-up">
         <h2 class="fw-bold text-dark">Daftar Pengumuman Resmi</h2>
-        <p class="text-muted">Informasi terbaru mengenai kegiatan dan pengumuman SDN Sesepan</p>
+        <p class="text-muted">Informasi terbaru mengenai kegiatan dan pengumuman SDN Dukuhbenda 02</p>
         <hr class="mx-auto" style="width: 80px; height: 4px; background-color: #3b82f6; border-radius: 2px; opacity: 1;">
     </div>
 
@@ -18,7 +18,7 @@ include 'includes/header.php';
             if(mysqli_num_rows($sql) > 0):
                 while($d = mysqli_fetch_array($sql)):
             ?>
-                <div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden card-sesepan" data-aos="fade-up">
+                <div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden card-dukuhbenda" data-aos="fade-up">
                     <div class="card-body p-4 p-md-5">
                         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start mb-3">
                             <div class="mb-3 mb-md-0">

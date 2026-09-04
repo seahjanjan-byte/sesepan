@@ -11,7 +11,7 @@ $d = mysqli_fetch_array($sql);
     <?php if($d && $d['status'] == 'buka'): ?>
         <div class="text-center mb-5 mt-4" data-aos="fade-up">
             <h2 class="fw-bold text-primary">Penerimaan Peserta Didik Baru (PPDB)</h2>
-            <p class="text-muted">Selamat datang calon siswa-siswi cerdas SDN Sesepan!</p>
+            <p class="text-muted">Selamat datang calon siswa-siswi cerdas SDN Dukuhbenda 02!</p>
             <hr class="mx-auto" style="width: 80px; height: 4px; background-color: #3b82f6; border-radius: 2px; opacity: 1;">
         </div>
 
@@ -35,7 +35,7 @@ $d = mysqli_fetch_array($sql);
                     </div>
                     <h3 class="fw-bold text-dark">Layanan PPDB Sedang Tidak Aktif</h3>
                     <p class="lead text-muted mt-3">
-                        Mohon maaf, saat ini periode Penerimaan Peserta Didik Baru (PPDB) SDN Sesepan 
+                        Mohon maaf, saat ini periode Penerimaan Peserta Didik Baru (PPDB) SDN Dukuhbenda 02 
                         <strong>telah ditutup atau belum memasuki masa pendaftaran</strong>.
                     </p>
                     <p class="text-muted small">

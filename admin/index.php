@@ -21,7 +21,7 @@ $total_pesan = mysqli_num_rows($query_pesan);
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <title>Dashboard Admin - SDN Sesepan</title>
+    <title>Dashboard Admin - SDN Dukuhbenda 02</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../assets/css/style.css">
@@ -36,7 +36,7 @@ $total_pesan = mysqli_num_rows($query_pesan);
             <div class="row align-items-center">
                 <div class="col-md-8">
                     <h2 class="fw-bold text-dark m-0">Selamat <?= $salam; ?>, Admin!</h2>
-                    <p class="text-muted m-0">Panel kendali konten website resmi SDN Sesepan.</p>
+                    <p class="text-muted m-0">Panel kendali konten website resmi SDN Dukuhbenda 02.</p>
                 </div>
                 <div class="col-md-4 text-md-end mt-3 mt-md-0">
                     <a href="../index.php" target="_blank" class="btn btn-outline-primary rounded-pill px-4">

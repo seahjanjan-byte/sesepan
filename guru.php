@@ -6,7 +6,7 @@ include 'includes/header.php';
 <div class="container py-5 mt-5 pt-lg-5">
     <div class="text-center mb-5 mt-3" data-aos="fade-up">
         <h2 class="fw-bold">Tenaga Pengajar</h2>
-        <p class="text-muted">Guru dan Staff pendidik SDN Sesepan</p>
+        <p class="text-muted">Guru dan Staff pendidik SDN Dukuhbenda 02</p>
         <hr class="mx-auto" style="width: 80px; height: 4px; background-color: #3b82f6; opacity: 1;">
     </div>
     

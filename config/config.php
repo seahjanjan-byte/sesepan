@@ -1,10 +1,10 @@
 <?php
 // 1. Konfigurasi Database
-// SAAT DI HOSTING: Ganti 'localhost', 'root', '', dan 'sdn_sesepan' sesuai data dari cPanel/Hosting Anda.
+// SAAT DI HOSTING: Ganti 'localhost', 'root', '', dan 'sdn_Dukuhbenda 02' sesuai data dari cPanel/Hosting Anda.
 $host = "localhost";
 $user = "root";
 $pass = "";
-$db   = "sdn_sesepan";
+$db   = "sdn-dukuhbenda02";
 
 $conn = mysqli_connect($host, $user, $pass, $db);
 
@@ -20,11 +20,6 @@ date_default_timezone_set('Asia/Jakarta');
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
 $host_url = $_SERVER['HTTP_HOST'];
 
-/** * Tentukan folder project Anda.
- * Jika di localhost menggunakan folder: "/sdn-sesepan/"
- * Jika sudah di hosting (domain utama): "/"
- */
-$project_folder = "/sdn-sesepan/"; 
+$project_folder = "/sdn-dukuhbenda02/";
 
 $base_url = $protocol . $host_url . $project_folder;
-?>

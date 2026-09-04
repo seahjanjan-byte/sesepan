@@ -5,8 +5,8 @@ include 'includes/header.php';
 // Ambil ID berita dari URL dan amankan
 $id = isset($_GET['id']) ? mysqli_real_escape_string($conn, $_GET['id']) : '';
 
-// Ambil data berita
-$query = mysqli_query($conn, "SELECT * FROM berita WHERE id = '$id' AND status = 'tampil'");
+// Ambil data berita (perbaikan nama kolom id -> id_berita)
+$query = mysqli_query($conn, "SELECT * FROM berita WHERE id_berita = '$id' AND status = 'tampil'");
 $b = mysqli_fetch_array($query);
 
 // Jika berita tidak ditemukan, kembalikan ke beranda menggunakan base_url
@@ -39,7 +39,7 @@ if (!$b) { echo "<script>window.location='" . $base_url . "index.php';</script>"
                 </div>
             </div>
 
-            <?php if ($b['gambar']): ?>
+            <?php if (!empty($b['gambar'])): ?>
             <div class="position-relative mb-5">
                 <div class="rounded-4 overflow-hidden shadow-lg border">
                     <img src="<?= $base_url; ?>assets/img/<?= $b['gambar']; ?>" class="img-fluid w-100" style="max-height: 550px; object-fit: cover;" alt="<?= $b['judul']; ?>">
