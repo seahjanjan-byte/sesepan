@@ -16,10 +16,10 @@
             <div class="col-lg-4 mb-4 ps-lg-5">
                 <h5 class="fw-bold mb-4">Navigasi</h5>
                 <ul class="list-unstyled">
-                    <li class="mb-2"><a href="<?= $base_url; ?>guru.php" class="text-white text-decoration-none opacity-75">Daftar Guru</a></li>
-                    <li class="mb-2"><a href="<?= $base_url; ?>fasilitas.php" class="text-white text-decoration-none opacity-75">Fasilitas Sekolah</a></li>
-                    <li class="mb-2"><a href="<?= $base_url; ?>pengumuman.php" class="text-white text-decoration-none opacity-75">Daftar Pengumuman</a></li>
-                    <li class="mb-2"><a href="<?= $base_url; ?>ppdb.php" class="text-white text-decoration-none opacity-75">Info Pendaftaran</a></li>
+                    <li class="mb-2"><a href="<?= htmlspecialchars($base_url . 'guru.php', ENT_QUOTES, 'UTF-8'); ?>" class="text-white text-decoration-none opacity-75">Daftar Guru</a></li>
+                    <li class="mb-2"><a href="<?= htmlspecialchars($base_url . 'fasilitas.php', ENT_QUOTES, 'UTF-8'); ?>" class="text-white text-decoration-none opacity-75">Fasilitas Sekolah</a></li>
+                    <li class="mb-2"><a href="<?= htmlspecialchars($base_url . 'pengumuman.php', ENT_QUOTES, 'UTF-8'); ?>" class="text-white text-decoration-none opacity-75">Daftar Pengumuman</a></li>
+                    <li class="mb-2"><a href="<?= htmlspecialchars($base_url . 'ppdb.php', ENT_QUOTES, 'UTF-8'); ?>" class="text-white text-decoration-none opacity-75">Info Pendaftaran</a></li>
                 </ul>
             </div>
 
@@ -27,7 +27,7 @@
                 <h5 class="fw-bold mb-4">Informasi Sekolah</h5>
                 <p class="opacity-75 mb-2"><i class="bi bi-geo-alt-fill me-2 text-primary"></i> Jl. Dukuhbenda, Kec. Bumijawa, Tegal.</p>
                 <p class="opacity-75 mb-2"><i class="bi bi-telephone-fill me-2 text-primary"></i> (0283) 123456</p>
-                <p class="opacity-75 mb-2"><i class="bi bi-envelope-fill me-2 text-primary"></i> info@sdnDukuhbenda 02.sch.id</p>
+                <p class="opacity-75 mb-2"><i class="bi bi-envelope-fill me-2 text-primary"></i> info@sdndukuhbenda02.sch.id</p>
             </div>
         </div>
 

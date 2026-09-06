@@ -90,17 +90,32 @@ include '../../cek_session.php'; ?>
                                                 <div class="btn-group shadow-sm">
                                                     <a href="detail.php?id=<?= $d['id_pesan']; ?>" class="btn btn-sm btn-light border px-3" title="Baca"><i class="bi bi-eye"></i></a>
 
-                                                    <a href="proses.php?aksi=pin&id=<?= $d['id_pesan']; ?>&set=<?= ($d['is_pinned'] == '1') ? '0' : '1'; ?>"
-                                                        class="btn btn-sm <?= ($d['is_pinned'] == '1') ? 'btn-warning' : 'btn-outline-warning'; ?> px-3">
-                                                        <i class="bi bi-pin-angle"></i>
-                                                    </a>
+                                                    <form method="POST" action="proses.php" class="d-inline">
+                                                        <input type="hidden" name="id" value="<?= htmlspecialchars($d['id_pesan'], ENT_QUOTES, 'UTF-8'); ?>">
+                                                        <input type="hidden" name="aksi" value="pin">
+                                                        <input type="hidden" name="set" value="<?= ($d['is_pinned'] == '1') ? '0' : '1'; ?>">
+                                                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
+                                                        <button type="submit" class="btn btn-sm <?= ($d['is_pinned'] == '1') ? 'btn-warning' : 'btn-outline-warning'; ?> px-3">
+                                                            <i class="bi bi-pin-angle"></i>
+                                                        </button>
+                                                    </form>
 
-                                                    <a href="proses.php?aksi=status&id=<?= $d['id_pesan']; ?>&set=<?= ($view == 'arsip') ? 'dibaca' : 'arsip'; ?>"
-                                                        class="btn btn-sm btn-secondary px-3">
-                                                        <i class="bi <?= ($view == 'arsip') ? 'bi-archive-fill' : 'bi-archive'; ?>"></i>
-                                                    </a>
+                                                    <form method="POST" action="proses.php" class="d-inline">
+                                                        <input type="hidden" name="id" value="<?= htmlspecialchars($d['id_pesan'], ENT_QUOTES, 'UTF-8'); ?>">
+                                                        <input type="hidden" name="aksi" value="status">
+                                                        <input type="hidden" name="set" value="<?= ($view == 'arsip') ? 'dibaca' : 'arsip'; ?>">
+                                                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
+                                                        <button type="submit" class="btn btn-sm btn-secondary px-3">
+                                                            <i class="bi <?= ($view == 'arsip') ? 'bi-archive-fill' : 'bi-archive'; ?>"></i>
+                                                        </button>
+                                                    </form>
 
-                                                    <a href="proses.php?aksi=hapus&id=<?= $d['id_pesan']; ?>" class="btn btn-sm btn-danger px-3" onclick="return confirm('Hapus permanen?')"><i class="bi bi-trash"></i></a>
+                                                    <form method="POST" action="proses.php" class="d-inline" onsubmit="return confirm('Hapus permanen?')">
+                                                        <input type="hidden" name="id" value="<?= htmlspecialchars($d['id_pesan'], ENT_QUOTES, 'UTF-8'); ?>">
+                                                        <input type="hidden" name="aksi" value="hapus">
+                                                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
+                                                        <button type="submit" class="btn btn-sm btn-danger px-3"><i class="bi bi-trash"></i></button>
+                                                    </form>
                                                 </div>
                                             </td>
                                         </tr>

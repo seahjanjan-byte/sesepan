@@ -65,7 +65,12 @@ include '../../cek_session.php'; ?>
                                         <td class="text-center">
                                             <div class="btn-group shadow-sm">
                                                 <a href="edit.php?id=<?= $d['id_guru']; ?>" class="btn btn-sm btn-warning px-3"><i class="bi bi-pencil-square"></i></a>
-                                                <a href="proses.php?aksi=hapus&id=<?= $d['id_guru']; ?>" class="btn btn-sm btn-danger px-3" onclick="return confirm('Hapus data guru ini?')"><i class="bi bi-trash"></i></a>
+                                                <form method="POST" action="proses.php" class="d-inline" onsubmit="return confirm('Hapus data guru ini?')">
+                                                    <input type="hidden" name="id" value="<?= htmlspecialchars($d['id_guru'], ENT_QUOTES, 'UTF-8'); ?>">
+                                                    <input type="hidden" name="aksi" value="hapus">
+                                                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
+                                                    <button type="submit" class="btn btn-sm btn-danger px-3"><i class="bi bi-trash"></i></button>
+                                                </form>
                                             </div>
                                         </td>
                                     </tr>

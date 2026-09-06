@@ -59,7 +59,12 @@ include '../../cek_session.php'; ?>
                                         <td class="text-center">
                                             <div class="btn-group">
                                                 <a href="edit.php?id=<?= $d['id_slider']; ?>" class="btn btn-warning btn-sm px-3"><i class="bi bi-pencil-square"></i></a>
-                                                <a href="proses.php?aksi=hapus&id=<?= $d['id_slider']; ?>" class="btn btn-danger btn-sm px-3" onclick="return confirm('Hapus slider ini?')"><i class="bi bi-trash"></i></a>
+                                                <form method="POST" action="proses.php" class="d-inline" onsubmit="return confirm('Hapus slider ini?')">
+                                                    <input type="hidden" name="id" value="<?= htmlspecialchars($d['id_slider'], ENT_QUOTES, 'UTF-8'); ?>">
+                                                    <input type="hidden" name="aksi" value="hapus">
+                                                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
+                                                    <button type="submit" class="btn btn-danger btn-sm px-3"><i class="bi bi-trash"></i></button>
+                                                </form>
                                             </div>
                                         </td>
                                     </tr>

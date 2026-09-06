@@ -31,11 +31,11 @@ function get_youtube_embed($url)
                     <?php if ($d['kategori'] == 'video' && $d['tipe_sumber'] == 'link_youtube'): ?>
                         <div class="ratio ratio-16x9">
                             <?php $video_id = get_youtube_embed($d['sumber']); ?>
-                            <iframe src="https://www.youtube.com/embed/<?= $video_id; ?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe src="https://www.youtube.com/embed/<?= htmlspecialchars($video_id, ENT_QUOTES, 'UTF-8'); ?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
 
                     <?php elseif ($d['tipe_sumber'] == 'upload'): ?>
-                        <img src="<?= $base_url; ?>assets/img/<?= $d['sumber']; ?>" class="card-img-top" style="height: 200px; object-fit: cover;" alt="<?= $d['judul']; ?>">
+                        <img src="<?= htmlspecialchars($base_url . 'assets/img/' . $d['sumber'], ENT_QUOTES, 'UTF-8'); ?>" class="card-img-top" style="height: 200px; object-fit: cover;" alt="<?= htmlspecialchars($d['judul'], ENT_QUOTES, 'UTF-8'); ?>">
 
                     <?php else: ?>
                         <div class="bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
@@ -49,14 +49,14 @@ function get_youtube_embed($url)
                     <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <span class="badge <?= $d['kategori'] == 'foto' ? 'bg-info' : 'bg-danger' ?> small">
-                                <?= strtoupper($d['kategori']); ?>
+                                <?= htmlspecialchars(strtoupper($d['kategori']), ENT_QUOTES, 'UTF-8'); ?>
                             </span>
                             <small class="text-muted"><?= date('d/m/Y', strtotime($d['tgl_upload'])); ?></small>
                         </div>
-                        <h5 class="card-title fw-bold text-dark h6"><?= $d['judul']; ?></h5>
+                        <h5 class="card-title fw-bold text-dark h6"><?= htmlspecialchars($d['judul'], ENT_QUOTES, 'UTF-8'); ?></h5>
 
                         <?php if ($d['tipe_sumber'] == 'link_drive'): ?>
-                            <a href="<?= $d['sumber']; ?>" target="_blank" class="btn btn-sm btn-outline-primary w-100 mt-2 rounded-pill">
+                            <a href="<?= htmlspecialchars($d['sumber'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank" class="btn btn-sm btn-outline-primary w-100 mt-2 rounded-pill">
                                 <i class="bi bi-box-arrow-up-right me-1"></i> Lihat di Drive
                             </a>
                         <?php endif; ?>

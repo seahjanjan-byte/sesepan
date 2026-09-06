@@ -21,16 +21,16 @@ $nav_class = $is_home ? 'navbar-transparent' : 'scrolled';
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="<?= $base_url; ?>assets/css/style.css">
-  <link rel="shortcut icon" href="<?= $base_url; ?>assets/img/logoo.png">
+  <link rel="stylesheet" href="<?= htmlspecialchars($base_url . 'assets/css/style.css', ENT_QUOTES, 'UTF-8'); ?>">
+  <link rel="shortcut icon" href="<?= htmlspecialchars($base_url . 'assets/img/logoo.png', ENT_QUOTES, 'UTF-8'); ?>">
 </head>
 
-<body class="<?= ($is_home) ? 'home-page' : ''; ?>">
+<body class="<?= htmlspecialchars(($is_home) ? 'home-page' : '', ENT_QUOTES, 'UTF-8'); ?>">
 
-  <nav class="navbar navbar-expand-lg fixed-top <?= $nav_class; ?>" id="mainNav">
+  <nav class="navbar navbar-expand-lg fixed-top <?= htmlspecialchars($nav_class, ENT_QUOTES, 'UTF-8'); ?>" id="mainNav">
     <div class="container">
-      <a class="navbar-brand fw-bold fs-3 d-flex align-items-center" href="<?= $base_url; ?>index.php">
-        <img src="<?= $base_url; ?>assets/img/logoo.png" alt="Logo" width="50" height="50" class="me-2">
+      <a class="navbar-brand fw-bold fs-3 d-flex align-items-center" href="<?= htmlspecialchars($base_url . 'index.php', ENT_QUOTES, 'UTF-8'); ?>">
+        <img src="<?= htmlspecialchars($base_url . 'assets/img/logoo.png', ENT_QUOTES, 'UTF-8'); ?>" alt="Logo" width="50" height="50" class="me-2">
         SDN Dukuhbenda 02
       </a>
 
@@ -40,7 +40,7 @@ $nav_class = $is_home ? 'navbar-transparent' : 'scrolled';
 
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto align-items-center">
-          <li class="nav-item"><a class="nav-link" href="<?= $base_url; ?>index.php">Beranda</a></li>
+          <li class="nav-item"><a class="nav-link" href="<?= htmlspecialchars($base_url . 'index.php', ENT_QUOTES, 'UTF-8'); ?>">Beranda</a></li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Profil
@@ -52,14 +52,14 @@ $nav_class = $is_home ? 'navbar-transparent' : 'scrolled';
               <li><a class="dropdown-item" href="profil_view.php?kat=struktur">Struktur Organisasi</a></li>
             </ul>
           </li>
-          <li class="nav-item"><a class="nav-link" href="<?= $base_url; ?>guru.php">Guru</a></li>
-          <li class="nav-item"><a class="nav-link" href="<?= $base_url; ?>berita.php">Berita</a></li>
-          <li class="nav-item"><a class="nav-link" href="<?= $base_url; ?>prestasi.php">Prestasi</a></li>
-          <li class="nav-item"><a class="nav-link" href="<?= $base_url; ?>fasilitas.php">Fasilitas</a></li>
-          <li class="nav-item"><a class="nav-link" href="<?= $base_url; ?>pengumuman.php">Pengumuman</a></li>
-          <li class="nav-item"><a class="nav-link" href="<?= $base_url; ?>index.php#hubungi-kami">Hubungi Kami</a></li>
+          <li class="nav-item"><a class="nav-link" href="<?= htmlspecialchars($base_url . 'guru.php', ENT_QUOTES, 'UTF-8'); ?>">Guru</a></li>
+          <li class="nav-item"><a class="nav-link" href="<?= htmlspecialchars($base_url . 'berita.php', ENT_QUOTES, 'UTF-8'); ?>">Berita</a></li>
+          <li class="nav-item"><a class="nav-link" href="<?= htmlspecialchars($base_url . 'prestasi.php', ENT_QUOTES, 'UTF-8'); ?>">Prestasi</a></li>
+          <li class="nav-item"><a class="nav-link" href="<?= htmlspecialchars($base_url . 'fasilitas.php', ENT_QUOTES, 'UTF-8'); ?>">Fasilitas</a></li>
+          <li class="nav-item"><a class="nav-link" href="<?= htmlspecialchars($base_url . 'pengumuman.php', ENT_QUOTES, 'UTF-8'); ?>">Pengumuman</a></li>
+          <li class="nav-item"><a class="nav-link" href="<?= htmlspecialchars($base_url . 'index.php#hubungi-kami', ENT_QUOTES, 'UTF-8'); ?>">Hubungi Kami</a></li>
           <li class="nav-item">
-            <a class="nav-link fw-bold text-primary" href="<?= $base_url; ?>ppdb.php">PPDB</a>
+            <a class="nav-link fw-bold text-primary" href="<?= htmlspecialchars($base_url . 'ppdb.php', ENT_QUOTES, 'UTF-8'); ?>">PPDB</a>
           </li>
         </ul>
       </div>

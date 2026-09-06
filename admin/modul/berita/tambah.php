@@ -30,6 +30,7 @@ include '../../cek_session.php'; ?>
                 </div>
                 <div class="card-dukuhbenda02-body p-4">
                     <form action="proses.php?aksi=tambah" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
                         <div class="mb-3">
                             <label class="form-label fw-bold">Judul Berita</label>
                             <input type="text" name="judul" class="form-control form-control-lg" placeholder="Masukkan judul berita..." required>

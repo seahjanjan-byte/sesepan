@@ -1,41 +1,44 @@
 <?php
 include '../../../config/config.php';
 include '../../cek_session.php';
+include '../../database_helper.php';
 
-if(isset($_POST['update'])){
-    $admin_id = $_SESSION['admin_id']; // Mengambil ID Admin dari session
+if (isset($_POST['update'])) {
+    $admin_id = $_SESSION['admin_id'] ?? '';
 
-    // Gabungkan array poin menjadi string dengan pemisah [BREAK]
-    $visi = isset($_POST['visi']) ? mysqli_real_escape_string($conn, implode("[BREAK]", array_filter($_POST['visi']))) : "";
-    $misi = isset($_POST['misi']) ? mysqli_real_escape_string($conn, implode("[BREAK]", array_filter($_POST['misi']))) : "";
+    // 1. OLAH DAN SANITASI ARRAY VISI
+    $raw_visi = is_array($_POST['visi'] ?? null) ? array_filter($_POST['visi']) : [];
+    $clean_visi = array_map('trim', $raw_visi);
+    $visi = implode("[BREAK]", $clean_visi);
 
-    // 1. PROSES DATA VISI
-    $cek_v = mysqli_query($conn, "SELECT id_profil FROM profil WHERE kategori='visi'");
-    if(mysqli_num_rows($cek_v) > 0){
+    // 2. OLAH DAN SANITASI ARRAY MISI
+    $raw_misi = is_array($_POST['misi'] ?? null) ? array_filter($_POST['misi']) : [];
+    $clean_misi = array_map('trim', $raw_misi);
+    $misi = implode("[BREAK]", $clean_misi);
+
+    // 3. PROSES DATA VISI
+    $cek_v = db_fetch_one($conn, "SELECT id_profil FROM profil WHERE kategori = ?", 's', ['visi']);
+    if ($cek_v) {
         // Jika sudah ada, update isi dan admin pengelola
-        mysqli_query($conn, "UPDATE profil SET isi='$visi', id_admin='$admin_id' WHERE kategori='visi'");
+        db_execute($conn, "UPDATE profil SET isi = ?, id_admin = ? WHERE kategori = ?", 'sis', [$visi, $admin_id, 'visi']);
     } else {
         // Jika belum ada, buat baris baru dengan ID String
-        mysqli_query($conn, "INSERT INTO profil (id_profil, id_admin, kategori, judul, isi) 
-                            VALUES ('PFL_VISI', '$admin_id', 'visi', 'Visi Sekolah', '$visi')");
+        db_execute($conn, "INSERT INTO profil (id_profil, id_admin, kategori, judul, isi) VALUES (?, ?, ?, ?, ?)", 'sisss', ['PFL_VISI', $admin_id, 'visi', 'Visi Sekolah', $visi]);
     }
 
-    // 2. PROSES DATA MISI
-    $cek_m = mysqli_query($conn, "SELECT id_profil FROM profil WHERE kategori='misi'");
-    if(mysqli_num_rows($cek_m) > 0){
+    // 4. PROSES DATA MISI
+    $cek_m = db_fetch_one($conn, "SELECT id_profil FROM profil WHERE kategori = ?", 's', ['misi']);
+    if ($cek_m) {
         // Jika sudah ada, update
-        mysqli_query($conn, "UPDATE profil SET isi='$misi', id_admin='$admin_id' WHERE kategori='misi'");
+        db_execute($conn, "UPDATE profil SET isi = ?, id_admin = ? WHERE kategori = ?", 'sis', [$misi, $admin_id, 'misi']);
     } else {
         // Jika belum ada, buat baris baru
-        mysqli_query($conn, "INSERT INTO profil (id_profil, id_admin, kategori, judul, isi) 
-                            VALUES ('PFL_MISI', '$admin_id', 'misi', 'Misi Sekolah', '$misi')");
+        db_execute($conn, "INSERT INTO profil (id_profil, id_admin, kategori, judul, isi) VALUES (?, ?, ?, ?, ?)", 'sisss', ['PFL_MISI', $admin_id, 'misi', 'Misi Sekolah', $misi]);
     }
 
     header("Location: ../profil/index.php?status=success");
     exit();
-
 } else {
     header("Location: ../profil/index.php");
     exit();
 }
-?>

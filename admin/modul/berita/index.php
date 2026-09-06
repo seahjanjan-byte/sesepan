@@ -71,17 +71,34 @@ include '../../cek_session.php';
                                         <td class="text-center">
                                             <div class="btn-group shadow-sm">
                                                 <?php if ($d['status'] == 'tampil'): ?>
-                                                    <a href="proses.php?aksi=status&id=<?= $d['id_berita']; ?>&set=arsip" class="btn btn-sm btn-dark px-3" title="Arsipkan">
-                                                        <i class="bi bi-eye-slash"></i>
-                                                    </a>
+                                                    <form method="POST" action="proses.php" class="d-inline">
+                                                        <input type="hidden" name="id" value="<?= htmlspecialchars($d['id_berita'], ENT_QUOTES, 'UTF-8'); ?>">
+                                                        <input type="hidden" name="aksi" value="status">
+                                                        <input type="hidden" name="set" value="arsip">
+                                                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
+                                                        <button type="submit" class="btn btn-sm btn-dark px-3" title="Arsipkan">
+                                                            <i class="bi bi-eye-slash"></i>
+                                                        </button>
+                                                    </form>
                                                 <?php else: ?>
-                                                    <a href="proses.php?aksi=status&id=<?= $d['id_berita']; ?>&set=tampil" class="btn btn-sm btn-info text-white px-3" title="Tampilkan">
-                                                        <i class="bi bi-eye"></i>
-                                                    </a>
+                                                    <form method="POST" action="proses.php" class="d-inline">
+                                                        <input type="hidden" name="id" value="<?= htmlspecialchars($d['id_berita'], ENT_QUOTES, 'UTF-8'); ?>">
+                                                        <input type="hidden" name="aksi" value="status">
+                                                        <input type="hidden" name="set" value="tampil">
+                                                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
+                                                        <button type="submit" class="btn btn-sm btn-info text-white px-3" title="Tampilkan">
+                                                            <i class="bi bi-eye"></i>
+                                                        </button>
+                                                    </form>
                                                 <?php endif; ?>
 
                                                 <a href="edit.php?id=<?= $d['id_berita']; ?>" class="btn btn-sm btn-warning px-3"><i class="bi bi-pencil-square"></i></a>
-                                                <a href="proses.php?aksi=hapus&id=<?= $d['id_berita']; ?>" class="btn btn-sm btn-danger px-3" onclick="return confirm('Hapus berita ini?')"><i class="bi bi-trash"></i></a>
+                                                <form method="POST" action="proses.php" class="d-inline" onsubmit="return confirm('Hapus berita ini?')">
+                                                    <input type="hidden" name="id" value="<?= htmlspecialchars($d['id_berita'], ENT_QUOTES, 'UTF-8'); ?>">
+                                                    <input type="hidden" name="aksi" value="hapus">
+                                                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
+                                                    <button type="submit" class="btn btn-sm btn-danger px-3"><i class="bi bi-trash"></i></button>
+                                                </form>
                                             </div>
                                         </td>
                                     </tr>

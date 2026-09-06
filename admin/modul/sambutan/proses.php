@@ -1,51 +1,53 @@
 <?php
 include '../../../config/config.php';
 include '../../cek_session.php';
+include '../../upload_helper.php';
+include '../../database_helper.php';
 
 if (isset($_POST['update'])) {
-    $id_admin = $_SESSION['admin_id']; // Mengambil ID Admin pengelola sesuai aturan relasi
-    $id_profil = mysqli_real_escape_string($conn, $_POST['id']);
-    $isi = mysqli_real_escape_string($conn, $_POST['isi']);
-    $file = $_FILES['gambar']['name'];
-    $tmp = $_FILES['gambar']['tmp_name'];
-    $path = "../../../assets/img/";
+    $id_admin  = $_SESSION['admin_id'] ?? '';
+    $id_profil = $_POST['id'] ?? '';
+    $isi       = $_POST['isi'] ?? '';
+    $file      = $_FILES['gambar']['name'] ?? '';
+    $tmp       = $_FILES['gambar']['tmp_name'] ?? '';
+    $path      = "../../../assets/img/";
 
     // Cek apakah data sambutan sudah ada di database
-    $cek_data = mysqli_query($conn, "SELECT id_profil, gambar FROM profil WHERE kategori='sambutan'");
-    $ada = mysqli_num_rows($cek_data) > 0;
-    $data_lama = mysqli_fetch_array($cek_data);
+    $data_lama = db_fetch_one($conn, "SELECT id_profil, gambar FROM profil WHERE kategori = ?", 's', ['sambutan']);
+    $ada       = $data_lama !== null;
 
     $nama_file = $ada ? $data_lama['gambar'] : 'default.jpg';
 
     // Jika ada upload foto baru
     if (!empty($file)) {
-        // Hapus foto lama jika bukan default
-        if ($ada && !empty($data_lama['gambar']) && $data_lama['gambar'] != 'default.jpg' && file_exists($path . $data_lama['gambar'])) {
-            unlink($path . $data_lama['gambar']);
+        $nama_file_baru = store_uploaded_image($_FILES['gambar'], $path);
+        if ($nama_file_baru === false) {
+            header("Location: index.php?pesan=upload_gagal");
+            exit();
         }
 
+        // Hapus foto lama jika bukan default dan merupakan file valid
+        remove_uploaded_file($path, $ada ? ($data_lama['gambar'] ?? null) : null);
+
         // Upload foto baru
-        $nama_file = "sambutan_" . time() . "_" . $file;
-        move_uploaded_file($tmp, $path . $nama_file);
+        $nama_file = $nama_file_baru;
     }
 
     if ($ada) {
         // Logika UPDATE: Tetap menyertakan id_admin agar relasi terjaga
-        $query = "UPDATE profil SET isi='$isi', gambar='$nama_file', id_admin='$id_admin' WHERE kategori='sambutan'";
+        $success = db_execute($conn, "UPDATE profil SET isi = ?, gambar = ?, id_admin = ? WHERE kategori = ?", 'ssss', [$isi, $nama_file, $id_admin, 'sambutan']);
     } else {
-        // Logika INSERT: Gunakan ID String (Zero-Math Rule)
-        $query = "INSERT INTO profil (id_profil, id_admin, kategori, judul, isi, gambar) 
-                  VALUES ('PFL_SAMBUTAN', '$id_admin', 'sambutan', 'Sambutan Kepala Sekolah', '$isi', '$nama_file')";
+        // Logika INSERT: Gunakan ID String khusus
+        $success = db_execute($conn, "INSERT INTO profil (id_profil, id_admin, kategori, judul, isi, gambar) VALUES (?, ?, ?, ?, ?, ?)", 'sissss', ['PFL_SAMBUTAN', $id_admin, 'sambutan', 'Sambutan Kepala Sekolah', $isi, $nama_file]);
     }
 
-    if(mysqli_query($conn, $query)){
-        header("location:index.php?status=success");
+    if ($success) {
+        header("Location: index.php?status=success");
         exit();
     } else {
         echo "Error: " . mysqli_error($conn);
     }
 } else {
-    header("location:index.php");
+    header("Location: index.php");
     exit();
 }
-?>

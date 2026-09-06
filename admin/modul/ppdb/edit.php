@@ -54,7 +54,7 @@ if (!$d) {
 
                         <div class="d-flex justify-content-end gap-2 border-top pt-3">
                             <a href="index.php" class="btn btn-secondary px-4 rounded-pill">Batal</a>
-                            <button type="submit" class="btn-primary-Dukuhbenda 02 px-4">Simpan Perubahan</button>
+                            <button type="submit" class="btn-primary-dukuhbenda02 px-4">Simpan Perubahan</button>
                         </div>
                     </form>
                 </div>

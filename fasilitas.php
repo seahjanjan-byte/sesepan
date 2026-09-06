@@ -18,7 +18,7 @@ include 'includes/header.php';
             $delay = 100;
             while ($f = mysqli_fetch_array($sql)):
         ?>
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="<?= $delay; ?>">
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="<?= htmlspecialchars((string) $delay, ENT_QUOTES, 'UTF-8'); ?>">
                     <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden transition-all">
                         <div class="position-relative">
                             <?php
@@ -27,17 +27,17 @@ include 'includes/header.php';
                                 ? $base_url . "assets/img/" . $f['gambar']
                                 : $base_url . "assets/img/default-fasilitas.jpg";
                             ?>
-                            <img src="<?= $gambar; ?>" class="card-img-top" style="height: 240px; object-fit: cover;" alt="<?= $f['nama_fasilitas']; ?>">
+                            <img src="<?= htmlspecialchars($gambar, ENT_QUOTES, 'UTF-8'); ?>" class="card-img-top" style="height: 240px; object-fit: cover;" alt="<?= htmlspecialchars($f['nama_fasilitas'], ENT_QUOTES, 'UTF-8'); ?>">
                             <div class="card-img-overlay d-flex align-items-end p-0">
                                 <div class="w-100 p-3" style="background: linear-gradient(transparent, rgba(0,0,0,0.7));">
-                                    <h5 class="text-white fw-bold mb-0"><?= $f['nama_fasilitas']; ?></h5>
+                                    <h5 class="text-white fw-bold mb-0"><?= htmlspecialchars($f['nama_fasilitas'], ENT_QUOTES, 'UTF-8'); ?></h5>
                                 </div>
                             </div>
                         </div>
 
                         <div class="card-body p-4">
                             <p class="text-secondary small mb-0" style="line-height: 1.6; text-align: justify;">
-                                <?= nl2br($f['deskripsi']); ?>
+                                <?= nl2br(htmlspecialchars($f['deskripsi'], ENT_QUOTES, 'UTF-8')); ?>
                             </p>
                         </div>
                     </div>

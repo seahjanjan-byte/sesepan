@@ -1,62 +1,77 @@
 <?php
-include '../../../config/config.php'; 
+include '../../../config/config.php';
 include '../../cek_session.php';
-$aksi = isset($_GET['aksi']) ? $_GET['aksi'] : '';
-$path = "../../../assets/img/";
+include '../../upload_helper.php';
+include '../../database_helper.php';
 
-if($aksi == 'tambah'){
+require_valid_csrf_token();
+
+$aksi     = $_POST['aksi'] ?? '';
+$path     = "../../../assets/img/";
+$id_admin = $_SESSION['admin_id'] ?? '';
+
+if ($aksi == 'tambah') {
     // LOGIKA GENERATE ID PPDB (PDB001)
-    $query_id = mysqli_query($conn, "SELECT id_ppdb FROM ppdb ORDER BY id_ppdb DESC LIMIT 1");
-    if(mysqli_num_rows($query_id) > 0) {
-        $last_id = mysqli_fetch_array($query_id)['id_ppdb'];
+    $last = db_fetch_one($conn, "SELECT id_ppdb FROM ppdb ORDER BY id_ppdb DESC LIMIT 1");
+    if ($last) {
+        $last_id = $last['id_ppdb'];
         $num = (int)substr($last_id, 3) + 1;
         $id_baru = "PDB" . str_pad($num, 3, "0", STR_PAD_LEFT);
     } else {
         $id_baru = "PDB001";
     }
 
-    $id_admin = $_SESSION['admin_id']; // Relasi ke Admin
-    $status = $_POST['status'];
-    $gambar = $_FILES['gambar']['name'];
-    $tmp    = $_FILES['gambar']['tmp_name'];
-    
-    $nama_file = "brosur_" . time() . "_" . $gambar;
-    move_uploaded_file($tmp, $path . $nama_file);
-    
-    // INSERT menyertakan id_ppdb dan id_admin sesuai aturan relasi
-    mysqli_query($conn, "INSERT INTO ppdb (id_ppdb, id_admin, gambar, status) VALUES ('$id_baru', '$id_admin', '$nama_file', '$status')");
+    $status = $_POST['status'] ?? '';
+    $gambar = $_FILES['gambar']['name'] ?? '';
+
+    $nama_file = "";
+    if (!empty($gambar)) {
+        $nama_file = store_uploaded_image($_FILES['gambar'], $path);
+        if ($nama_file === false) {
+            header("Location: index.php?pesan=upload_gagal");
+            exit();
+        }
+    }
+
+    db_execute($conn, "INSERT INTO ppdb (id_ppdb, id_admin, gambar, status) VALUES (?, ?, ?, ?)", 'siss', [$id_baru, $id_admin, $nama_file, $status]);
     header("Location: index.php");
     exit();
+} elseif ($aksi == 'edit') {
+    $id     = $_POST['id'] ?? '';
+    $status = $_POST['status'] ?? '';
+    $gambar = $_FILES['gambar']['name'] ?? '';
 
-} elseif($aksi == 'edit'){
-    $id = mysqli_real_escape_string($conn, $_POST['id']);
-    $id_admin = $_SESSION['admin_id']; // Catat admin yang melakukan update
-    $status = $_POST['status'];
-    $gambar = $_FILES['gambar']['name'];
+    if (!empty($gambar)) {
+        $nama_file = store_uploaded_image($_FILES['gambar'], $path);
+        if ($nama_file === false) {
+            header("Location: index.php?pesan=upload_gagal");
+            exit();
+        }
 
-    if(!empty($gambar)){
-        // REVISI: Menggunakan id_ppdb
-        $query = mysqli_query($conn, "SELECT gambar FROM ppdb WHERE id_ppdb='$id'");
-        $old = mysqli_fetch_array($query);
-        if(!empty($old['gambar']) && file_exists($path . $old['gambar'])) unlink($path . $old['gambar']);
-        
-        $nama_file = "brosur_" . time() . "_" . $gambar;
-        move_uploaded_file($_FILES['gambar']['tmp_name'], $path . $nama_file);
-        
-        // Update gambar, status, dan id_admin pembaharu
-        mysqli_query($conn, "UPDATE ppdb SET gambar='$nama_file', status='$status', id_admin='$id_admin' WHERE id_ppdb='$id'");
+        $old = db_fetch_one($conn, "SELECT gambar FROM ppdb WHERE id_ppdb = ?", 's', [$id]);
+
+        remove_uploaded_file($path, $old['gambar'] ?? null);
+
+        db_execute($conn, "UPDATE ppdb SET gambar = ?, status = ?, id_admin = ? WHERE id_ppdb = ?", 'ssis', [$nama_file, $status, $id_admin, $id]);
     } else {
-        mysqli_query($conn, "UPDATE ppdb SET status='$status', id_admin='$id_admin' WHERE id_ppdb='$id'");
+        db_execute($conn, "UPDATE ppdb SET status = ?, id_admin = ? WHERE id_ppdb = ?", 'sis', [$status, $id_admin, $id]);
     }
     header("Location: index.php");
     exit();
+} elseif ($aksi == 'status') {
+    $id  = $_POST['id'] ?? '';
+    $set = $_POST['set'] ?? '';
 
-} elseif($aksi == 'status'){
-    $id = mysqli_real_escape_string($conn, $_GET['id']);
-    $set = mysqli_real_escape_string($conn, $_GET['set']);
-    $id_admin = $_SESSION['admin_id'];
-    mysqli_query($conn, "UPDATE ppdb SET status='$set', id_admin='$id_admin' WHERE id_ppdb='$id'");
+    db_execute($conn, "UPDATE ppdb SET status = ?, id_admin = ? WHERE id_ppdb = ?", 'sis', [$set, $id_admin, $id]);
+    header("Location: index.php");
+    exit();
+} elseif ($aksi == 'hapus') {
+    $id    = $_POST['id'] ?? '';
+    $old   = db_fetch_one($conn, "SELECT gambar FROM ppdb WHERE id_ppdb = ?", 's', [$id]);
+
+    remove_uploaded_file($path, $old['gambar'] ?? null);
+
+    db_execute($conn, "DELETE FROM ppdb WHERE id_ppdb = ?", 's', [$id]);
     header("Location: index.php");
     exit();
 }
-?>

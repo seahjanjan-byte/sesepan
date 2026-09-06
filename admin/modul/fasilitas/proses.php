@@ -1,15 +1,19 @@
 <?php
 include '../../../config/config.php';
 include '../../cek_session.php';
+include '../../upload_helper.php';
+include '../../database_helper.php';
 
-$aksi = isset($_GET['aksi']) ? $_GET['aksi'] : '';
+require_valid_csrf_token();
+
+$aksi = $_POST['aksi'] ?? '';
 $path = "../../../assets/img/";
 
-if($aksi == 'tambah'){
+if ($aksi == 'tambah') {
     // LOGIKA GENERATE ID FASILITAS (FSL001)
-    $query_id = mysqli_query($conn, "SELECT id_fasilitas FROM fasilitas ORDER BY id_fasilitas DESC LIMIT 1");
-    if(mysqli_num_rows($query_id) > 0) {
-        $last_id = mysqli_fetch_array($query_id)['id_fasilitas'];
+    $last = db_fetch_one($conn, "SELECT id_fasilitas FROM fasilitas ORDER BY id_fasilitas DESC LIMIT 1");
+    if ($last) {
+        $last_id = $last['id_fasilitas'];
         $num = (int)substr($last_id, 3) + 1;
         $id_baru = "FSL" . str_pad($num, 3, "0", STR_PAD_LEFT);
     } else {
@@ -17,47 +21,53 @@ if($aksi == 'tambah'){
     }
 
     $id_admin = $_SESSION['admin_id']; // Relasi ke Admin
-    $nama = mysqli_real_escape_string($conn, $_POST['nama_fasilitas']);
-    $desk = mysqli_real_escape_string($conn, $_POST['deskripsi']);
-    $gambar = $_FILES['gambar']['name'];
-    
-    $nama_file = time() . "_" . $gambar;
-    move_uploaded_file($_FILES['gambar']['tmp_name'], $path . $nama_file);
+    $nama = $_POST['nama_fasilitas'] ?? '';
+    $desk = $_POST['deskripsi'] ?? '';
+    $gambar = $_FILES['gambar']['name'] ?? '';
+
+    $nama_file = '';
+    if ($gambar !== '') {
+        $nama_file = store_uploaded_image($_FILES['gambar'], $path);
+        if ($nama_file === false) {
+            header("Location: index.php?pesan=upload_gagal");
+            exit();
+        }
+    }
 
     // INSERT menyertakan id_fasilitas dan id_admin
-    mysqli_query($conn, "INSERT INTO fasilitas (id_fasilitas, id_admin, nama_fasilitas, deskripsi, gambar) 
-                        VALUES ('$id_baru', '$id_admin', '$nama', '$desk', '$nama_file')");
+    db_execute($conn, "INSERT INTO fasilitas (id_fasilitas, id_admin, nama_fasilitas, deskripsi, gambar)
+                      VALUES (?, ?, ?, ?, ?)", 'sisss', [$id_baru, $id_admin, $nama, $desk, $nama_file]);
     header("Location: index.php");
     exit();
+} elseif ($aksi == 'edit') {
+    $id = $_POST['id'] ?? '';
+    $nama = $_POST['nama_fasilitas'] ?? '';
+    $desk = $_POST['deskripsi'] ?? '';
+    $gambar = $_FILES['gambar']['name'] ?? '';
 
-} elseif($aksi == 'edit'){
-    $id = mysqli_real_escape_string($conn, $_POST['id']);
-    $nama = mysqli_real_escape_string($conn, $_POST['nama_fasilitas']);
-    $desk = mysqli_real_escape_string($conn, $_POST['deskripsi']);
-    $gambar = $_FILES['gambar']['name'];
+    if ($gambar != "") {
+        $nama_baru = store_uploaded_image($_FILES['gambar'], $path);
+        if ($nama_baru === false) {
+            header("Location: index.php?pesan=upload_gagal");
+            exit();
+        }
 
-    if($gambar != ""){
         // REVISI: Menggunakan id_fasilitas
-        $old = mysqli_fetch_array(mysqli_query($conn, "SELECT gambar FROM fasilitas WHERE id_fasilitas='$id'"));
-        if(!empty($old['gambar']) && file_exists($path . $old['gambar'])) unlink($path . $old['gambar']);
-        
-        $nama_baru = time() . "_" . $gambar;
-        move_uploaded_file($_FILES['gambar']['tmp_name'], $path . $nama_baru);
-        $sql = "UPDATE fasilitas SET nama_fasilitas='$nama', deskripsi='$desk', gambar='$nama_baru' WHERE id_fasilitas='$id'";
+        $old = db_fetch_one($conn, "SELECT gambar FROM fasilitas WHERE id_fasilitas = ?", 's', [$id]);
+        remove_uploaded_file($path, $old['gambar'] ?? null);
+
+        db_execute($conn, "UPDATE fasilitas SET nama_fasilitas = ?, deskripsi = ?, gambar = ? WHERE id_fasilitas = ?", 'ssss', [$nama, $desk, $nama_baru, $id]);
     } else {
-        $sql = "UPDATE fasilitas SET nama_fasilitas='$nama', deskripsi='$desk' WHERE id_fasilitas='$id'";
+        db_execute($conn, "UPDATE fasilitas SET nama_fasilitas = ?, deskripsi = ? WHERE id_fasilitas = ?", 'sss', [$nama, $desk, $id]);
     }
-    mysqli_query($conn, $sql);
     header("Location: index.php");
     exit();
+} elseif ($aksi == 'hapus') {
+    $id = $_POST['id'] ?? '';
+    $old = db_fetch_one($conn, "SELECT gambar FROM fasilitas WHERE id_fasilitas = ?", 's', [$id]);
+    remove_uploaded_file($path, $old['gambar'] ?? null);
 
-} elseif($aksi == 'hapus'){
-    $id = mysqli_real_escape_string($conn, $_GET['id']);
-    $old = mysqli_fetch_array(mysqli_query($conn, "SELECT gambar FROM fasilitas WHERE id_fasilitas='$id'"));
-    if(!empty($old['gambar']) && file_exists($path . $old['gambar'])) unlink($path . $old['gambar']);
-    
-    mysqli_query($conn, "DELETE FROM fasilitas WHERE id_fasilitas='$id'");
+    db_execute($conn, "DELETE FROM fasilitas WHERE id_fasilitas = ?", 's', [$id]);
     header("Location: index.php");
     exit();
 }
-?>

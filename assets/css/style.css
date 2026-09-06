@@ -3,21 +3,26 @@
 /* 1. Import Font Wajib di Baris Paling Atas */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 /* 2. Variabel Warna Modern & Profesional */
 :root {
-  --primary-blue: #3b82f6; /* Electric Blue */
-  --primary-dark: #1e40af;
-  --side-bg: #0f172a;      /* Midnight Slate */
+  --primary-blue: #5f8f78;
+  --primary-dark: #173f35;
+  --side-bg: #102a2a;
   --side-text: #94a3b8;
-  --body-bg: #f8fafc;
+  --body-bg: #f5f8f6;
   --white: #ffffff;
-  --border-soft: #e2e8f0;
-  --text-dark: #1e293b;
+  --border-soft: #dce8e2;
+  --text-dark: #18332d;
   --text-muted: #64748b;
+  --sage-light: #eef5f0;
+  --sage-subtle: #dcece2;
+  --navy: #173f35;
 }
 
 /* 3. Layout Dasar */
@@ -176,10 +181,205 @@ main,
 }
 
 .hero-overlay {
-  background: rgba(0, 0, 0, 0.4);
-  height: 100%;
-  display: flex;
-  align-items: center;
+  background: linear-gradient(
+    90deg,
+    rgba(8, 25, 28, 0.88) 0%,
+    rgba(12, 35, 34, 0.68) 42%,
+    rgba(12, 35, 34, 0.2) 100%
+  );
+  inset: 0;
+  position: absolute;
+}
+
+.hero-section {
+  background: #102a2a;
+  min-height: 100vh;
+}
+
+.hero-slide {
+  background-position: center;
+  background-size: cover;
+  height: 100vh !important;
+  min-height: 640px;
+  position: relative;
+}
+
+.hero-content {
+  z-index: 1;
+}
+
+.hero-copy {
+  padding-top: 4rem;
+}
+
+.hero-copy h1 {
+  letter-spacing: -0.025em;
+  max-width: 760px;
+  text-shadow: 0 3px 22px rgba(0, 0, 0, 0.28);
+}
+
+.hero-copy p {
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 620px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+}
+
+.hero-kicker {
+  color: #c4e3d0;
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.hero-section .carousel-control-prev,
+.hero-section .carousel-control-next {
+  opacity: 0.75;
+  width: 8%;
+  z-index: 2;
+}
+
+.home-section {
+  padding-bottom: 5rem !important;
+  padding-top: 5rem !important;
+}
+
+.text-navy {
+  color: var(--navy) !important;
+}
+
+.text-sage {
+  color: var(--primary-blue) !important;
+}
+
+.bg-navy {
+  background-color: var(--navy) !important;
+}
+
+.bg-sage-light {
+  background-color: var(--sage-light) !important;
+}
+
+.bg-sage-subtle {
+  background-color: var(--sage-subtle) !important;
+}
+
+.btn-sage {
+  background-color: var(--primary-blue);
+  border-color: var(--primary-blue);
+  color: #fff;
+}
+
+.btn-sage:hover,
+.btn-sage:focus {
+  background-color: #4d7965;
+  border-color: #4d7965;
+  color: #fff;
+}
+
+.home-page .text-primary {
+  color: var(--primary-blue) !important;
+}
+
+.home-page .btn-primary {
+  background-color: var(--primary-blue);
+  border-color: var(--primary-blue);
+}
+
+.home-page .btn-primary:hover,
+.home-page .btn-primary:focus {
+  background-color: #4d7965;
+  border-color: #4d7965;
+}
+
+.home-page .btn-outline-primary {
+  border-color: var(--primary-blue);
+  color: var(--primary-blue);
+}
+
+.home-page .btn-outline-primary:hover,
+.home-page .btn-outline-primary:focus {
+  background-color: var(--primary-blue);
+  border-color: var(--primary-blue);
+  color: #fff;
+}
+
+.section-rule {
+  background-color: var(--primary-blue);
+  border: 0;
+  border-radius: 999px;
+  height: 4px;
+  opacity: 1;
+  width: 72px;
+}
+
+.announcement-card,
+.contact-card,
+.news-card {
+  border: 0 !important;
+  box-shadow: 0 8px 24px rgba(23, 63, 53, 0.08) !important;
+}
+
+.announcement-card .card-header {
+  letter-spacing: 0.01em;
+}
+
+.welcome-image {
+  min-height: 240px;
+}
+
+.welcome-image img {
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+}
+
+.news-image {
+  transition: transform 0.35s ease;
+}
+
+.news-card:hover .news-image {
+  transform: scale(1.04);
+}
+
+.contact-card {
+  background-color: #fff;
+}
+
+@media (max-width: 767.98px) {
+  .hero-slide {
+    min-height: 680px;
+  }
+
+  .hero-overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(8, 25, 28, 0.5) 0%,
+      rgba(8, 25, 28, 0.9) 100%
+    );
+  }
+
+  .hero-copy {
+    padding: 3rem 1rem 0;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(2.35rem, 11vw, 4.5rem);
+  }
+
+  .hero-copy p {
+    font-size: 1.05rem !important;
+  }
+
+  .home-section {
+    padding-bottom: 3.5rem !important;
+    padding-top: 3.5rem !important;
+  }
+
+  .welcome-image img {
+    aspect-ratio: 16 / 10;
+  }
 }
 
 .feature-card {

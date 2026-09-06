@@ -1,67 +1,89 @@
 <?php
 include '../../../config/config.php';
 include '../../cek_session.php';
+include '../../upload_helper.php';
+include '../../database_helper.php';
 
-$aksi = isset($_GET['aksi']) ? $_GET['aksi'] : '';
+require_valid_csrf_token();
+
+$aksi = $_POST['aksi'] ?? '';
 $path = "../../../assets/img/";
 
-if($aksi == 'tambah'){
+if ($aksi == 'tambah') {
     // LOGIKA GENERATE ID GALERI (GLR001)
-    $query_id = mysqli_query($conn, "SELECT id_galeri FROM galeri ORDER BY id_galeri DESC LIMIT 1");
-    if(mysqli_num_rows($query_id) > 0) {
-        $last_id = mysqli_fetch_array($query_id)['id_galeri'];
+    $last = db_fetch_one($conn, "SELECT id_galeri FROM galeri ORDER BY id_galeri DESC LIMIT 1");
+    if ($last) {
+        $last_id = $last['id_galeri'];
         $num = (int)substr($last_id, 3) + 1;
         $id_baru = "GLR" . str_pad($num, 3, "0", STR_PAD_LEFT);
     } else {
         $id_baru = "GLR001";
     }
 
-    $id_admin = $_SESSION['admin_id']; // Relasi ke Admin
-    $judul    = mysqli_real_escape_string($conn, $_POST['judul']);
-    $kategori = $_POST['kategori'];
-    $tipe     = $_POST['tipe_sumber'];
+    $id_admin = $_SESSION['admin_id'];
+    $judul    = $_POST['judul'] ?? '';
+    $kategori = $_POST['kategori'] ?? '';
+    $tipe     = $_POST['tipe_sumber'] ?? '';
     $sumber   = "";
 
-    if($tipe == 'upload'){
-        $sumber = time() . "_" . $_FILES['file_sumber']['name'];
-        move_uploaded_file($_FILES['file_sumber']['tmp_name'], $path . $sumber);
+    if ($tipe == 'upload' && !empty($_FILES['file_sumber']['name'])) {
+        $sumber = store_uploaded_image($_FILES['file_sumber'], $path);
+        if ($sumber === false) {
+            header("Location: index.php?pesan=upload_gagal");
+            exit();
+        }
     } else {
-        $sumber = mysqli_real_escape_string($conn, $_POST['url_sumber']);
+        $sumber = $_POST['url_sumber'] ?? '';
     }
 
-    // INSERT menyertakan id_galeri dan id_admin
-    mysqli_query($conn, "INSERT INTO galeri (id_galeri, id_admin, judul, kategori, tipe_sumber, sumber) 
-                        VALUES ('$id_baru', '$id_admin', '$judul', '$kategori', '$tipe', '$sumber')");
+    db_execute($conn, "INSERT INTO galeri (id_galeri, id_admin, judul, kategori, tipe_sumber, sumber) VALUES (?, ?, ?, ?, ?, ?)", 'sissss', [$id_baru, $id_admin, $judul, $kategori, $tipe, $sumber]);
     header("Location: index.php");
     exit();
+} elseif ($aksi == 'edit') {
+    $id        = $_POST['id'] ?? '';
+    $judul     = $_POST['judul'] ?? '';
+    $url_baru  = $_POST['url_sumber'] ?? '';
+    $file_baru = $_FILES['file_sumber']['name'] ?? '';
 
-} elseif($aksi == 'edit'){
-    $id       = mysqli_real_escape_string($conn, $_POST['id']);
-    $judul    = mysqli_real_escape_string($conn, $_POST['judul']);
-    $url_baru = mysqli_real_escape_string($conn, $_POST['url_sumber']);
+    $old = db_fetch_one($conn, "SELECT * FROM galeri WHERE id_galeri = ?", 's', [$id]);
 
-    // REVISI: Menggunakan id_galeri
-    $old = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM galeri WHERE id_galeri='$id'"));
+    // Opsi 1: Pengguna mengunggah berkas gambar baru
+    if (!empty($file_baru)) {
+        $nama_sumber = store_uploaded_image($_FILES['file_sumber'], $path);
+        if ($nama_sumber === false) {
+            header("Location: index.php?pesan=upload_gagal");
+            exit();
+        }
 
-    if(!empty($url_baru)){
-        if($old['tipe_sumber'] == 'upload' && file_exists($path . $old['sumber'])) unlink($path . $old['sumber']);
-        $sql = "UPDATE galeri SET judul='$judul', sumber='$url_baru' WHERE id_galeri='$id'";
+        if (!empty($old['sumber']) && $old['tipe_sumber'] == 'upload' && is_file($path . $old['sumber'])) {
+            remove_uploaded_file($path, $old['sumber']);
+        }
+        db_execute($conn, "UPDATE galeri SET judul = ?, tipe_sumber = ?, sumber = ? WHERE id_galeri = ?", 'ssss', [$judul, 'upload', $nama_sumber, $id]);
+
+        // Opsi 2: Pengguna memasukkan Link/URL baru (misal Youtube)
+    } elseif (!empty($url_baru)) {
+        if (!empty($old['sumber']) && $old['tipe_sumber'] == 'upload' && is_file($path . $old['sumber'])) {
+            remove_uploaded_file($path, $old['sumber']);
+        }
+        db_execute($conn, "UPDATE galeri SET judul = ?, tipe_sumber = ?, sumber = ? WHERE id_galeri = ?", 'ssss', [$judul, 'link', $url_baru, $id]);
+
+        // Opsi 3: Hanya mengubah Judul saja
     } else {
-        $sql = "UPDATE galeri SET judul='$judul' WHERE id_galeri='$id'";
+        db_execute($conn, "UPDATE galeri SET judul = ? WHERE id_galeri = ?", 'ss', [$judul, $id]);
     }
-    
-    mysqli_query($conn, $sql);
+
     header("Location: index.php");
     exit();
+} elseif ($aksi == 'hapus') {
+    $id = $_POST['id'] ?? '';
+    $d  = db_fetch_one($conn, "SELECT * FROM galeri WHERE id_galeri = ?", 's', [$id]);
 
-} elseif($aksi == 'hapus'){
-    $id = mysqli_real_escape_string($conn, $_GET['id']);
-    $d  = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM galeri WHERE id_galeri='$id'"));
-    
-    if($d['tipe_sumber'] == 'upload' && file_exists($path . $d['sumber'])) unlink($path . $d['sumber']);
-    
-    mysqli_query($conn, "DELETE FROM galeri WHERE id_galeri='$id'");
+    // Memastikan sumber tidak kosong, bertipe upload, dan benar-benar file valid sebelum unlink
+    if (!empty($d['sumber']) && $d['tipe_sumber'] == 'upload' && is_file($path . $d['sumber'])) {
+        remove_uploaded_file($path, $d['sumber']);
+    }
+
+    db_execute($conn, "DELETE FROM galeri WHERE id_galeri = ?", 's', [$id]);
     header("Location: index.php");
     exit();
 }
-?>

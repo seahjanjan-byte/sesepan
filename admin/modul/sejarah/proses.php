@@ -1,36 +1,40 @@
 <?php
 include '../../../config/config.php';
 include '../../cek_session.php';
+include '../../upload_helper.php';
+include '../../database_helper.php';
 
-if(isset($_POST['update'])){
-    $isi = mysqli_real_escape_string($conn, $_POST['isi']);
-    $gambar = $_FILES['gambar']['name'];
-    $tmp = $_FILES['gambar']['tmp_name'];
-    $path = "../../../assets/img/";
-    $admin_id = $_SESSION['admin_id'];
+if (isset($_POST['update'])) {
+    $admin_id = $_SESSION['admin_id'] ?? '';
+    $isi      = $_POST['isi'] ?? '';
+    $gambar   = $_FILES['gambar']['name'] ?? '';
+    $tmp      = $_FILES['gambar']['tmp_name'] ?? '';
+    $path     = "../../../assets/img/";
 
-    if(!empty($gambar)){
-        // 1. Cari dan hapus gambar lama
-        $old = mysqli_fetch_array(mysqli_query($conn, "SELECT gambar FROM profil WHERE kategori='sejarah'"));
-        if(!empty($old['gambar']) && file_exists($path . $old['gambar'])) {
-            unlink($path . $old['gambar']);
+    if (!empty($gambar)) {
+        $nama_file = store_uploaded_image($_FILES['gambar'], $path);
+        if ($nama_file === false) {
+            header("Location: ../profil/index.php?pesan=upload_gagal");
+            exit();
         }
-        
+
+        // 1. Cari dan hapus gambar lama
+        $old = db_fetch_one($conn, "SELECT gambar FROM profil WHERE kategori = ?", 's', ['sejarah']);
+        remove_uploaded_file($path, $old['gambar'] ?? null);
+
         // 2. Upload gambar baru
-        $nama_file = "sejarah_" . time() . "_" . $gambar;
-        move_uploaded_file($tmp, $path . $nama_file);
-        $sql = "UPDATE profil SET isi='$isi', gambar='$nama_file', id_admin='$admin_id' WHERE kategori='sejarah'";
+        $success = db_execute($conn, "UPDATE profil SET isi = ?, gambar = ?, id_admin = ? WHERE kategori = ?", 'ssis', [$isi, $nama_file, $admin_id, 'sejarah']);
     } else {
-        $sql = "UPDATE profil SET isi='$isi', id_admin='$admin_id' WHERE kategori='sejarah'";
+        $success = db_execute($conn, "UPDATE profil SET isi = ?, id_admin = ? WHERE kategori = ?", 'sis', [$isi, $admin_id, 'sejarah']);
     }
-    
-    if(mysqli_query($conn, $sql)){
-        header("location:../profil/index.php");
+
+    if ($success) {
+        header("Location: ../profil/index.php");
         exit();
     } else {
         echo "Error: " . mysqli_error($conn);
     }
 } else {
-    header("location:index.php");
+    header("Location: index.php");
+    exit();
 }
-?>

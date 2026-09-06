@@ -1,58 +1,73 @@
 <?php
 include '../../../config/config.php';
-include '../../cek_session.php'; 
-$aksi = $_GET['aksi'];
+include '../../cek_session.php';
+include '../../upload_helper.php';
+include '../../database_helper.php';
+
+require_valid_csrf_token();
+
+$aksi = $_POST['aksi'] ?? '';
 $path = "../../../assets/img/";
 
-if($aksi == 'tambah'){
+if ($aksi == 'tambah') {
     // LOGIKA GENERATE ID GURU (GRUxxx)
-    $query_id = mysqli_query($conn, "SELECT id_guru FROM guru ORDER BY id_guru DESC LIMIT 1");
-    if(mysqli_num_rows($query_id) > 0) {
-        $last_id = mysqli_fetch_array($query_id)['id_guru'];
+    $last = db_fetch_one($conn, "SELECT id_guru FROM guru ORDER BY id_guru DESC LIMIT 1");
+    if ($last) {
+        $last_id = $last['id_guru'];
         $num = (int)substr($last_id, 3) + 1;
         $id_baru = "GRU" . str_pad($num, 3, "0", STR_PAD_LEFT);
     } else {
         $id_baru = "GRU001";
     }
 
-    $id_admin = $_SESSION['admin_id']; // Mengambil ID Admin dari session
-    $nama = mysqli_real_escape_string($conn, $_POST['nama']);
-    $jabatan = mysqli_real_escape_string($conn, $_POST['jabatan']);
-    $foto = $_FILES['foto']['name'];
-    
-    $nama_file = time() . "_" . $foto;
-    move_uploaded_file($_FILES['foto']['tmp_name'], $path . $nama_file);
+    $id_admin = $_SESSION['admin_id'];
+    $nama     = $_POST['nama'] ?? '';
+    $jabatan  = $_POST['jabatan'] ?? '';
+    $foto     = $_FILES['foto']['name'] ?? '';
 
-    // Query menyertakan id_guru dan id_admin sesuai aturan relasi
-    mysqli_query($conn, "INSERT INTO guru (id_guru, id_admin, nama, jabatan, foto) 
-                        VALUES ('$id_baru', '$id_admin', '$nama', '$jabatan', '$nama_file')");
-    header("location:index.php");
-
-} elseif($aksi == 'edit'){
-    $id = $_POST['id']; // id_guru (String)
-    $nama = mysqli_real_escape_string($conn, $_POST['nama']);
-    $jabatan = mysqli_real_escape_string($conn, $_POST['jabatan']);
-    $foto = $_FILES['foto']['name'];
-
-    if($foto != ""){
-        $old = mysqli_fetch_array(mysqli_query($conn, "SELECT foto FROM guru WHERE id_guru='$id'"));
-        if(!empty($old['foto']) && file_exists($path . $old['foto'])) unlink($path . $old['foto']);
-        
-        $nama_baru = time() . "_" . $foto;
-        move_uploaded_file($_FILES['foto']['tmp_name'], $path . $nama_baru);
-        $sql = "UPDATE guru SET nama='$nama', jabatan='$jabatan', foto='$nama_baru' WHERE id_guru='$id'";
-    } else {
-        $sql = "UPDATE guru SET nama='$nama', jabatan='$jabatan' WHERE id_guru='$id'";
+    $nama_file = "";
+    if (!empty($foto)) {
+        $nama_file = store_uploaded_image($_FILES['foto'], $path);
+        if ($nama_file === false) {
+            header("Location: index.php?pesan=upload_gagal");
+            exit();
+        }
     }
-    mysqli_query($conn, $sql);
-    header("location:index.php");
 
-} elseif($aksi == 'hapus'){
-    $id = $_GET['id'];
-    $old = mysqli_fetch_array(mysqli_query($conn, "SELECT foto FROM guru WHERE id_guru='$id'"));
-    if(!empty($old['foto']) && file_exists($path . $old['foto'])) unlink($path . $old['foto']);
-    
-    mysqli_query($conn, "DELETE FROM guru WHERE id_guru='$id'");
-    header("location:index.php");
+    db_execute($conn, "INSERT INTO guru (id_guru, id_admin, nama, jabatan, foto)
+                      VALUES (?, ?, ?, ?, ?)", 'sisss', [$id_baru, $id_admin, $nama, $jabatan, $nama_file]);
+    header("Location: index.php");
+    exit();
+} elseif ($aksi == 'edit') {
+    $id      = $_POST['id'] ?? '';
+    $nama    = $_POST['nama'] ?? '';
+    $jabatan = $_POST['jabatan'] ?? '';
+    $foto    = $_FILES['foto']['name'] ?? '';
+
+    if (!empty($foto)) {
+        $nama_baru = store_uploaded_image($_FILES['foto'], $path);
+        if ($nama_baru === false) {
+            header("Location: index.php?pesan=upload_gagal");
+            exit();
+        }
+
+        $old = db_fetch_one($conn, "SELECT foto FROM guru WHERE id_guru = ?", 's', [$id]);
+        remove_uploaded_file($path, $old['foto'] ?? null);
+
+        db_execute($conn, "UPDATE guru SET nama = ?, jabatan = ?, foto = ? WHERE id_guru = ?", 'ssss', [$nama, $jabatan, $nama_baru, $id]);
+    } else {
+        db_execute($conn, "UPDATE guru SET nama = ?, jabatan = ? WHERE id_guru = ?", 'sss', [$nama, $jabatan, $id]);
+    }
+
+    header("Location: index.php");
+    exit();
+} elseif ($aksi == 'hapus') {
+    $id  = $_POST['id'] ?? '';
+    $old = db_fetch_one($conn, "SELECT foto FROM guru WHERE id_guru = ?", 's', [$id]);
+
+    remove_uploaded_file($path, $old['foto'] ?? null);
+
+    db_execute($conn, "DELETE FROM guru WHERE id_guru = ?", 's', [$id]);
+    header("Location: index.php");
+    exit();
 }
-?>

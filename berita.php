@@ -16,13 +16,13 @@ include 'includes/header.php';
         ?>
                 <div class="col-md-4" data-aos="fade-up">
                     <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden card-dukuhbenda02">
-                        <img src="<?= $base_url; ?>assets/img/<?= $b['gambar']; ?>" class="card-img-top" style="height: 220px; object-fit: cover;">
+                        <img src="<?= htmlspecialchars($base_url . 'assets/img/' . $b['gambar'], ENT_QUOTES, 'UTF-8'); ?>" class="card-img-top" style="height: 220px; object-fit: cover;">
                         <div class="card-body p-4">
-                            <h5 class="fw-bold text-dark mb-3"><?= $b['judul']; ?></h5>
+                            <h5 class="fw-bold text-dark mb-3"><?= htmlspecialchars($b['judul'], ENT_QUOTES, 'UTF-8'); ?></h5>
                             <p class="text-secondary small mb-4" style="line-height: 1.6;">
-                                <?= substr(strip_tags($b['isi']), 0, 120); ?>...
+                                <?= htmlspecialchars(substr(strip_tags($b['isi']), 0, 120), ENT_QUOTES, 'UTF-8'); ?>...
                             </p>
-                            <a href="<?= $base_url; ?>berita_view.php?id=<?= $b['id_berita']; ?>" class="btn btn-outline-primary btn-sm rounded-pill px-4 fw-bold">
+                            <a href="<?= htmlspecialchars($base_url . 'berita_view.php?id=' . rawurlencode($b['id_berita']), ENT_QUOTES, 'UTF-8'); ?>" class="btn btn-outline-primary btn-sm rounded-pill px-4 fw-bold">
                                 Baca Selengkapnya
                             </a>
                         </div>

@@ -4,34 +4,36 @@ include 'includes/header.php';
 // JANGAN sertakan cek_session.php di sini karena ini halaman publik
 ?>
 
-<div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-pause="false" data-bs-interval="3000">
-    <div class="carousel-inner">
-        <?php
-        $sql = mysqli_query($conn, "SELECT * FROM slider");
-        $active = "active";
-        while ($s = mysqli_fetch_array($sql)):
-        ?>
-            <div class="carousel-item <?= $active; ?>" style="height: 100vh; background: url('<?= $base_url; ?>assets/img/<?= $s['gambar']; ?>') center/cover no-repeat;">
-                <div class="hero-overlay text-white">
-                    <div class="container">
-                        <div class="col-lg-7" data-aos="fade-right">
+<section class="hero-section" aria-label="Banner utama sekolah">
+    <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-pause="false" data-bs-interval="4500">
+        <div class="carousel-inner">
+            <?php
+            $sql = mysqli_query($conn, "SELECT * FROM slider");
+            $active = "active";
+            while ($s = mysqli_fetch_array($sql)):
+            ?>
+                <div class="carousel-item <?= $active; ?> hero-slide" style="height: 100vh; background: url('<?= $base_url; ?>assets/img/<?= $s['gambar']; ?>') center/cover no-repeat;">
+                    <div class="hero-overlay text-white"></div>
+                    <div class="hero-content container position-relative d-flex align-items-center h-100">
+                        <div class="hero-copy col-lg-7" data-aos="fade-right">
+                            <span class="hero-kicker"><i class="bi bi-stars me-2"></i>SDN Dukuhbenda 02</span>
                             <h1 class="display-2 fw-bold mb-3"><?= $s['judul']; ?></h1>
-                            <p class="fs-4 opacity-85"><?= $s['subjudul']; ?></p>
+                            <p class="fs-4 opacity-85 mb-0"><?= $s['subjudul']; ?></p>
                         </div>
                     </div>
                 </div>
-            </div>
-        <?php $active = "";
-        endwhile; ?>
+            <?php $active = "";
+            endwhile; ?>
+        </div>
     </div>
-</div>
+</section>
 
-<section class="py-5 bg-white">
+<section class="home-section py-5 bg-white">
     <div class="container">
         <div class="row justify-content-center g-5 align-items-start">
             <div class="col-lg-4" data-aos="fade-right">
-                <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
-                    <div class="card-header bg-primary text-white py-3">
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100 announcement-card">
+                    <div class="card-header bg-navy text-white py-3 px-4 border-0">
                         <h5 class="mb-0 fw-bold"><i class="bi bi-megaphone-fill me-2"></i> Pengumuman</h5>
                     </div>
                     <div class="card-body p-0">
@@ -41,8 +43,8 @@ include 'includes/header.php';
                             if (mysqli_num_rows($q_peng) > 0):
                                 while ($p = mysqli_fetch_array($q_peng)):
                             ?>
-                                    <div class="list-group-item p-4 border-bottom transition-all">
-                                        <span class="badge bg-primary-subtle text-primary mb-2"><?= date('d M Y', strtotime($p['tanggal'])); ?></span>
+                                    <div class="list-group-item p-4 border-0 border-bottom transition-all">
+                                        <span class="badge bg-sage-subtle text-sage mb-2"><?= date('d M Y', strtotime($p['tanggal'])); ?></span>
                                         <h6 class="fw-bold mb-2 text-dark"><?= $p['judul']; ?></h6>
                                         <?php if (!empty($p['dokumen'])): ?>
                                             <a href="<?= $base_url; ?>assets/doc/<?= $p['dokumen']; ?>" target="_blank" class="btn btn-sm btn-outline-danger rounded-pill px-3 py-1 mt-2">
@@ -55,8 +57,8 @@ include 'includes/header.php';
                                 <div class='p-4 text-center text-muted'>Belum ada pengumuman aktif.</div>
                             <?php endif; ?>
                         </div>
-                        <div class="p-3 text-center bg-light">
-                            <a href="<?= $base_url; ?>pengumuman.php" class="text-decoration-none fw-bold small text-primary">LIHAT SEMUA PENGUMUMAN</a>
+                        <div class="p-3 text-center bg-sage-light">
+                            <a href="<?= $base_url; ?>pengumuman.php" class="text-decoration-none fw-bold small text-sage">LIHAT SEMUA PENGUMUMAN</a>
                         </div>
                     </div>
                 </div>
@@ -68,10 +70,10 @@ include 'includes/header.php';
                     $query_sk = mysqli_query($conn, "SELECT * FROM profil WHERE kategori='sambutan' LIMIT 1");
                     $sk = mysqli_fetch_array($query_sk);
                     ?>
-                    <h3 class="fw-bold text-primary mb-4">Sambutan Kepala Sekolah</h3>
+                    <h3 class="fw-bold text-navy mb-4">Sambutan Kepala Sekolah</h3>
                     <div class="row g-4">
                         <div class="col-md-5">
-                            <div class="rounded-4 overflow-hidden shadow-sm border bg-light">
+                            <div class="rounded-4 overflow-hidden shadow-sm border-0 bg-sage-light welcome-image">
                                 <?php
                                 $foto_path = "assets/img/" . ($sk['gambar'] ?? '');
                                 $foto = (!empty($sk['gambar']) && file_exists($foto_path)) ? $base_url . $foto_path : $base_url . "assets/img/logoo.png";
@@ -84,7 +86,7 @@ include 'includes/header.php';
                             <div class="text-secondary" style="line-height: 1.8; text-align: justify; font-size: 0.95rem;">
                                 <?= nl2br(substr($sk['isi'] ?? 'Teks sambutan sedang diperbarui.', 0, 500)); ?>...
                             </div>
-                            <a href="<?= $base_url; ?>profil_view.php?kat=sambutan" class="btn btn-outline-primary rounded-pill px-4 mt-4 fw-bold shadow-sm">
+                            <a href="<?= $base_url; ?>profil_view.php?kat=sambutan" class="btn btn-sage rounded-pill px-4 mt-4 fw-bold shadow-sm">
                                 Baca Selengkapnya <i class="bi bi-arrow-right-short ms-1"></i>
                             </a>
                         </div>
@@ -95,11 +97,11 @@ include 'includes/header.php';
     </div>
 </section>
 
-<section class="py-5 bg-light">
+<section class="home-section py-5 bg-sage-light">
     <div class="container">
         <div class="text-center mb-5" data-aos="fade-up">
-            <h2 class="fw-bold text-dark">Berita & Kegiatan Terbaru</h2>
-            <hr class="mx-auto" style="width: 80px; height: 4px; background-color: #3b82f6; border-radius: 2px; opacity: 1;">
+            <h2 class="fw-bold text-navy">Berita & Kegiatan Terbaru</h2>
+            <hr class="mx-auto section-rule">
         </div>
         <div class="row g-4">
             <?php
@@ -108,12 +110,12 @@ include 'includes/header.php';
             while ($bn = mysqli_fetch_array($sql_news)):
             ?>
                 <div class="col-md-4" data-aos="fade-up">
-                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden card-dukuhbenda02">
-                        <img src="<?= $base_url; ?>assets/img/<?= $bn['gambar']; ?>" class="card-img-top" style="height: 220px; object-fit: cover;">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden card-dukuhbenda02 news-card">
+                        <img src="<?= $base_url; ?>assets/img/<?= $bn['gambar']; ?>" class="card-img-top news-image" style="height: 220px; object-fit: cover;">
                         <div class="card-body p-4">
                             <h5 class="fw-bold text-dark mb-3"><?= $bn['judul']; ?></h5>
                             <p class="text-muted small mb-4"><?= substr(strip_tags($bn['isi']), 0, 100); ?>...</p>
-                            <a href="<?= $base_url; ?>berita_view.php?id=<?= $bn['id_berita']; ?>" class="btn btn-link text-primary fw-bold p-0 text-decoration-none">
+                            <a href="<?= $base_url; ?>berita_view.php?id=<?= $bn['id_berita']; ?>" class="btn btn-link text-sage fw-bold p-0 text-decoration-none">
                                 Selengkapnya <i class="bi bi-chevron-right"></i>
                             </a>
                         </div>
@@ -124,15 +126,15 @@ include 'includes/header.php';
     </div>
 </section>
 
-<section id="hubungi-kami" class="py-5 bg-white">
+<section id="hubungi-kami" class="home-section py-5 bg-white">
     <div class="container">
         <div class="text-center mb-5" data-aos="fade-up">
-            <h2 class="fw-bold text-dark">Hubungi Kami</h2>
-            <hr class="mx-auto" style="width: 80px; height: 4px; background-color: #3b82f6; border-radius: 2px; opacity: 1;">
+            <h2 class="fw-bold text-navy">Hubungi Kami</h2>
+            <hr class="mx-auto section-rule">
         </div>
         <div class="row g-4 justify-content-center">
             <div class="col-lg-6" data-aos="fade-right">
-                <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+                <div class="card border-0 shadow-sm rounded-4 p-4 h-100 contact-card">
                     <h5 class="fw-bold mb-4">Kirim Pesan</h5>
                     <form action="<?= $base_url; ?>proses_kontak.php" method="POST">
                         <div class="mb-3">
@@ -160,7 +162,7 @@ include 'includes/header.php';
                 </div>
             </div>
             <div class="col-lg-5" data-aos="fade-left">
-                <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-light">
+                <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-sage-light contact-card">
                     <h5 class="fw-bold mb-4">Informasi Sekolah</h5>
                     <div class="d-flex mb-3">
                         <i class="bi bi-geo-alt-fill text-primary me-3 fs-5"></i>

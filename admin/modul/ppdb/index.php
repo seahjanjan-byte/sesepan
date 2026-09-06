@@ -54,17 +54,29 @@ include '../../cek_session.php'; ?>
                                     <i class="bi bi-check-circle-fill fs-3 me-3"></i>
                                     <div><strong>AKTIF:</strong> Pendaftaran sedang dibuka dan brosur tampil di website.</div>
                                 </div>
-                                <a href="proses.php?aksi=status&id=<?= $d['id_ppdb']; ?>&set=tutup" class="btn btn-danger btn-lg w-100 rounded-4 py-3 shadow">
-                                    <i class="bi bi-x-circle me-2"></i> Tutup Pendaftaran Sekarang
-                                </a>
+                                <form method="POST" action="proses.php">
+                                    <input type="hidden" name="id" value="<?= htmlspecialchars($d['id_ppdb'], ENT_QUOTES, 'UTF-8'); ?>">
+                                    <input type="hidden" name="aksi" value="status">
+                                    <input type="hidden" name="set" value="tutup">
+                                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
+                                    <button type="submit" class="btn btn-danger btn-lg w-100 rounded-4 py-3 shadow">
+                                        <i class="bi bi-x-circle me-2"></i> Tutup Pendaftaran Sekarang
+                                    </button>
+                                </form>
                             <?php elseif ($d && $d['status'] == 'tutup'): ?>
                                 <div class="alert alert-danger d-flex align-items-center mb-4">
                                     <i class="bi bi-info-circle-fill fs-3 me-3"></i>
                                     <div><strong>NON-AKTIF:</strong> Pendaftaran ditutup. Pengunjung akan melihat pesan pemberitahuan.</div>
                                 </div>
-                                <a href="proses.php?aksi=status&id=<?= $d['id_ppdb']; ?>&set=buka" class="btn btn-success btn-lg w-100 rounded-4 py-3 shadow">
-                                    <i class="bi bi-check-circle me-2"></i> Buka Pendaftaran Sekarang
-                                </a>
+                                <form method="POST" action="proses.php">
+                                    <input type="hidden" name="id" value="<?= htmlspecialchars($d['id_ppdb'], ENT_QUOTES, 'UTF-8'); ?>">
+                                    <input type="hidden" name="aksi" value="status">
+                                    <input type="hidden" name="set" value="buka">
+                                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
+                                    <button type="submit" class="btn btn-success btn-lg w-100 rounded-4 py-3 shadow">
+                                        <i class="bi bi-check-circle me-2"></i> Buka Pendaftaran Sekarang
+                                    </button>
+                                </form>
                             <?php endif; ?>
 
                             <div class="mt-4 p-3 bg-light rounded border small text-muted">

@@ -95,12 +95,23 @@ if (substr($wa_number, 0, 1) === '0') {
                             <span class="text-muted small italic">ID Pesan: #<?= $d['id_pesan']; ?></span>
                         </div>
                         <div class="d-flex gap-2">
-                            <a href="proses.php?aksi=status&id=<?= $d['id_pesan']; ?>&set=arsip" class="btn btn-outline-secondary px-4 rounded-pill fw-bold">
-                                <i class="bi bi-archive me-2"></i> Arsipkan Pesan
-                            </a>
-                            <a href="proses.php?aksi=hapus&id=<?= $d['id_pesan']; ?>" class="btn btn-danger px-4 rounded-pill fw-bold" onclick="return confirm('Hapus pesan ini secara permanen?')">
-                                <i class="bi bi-trash me-2"></i> Hapus Pesan
-                            </a>
+                            <form method="POST" action="proses.php" class="d-inline">
+                                <input type="hidden" name="id" value="<?= htmlspecialchars($d['id_pesan'], ENT_QUOTES, 'UTF-8'); ?>">
+                                <input type="hidden" name="aksi" value="status">
+                                <input type="hidden" name="set" value="arsip">
+                                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
+                                <button type="submit" class="btn btn-outline-secondary px-4 rounded-pill fw-bold">
+                                    <i class="bi bi-archive me-2"></i> Arsipkan Pesan
+                                </button>
+                            </form>
+                            <form method="POST" action="proses.php" class="d-inline" onsubmit="return confirm('Hapus pesan ini secara permanen?')">
+                                <input type="hidden" name="id" value="<?= htmlspecialchars($d['id_pesan'], ENT_QUOTES, 'UTF-8'); ?>">
+                                <input type="hidden" name="aksi" value="hapus">
+                                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
+                                <button type="submit" class="btn btn-danger px-4 rounded-pill fw-bold">
+                                    <i class="bi bi-trash me-2"></i> Hapus Pesan
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
